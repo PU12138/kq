@@ -290,7 +290,6 @@ html, body {
   background: var(--bg-card);
   overflow-x: auto;
   border-top: 1px solid #2a2a4a;
-  display: none;  /* 隐藏孔位网格，改用简化键盘 */
 }
 .harmonica-label {
   text-align: center;
