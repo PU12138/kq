@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.harmonica.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>口琴演奏家</name>
+    <name>口琴大师</name>
     <description>
         手机口琴演奏软件，支持多种口琴类型、100+首内置歌曲自动演奏、自由添加琴谱
     </description>
