@@ -354,6 +354,25 @@ html, body {
   display: flex;
   gap: 3px;
 }
+/* 半音切换按钮 */
+.sharp-toggle {
+  background: #2a3a4a;
+  color: var(--text-dim);
+  border: 1px solid #3a5a6a;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sharp-toggle.active {
+  background: #3a6a8a;
+  color: #fff;
+  border-color: #5a8aaa;
+}
+.key-row-sharp.hidden {
+  display: none;
+}
 .key-row-sharp {
   padding: 0 12%;
   height: 38px;

@@ -61,6 +61,7 @@
     <div class="manual-keyboard">
       <div class="keyboard-label">
         <span>手动演奏（长按持续发声）</span>
+        <button id="toggleSharpBtn" class="sharp-toggle">#半音</button>
       </div>
       <!-- 音区选择按钮 -->
       <div class="octave-selector" id="octaveSelector">
@@ -70,7 +71,7 @@
         <button class="oct-btn" data-oct="5">高5</button>
         <button class="oct-btn" data-oct="6">高6</button>
       </div>
-      <!-- 两排琴键：上排自然音，下排升降音（像钢琴） -->
+      <!-- 两排琴键：上排自然音，下排升降音（隐藏，点#半音按钮显示） -->
       <div class="keyboard-keys" id="keyboardKeys">
         <div class="key-row key-row-natural">
           <button class="key-btn key-natural" data-degree="1" data-dir="blow"><span class="key-num">1</span><span class="key-sol">do</span><span class="key-act">吹</span></button>
@@ -81,7 +82,7 @@
           <button class="key-btn key-natural" data-degree="6" data-dir="draw"><span class="key-num">6</span><span class="key-sol">la</span><span class="key-act">吸</span></button>
           <button class="key-btn key-natural" data-degree="7" data-dir="draw"><span class="key-num">7</span><span class="key-sol">si</span><span class="key-act">吸</span></button>
         </div>
-        <div class="key-row key-row-sharp">
+        <div class="key-row key-row-sharp hidden" id="sharpRow">
           <button class="key-btn key-sharp" data-degree="1" data-accidental="#" data-dir="blow">#1</button>
           <button class="key-btn key-sharp" data-degree="2" data-accidental="#" data-dir="draw">#2</button>
           <button class="key-btn key-sharp" data-degree="4" data-accidental="#" data-dir="draw">#4</button>

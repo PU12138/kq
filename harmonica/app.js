@@ -205,64 +205,36 @@ function playNote(noteName, duration, startTime = 0, velocity = 0.15) {
 }
 
 /**
- * 创建口琴音色 Voice（可手动控制开始/停止，支持长按持续发声）
- * 用 PeriodicWave 自定义谐波 + 共振峰滤波 + 气息噪声 + 包络
+ * 创建口琴音色 Voice
+ * 真实口琴 = 方波簧片(奇次谐波) + 八度三角波 + 温和带通 + 气息噪声
  */
 function createHarmonicaVoice(freq, velocity) {
   if (!State.audioCtx) return null;
   const ctx = State.audioCtx;
-  const v = Math.max(0.05, Math.min(0.5, velocity));
+  const v = Math.max(0.05, Math.min(0.4, velocity));
 
-  // === 1. 自定义哨片波形（PeriodicWave 精确控制谐波）===
-  // 真实口琴哨片的谐波振幅（实测频谱近似值）
-  // 奇偶次谐波都有，奇次略强（簧片振动特征）
-  if (!State._reedWave) {
-    const real = [0, 1.0, 0.55, 0.40, 0.25, 0.18, 0.12, 0.08, 0.06, 0.04, 0.03];
-    const imag = new Array(real.length).fill(0);
-    State._reedWave = ctx.createPeriodicWave(real, imag);
-  }
-
+  // === 1. 主簧片：方波（只有奇次谐波，最接近金属哨片）===
   const reed = ctx.createOscillator();
-  reed.setPeriodicWave(State._reedWave);
-  // 起音瞬间频率从略低滑到目标（哨片起振特性）
-  reed.frequency.setValueAtTime(freq * 0.97, ctx.currentTime);
-  reed.frequency.linearRampToValueAtTime(freq, ctx.currentTime + 0.025);
+  reed.type = 'square';
+  // 起音：频率从98%滑到100%（哨片起振瞬间）
+  reed.frequency.setValueAtTime(freq * 0.98, ctx.currentTime);
+  reed.frequency.linearRampToValueAtTime(freq, ctx.currentTime + 0.02);
 
-  // 第二哨片（微弱失谐，模拟复音口琴双哨片 beat 效果）
+  // === 2. 副簧片：三角波高八度（增加明亮厚度，不刺耳）===
   const reed2 = ctx.createOscillator();
-  reed2.setPeriodicWave(State._reedWave);
-  reed2.frequency.value = freq * 1.004;  // 略高，产生慢拍音
+  reed2.type = 'triangle';
+  reed2.frequency.value = freq * 2;
   const reed2Gain = ctx.createGain();
-  reed2Gain.gain.value = 0.12;
-  reed2.connect(reed2Gain);
+  reed2Gain.gain.value = 0.18;  // 主簧片的18%
 
-  // === 2. 共振峰滤波链（口琴琴体共振）===
-  // 低频共振峰（琴体共振 ~1000Hz）
-  const formantLow = ctx.createBiquadFilter();
-  formantLow.type = 'peaking';
-  formantLow.frequency.value = Math.min(1500, freq * 2.5 + 600);
-  formantLow.Q.value = 1.5;
-  formantLow.gain.value = 6;
+  // === 3. 温和滤波（不要peaking！带通就行）===
+  // 去掉极低和极高，让音色集中在口琴的频段
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = freq * 1.8;
+  filter.Q.value = 0.7;  // 宽一些，不要太尖锐
 
-  // 高频共振峰（明亮度 ~3000Hz）
-  const formantHigh = ctx.createBiquadFilter();
-  formantHigh.type = 'peaking';
-  formantHigh.frequency.value = Math.min(5000, freq * 5 + 2000);
-  formantHigh.Q.value = 2;
-  formantHigh.gain.value = 5;
-
-  // 高通去低频浑浊
-  const hipass = ctx.createBiquadFilter();
-  hipass.type = 'highpass';
-  hipass.frequency.value = Math.max(150, freq * 0.4);
-
-  // 低通去高频刺耳
-  const lopass = ctx.createBiquadFilter();
-  lopass.type = 'lowpass';
-  lopass.frequency.value = freq * 10;
-  lopass.Q.value = 0.5;
-
-  // === 3. 气息噪声（仅在起音时短暂出现 + 持续极弱）===
+  // === 4. 气息噪声（极弱，仅在起音时有一点）===
   let noiseSrc = null, noiseGain = null;
   const noiseBuf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * 2), ctx.sampleRate);
   const nData = noiseBuf.getChannelData(0);
@@ -272,26 +244,23 @@ function createHarmonicaVoice(freq, velocity) {
   noiseSrc.loop = true;
   const noiseBP = ctx.createBiquadFilter();
   noiseBP.type = 'bandpass';
-  noiseBP.frequency.value = freq * 2;
+  noiseBP.frequency.value = freq;
   noiseBP.Q.value = 1;
   noiseGain = ctx.createGain();
   noiseGain.gain.value = 0;
   noiseSrc.connect(noiseBP);
   noiseBP.connect(noiseGain);
-  noiseGain.connect(ctx.destination);
 
-  // === 4. 总音量 + 包络 ===
+  // === 5. 总音量 ===
   const gain = ctx.createGain();
   gain.gain.value = 0;
 
-  // 连接信号链
-  reed.connect(formantLow);
-  reed2Gain.connect(formantLow);
-  formantLow.connect(formantHigh);
-  formantHigh.connect(hipass);
-  hipass.connect(lopass);
-  lopass.connect(gain);
+  // 连接
+  reed.connect(filter);
+  reed2Gain.connect(filter);
+  filter.connect(gain);
   gain.connect(ctx.destination);
+  noiseGain.connect(ctx.destination);
 
   let vib = null, vibGain = null;
 
@@ -304,38 +273,38 @@ function createHarmonicaVoice(freq, velocity) {
       const st = t || ctx.currentTime;
       reed.start(st); reed2.start(st); noiseSrc.start(st);
 
-      // 起音：极快上升 + 轻微衰减到持续电平（模拟哨片起振后稳定）
+      // 起音：极快上升（哨片一推就响）
       gain.gain.setValueAtTime(0, st);
-      gain.gain.linearRampToValueAtTime(v, st + 0.008);
-      gain.gain.linearRampToValueAtTime(v * 0.78, st + 0.05);
+      gain.gain.linearRampToValueAtTime(v, st + 0.005);
+      gain.gain.linearRampToValueAtTime(v * 0.82, st + 0.04);
 
-      // 起音噪声脉冲（气息先行）
-      noiseGain.gain.setValueAtTime(0, st);
-      noiseGain.gain.linearRampToValueAtTime(0.04, st + 0.003);
-      noiseGain.gain.exponentialRampToValueAtTime(0.005, st + 0.05);
+      // 起音时微弱的气息声（像吹气瞬间）
+      noiseGain.gain.setValueAtTime(0.025, st);
+      noiseGain.gain.exponentialRampToValueAtTime(0.003, st + 0.08);
     },
     stop(t) {
       if (this._stopped) return;
       this._stopped = true;
       const st = t || ctx.currentTime;
-      // 释放：频率微降 + 音量快速衰减（哨片停止振动）
-      reed.frequency.linearRampToValueAtTime(freq * 0.92, st + 0.08);
+      // 释放：快速衰减（停气就停声）
       const cur = gain.gain.value;
       gain.gain.cancelScheduledValues(st);
       gain.gain.setValueAtTime(cur, st);
-      gain.gain.exponentialRampToValueAtTime(0.001, st + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.001, st + 0.05);
       noiseGain.gain.cancelScheduledValues(st);
-      reed.stop(st + 0.1);
-      reed2.stop(st + 0.1);
-      noiseSrc.stop(st + 0.1);
-      if (vib) { try { vib.stop(st + 0.1); } catch(e){} }
+      noiseGain.gain.setValueAtTime(noiseGain.gain.value, st);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.03);
+      reed.stop(st + 0.08);
+      reed2.stop(st + 0.08);
+      noiseSrc.stop(st + 0.08);
+      if (vib) { try { vib.stop(st + 0.08); } catch(e){} }
     },
     setVibrato(on) {
       if (on && !vib) {
         vib = ctx.createOscillator();
         vibGain = ctx.createGain();
-        vib.frequency.value = 5.2;
-        vibGain.gain.value = freq * 0.01;
+        vib.frequency.value = 5;
+        vibGain.gain.value = freq * 0.006;  // 轻微颤音，不要太夸张
         vib.connect(vibGain);
         vibGain.connect(reed.frequency);
         vibGain.connect(reed2.frequency);
@@ -672,6 +641,16 @@ function bindKeyboardEvents() {
     key.addEventListener('mouseup', onEnd);
     key.addEventListener('mouseleave', onEnd);
   });
+  
+  // #半音 切换按钮
+  const toggleBtn = document.getElementById('toggleSharpBtn');
+  const sharpRow = document.getElementById('sharpRow');
+  if (toggleBtn && sharpRow) {
+    toggleBtn.addEventListener('click', () => {
+      toggleBtn.classList.toggle('active');
+      sharpRow.classList.toggle('hidden');
+    });
+  }
 }
 
 /**
