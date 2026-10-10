@@ -202,6 +202,31 @@ function notesToJiapu(parsed, key = 'C') {
 }
 
 // 渲染简谱到页面
+// 把歌词按每个音符分配一个字，返回和 notes 等长的数组
+function alignLyrics(lyrics, parsedNotes) {
+  if (!lyrics) return parsedNotes.map(() => '');
+  // 把歌词拆成字（兼容中文和拼音/空格分词）
+  // 优先按空格分词，没有空格就按单字拆
+  let chars;
+  if (/\s/.test(lyrics)) {
+    chars = lyrics.split(/\s+/).filter(Boolean);
+  } else {
+    chars = lyrics.split('');
+  }
+  // 过滤掉空字符和纯标点
+  chars = chars.filter(c => c.trim() && !/^[|,，。.!！?？、\-—]+$/.test(c));
+  if (chars.length === 0) return parsedNotes.map(() => '');
+
+  // 目标长度 = 音符数（排除休止符？不，也分配占位）
+  const target = parsedNotes.length;
+  // 如果歌词比音符少，循环填充；多的话截断
+  const result = new Array(target).fill('');
+  for (let i = 0; i < target; i++) {
+    result[i] = chars[i % chars.length];
+  }
+  return result;
+}
+
 function renderSheetMusic(song) {
   const listEl = document.getElementById('sheetList');
   const musicEl = document.getElementById('sheetMusic');
@@ -210,23 +235,26 @@ function renderSheetMusic(song) {
   listEl.classList.add('hidden');
   musicEl.classList.remove('hidden');
   document.getElementById('sheetTitle').textContent = song.title + ' (' + song.key + '调)';
-  document.getElementById('sheetLyrics').textContent = song.lyrics || '';
+  document.getElementById('sheetLyrics').textContent = ''; // 歌词现在嵌进每行
   
   const parsed = parseNotes(song.notes, song.key);
   State.parsedNotes = parsed;
   
   const jiapu = notesToJiapu(parsed, song.key);
+  const lyricsArr = alignLyrics(song.lyrics, parsed);
   const container = document.getElementById('sheetNotes');
   
-  // 每 8 个音符一行（含小节分隔），支持多行完整谱面
+  // 每 8 个音符一行
   const PER_LINE = 8;
   let html = '';
   let lineNum = 0;
   for (let i = 0; i < jiapu.length; i += PER_LINE) {
-    const line = jiapu.slice(i, i + PER_LINE);
+    const jline = jiapu.slice(i, i + PER_LINE);
+    const lline = lyricsArr.slice(i, i + PER_LINE);
     lineNum++;
+    html += `<div class="sline-wrap">`;
     html += `<div class="sline"><span class="sline-num">${lineNum}</span>`;
-    for (const j of line) {
+    for (const j of jline) {
       let cls = 'sheet-note';
       if (j.hi) cls += ' hi';
       if (j.lo) cls += ' lo';
@@ -234,9 +262,15 @@ function renderSheetMusic(song) {
       html += `<span class="${cls}">${j.text}</span>`;
     }
     html += '<span class="sline-bar">│</span></div>';
+    // 歌词行
+    html += `<div class="sline-lyric"><span class="sline-num">${lineNum}</span>`;
+    for (const l of lline) {
+      html += `<span class="slyric">${l || ''}</span>`;
+    }
+    html += '<span class="sline-bar">│</span></div>';
+    html += `</div>`;
   }
   container.innerHTML = html;
-  // 滚动到顶部
   container.scrollTop = 0;
 }
 
@@ -331,12 +365,18 @@ function noteToJiapu(note, rootNote) {
   const diff = curMidi - rootMidi;   // -12..24 之类
   const semis = diff % 12;
   const octaveShift = Math.floor(diff / 12);
-  // 半音差 -> 度（首调）
-  const SEMI_TO_DEGREE = [1,1,2,3,3,4,5,5,6,7,7,1]; // 0=C, 1=C#=1 升, 2=D=2 ...
+  // 半音差 -> 度（C大调首调）
+  // C=1  D=2  E=3  F=4  G=5  A=6  B=7，中间半音用升降号
+  const SEMI_TO_DEGREE = [1,1,2,2,3,4,4,5,5,6,6,7];
   let degree = SEMI_TO_DEGREE[((semis % 12) + 12) % 12];
-  // 降/升
+  // 升降号：如果半音映射和 degree 有差，说明需要升降
+  // 用原始升降号 + 计算得出的
   let acc = '';
   if (m[2] === '#') acc = '#';
+  else if (m[2] === 'b') {
+    // 降号对应下一个 degree 带 b
+    acc = 'b';
+  }
   // 八度点
   const baseOctave = 4;
   const actualOctave = baseOctave + octaveShift;
