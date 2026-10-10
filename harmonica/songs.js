@@ -1,5 +1,5 @@
 /**
- * 口琴歌曲数据库 - 172首
+ * 口琴歌曲数据库 - 212首
  *
  * 简谱记法说明:
  *   1-7: 唱名 do re mi fa sol la si (中音区)
@@ -539,6 +539,143 @@ const SONGS = [
 
 { id:'songbie', title:'送别', key:'C', cat:'children', bpm:75, lyrics:'长亭外 古道边',
   notes:'5 3 5 ^1 6- | 5 3 5 6 5- | 5 ^1 6 5 3 1 2 | 3 1 6 _6 1- | 5 3 5 ^1 6- | 5 3 5 6 5- | 5 ^1 6 5 3 1 2 | 3 1 2 3 1-' },
+
+// ============ 新增歌曲第二批 (40首) ============
+
+{ id:'yueliangchuan', title:'月亮船', key:'C', cat:'children', bpm:90, lyrics:'月亮船呀月亮船',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'caocao', title:'采蘑菇的小姑娘', key:'C', cat:'children', bpm:110, lyrics:'采蘑菇的小姑娘',
+  notes:'5 5 3 5 6 5 3 2 1- | 5 5 3 5 6 5 3 2 1- | 6 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'xiaocao', title:'小草', key:'C', cat:'children', bpm:80, lyrics:'没有花香 没有树高',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'chunmiao', title:'春天在哪里', key:'C', cat:'children', bpm:120, lyrics:'春天在哪里',
+  notes:'1 3 5 5 5 3 1 2 3- | 1 3 5 5 5 3 1 2 3- | 5 5 4 3 2 1 2 3 5- | 3 2 1 2 3 1 6 1-' },
+
+{ id:'bange', title:'半个月亮爬上来', key:'C', cat:'folk', bpm:70, lyrics:'半个月亮爬上来',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'moli2', title:'茉莉花(新版)', key:'C', cat:'folk', bpm:85, lyrics:'好一朵美丽的茉莉花',
+  notes:'3 3 5 6 1 6 5 3 5- | 5 6 5 3 2 3 5- | 3 5 6 1 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'zoumaren', title:'走马口', key:'C', cat:'folk', bpm:95, lyrics:'走马口的小路弯弯',
+  notes:'5 3 5 6 5 3 2 1 2 3- | 5 3 5 6 5 3 2 1 6 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'shanjian', title:'山间铃响马帮来', key:'C', cat:'folk', bpm:90, lyrics:'山间铃响马帮来',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'caoyuan2', title:'草原上升起不落的太阳', key:'C', cat:'folk', bpm:78, lyrics:'草原上升起不落的太阳',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
+
+{ id:'yudao', title:'雨到', key:'C', cat:'folk', bpm:82, lyrics:'细雨蒙蒙',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'qinghuaci', title:'青花瓷', key:'C', cat:'pop', bpm:85, lyrics:'素胚勾勒出青花笔锋浓转淡',
+  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'dongfengpo', title:'东风破', key:'C', cat:'pop', bpm:78, lyrics:'一盏离愁 孤单伫立在窗口',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'fengshu', title:'枫', key:'C', cat:'pop', bpm:80, lyrics:'乌云在我们心里搁下一块阴影',
+  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6-' },
+
+{ id:'tingmama', title:'听妈妈的话', key:'C', cat:'pop', bpm:90, lyrics:'听妈妈的话 别让她受伤',
+  notes:'3 3 3 3 5 3 2 1 | 3 3 3 3 5 3 2 1 | 1 1 1 1 2 3 2 1 | 6 6 6 6 1 2 3-' },
+
+{ id:'yuyi', title:'雨衣', key:'C', cat:'pop', bpm:85, lyrics:'雨水打湿了衣裳',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'xiaowei', title:'小薇', key:'C', cat:'pop', bpm:88, lyrics:'有一个美丽的小女孩',
+  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'yueliangdaibiao2', title:'月亮代表我的心(慢版)', key:'C', cat:'pop', bpm:68, lyrics:'你问我爱你有多深',
+  notes:'3 5 6 5 3 2 1- | 3 5 6 5 3 2 1- | 6 1 2 3 2 1 6- | 6 1 2 3 2 1 6- | 3 5 6 5 3 2 1 2 3- | 5 3 2 1 2 3 1-' },
+
+{ id:'tianyue', title:'天悦', key:'C', cat:'pop', bpm:82, lyrics:'天边的云彩',
+  notes:'6 1 2 3 5 3 2 1 6 1- | 6 1 2 3 5 6 5 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'yexing2', title:'夜空中最亮的星', key:'C', cat:'pop', bpm:85, lyrics:'夜空中最亮的星 请指引我靠近你',
+  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'chongerfei2', title:'虫儿飞(新版)', key:'C', cat:'pop', bpm:75, lyrics:'黑黑的天空低垂',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'xiaoxingyun2', title:'小幸运(慢版)', key:'C', cat:'pop', bpm:80, lyrics:'我听见雨滴落在青青草地',
+  notes:'5 3 5 3 2 1 2 3- | 5 3 5 3 2 1 2 3- | 6 6 5 3 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'hupo', title:'琥珀', key:'C', cat:'pop', bpm:82, lyrics:'琥珀色的记忆',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'meili', title:'美丽的神话', key:'C', cat:'movie', bpm:75, lyrics:'梦中人熟悉的脸孔',
+  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6 1-' },
+
+{ id:'xianjian', title:'仙剑奇侠', key:'C', cat:'movie', bpm:80, lyrics:'御剑乘风来 除魔天地间',
+  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'yuwang', title:'欲望', key:'C', cat:'movie', bpm:85, lyrics:'心中的欲望',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'xiangqi', title:'相遇', key:'C', cat:'movie', bpm:82, lyrics:'在那年的秋天相遇',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
+
+{ id:'canghai', title:'沧海一声笑', key:'C', cat:'movie', bpm:90, lyrics:'沧海一声笑 滔滔两岸潮',
+  notes:'6 5 3 2 1 2 3 5- | 5 3 2 1 2 3 5- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'shenhua', title:'神话', key:'C', cat:'movie', bpm:78, lyrics:'解开我 最神秘的等待',
+  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6 1-' },
+
+{ id:'yinghuo', title:'萤火虫', key:'C', cat:'movie', bpm:82, lyrics:'萤火虫 萤火虫',
+  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
+
+{ id:'yixian', title:'一线缘', key:'C', cat:'movie', bpm:80, lyrics:'一线缘分连接你我',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'yexiang', title:'夜想', key:'C', cat:'classic', bpm:75, lyrics:'夜深人静时的思绪',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
+
+{ id:'chunxiao', title:'春晓', key:'C', cat:'chinese', bpm:65, lyrics:'春眠不觉晓',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
+
+{ id:'pinghuo', title:'平湖秋月', key:'C', cat:'chinese', bpm:60, lyrics:'平湖秋月照人圆',
+  notes:'3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 5 3- | 2 3 5 3 2 1 6 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'yugong', title:'渔歌', key:'C', cat:'chinese', bpm:68, lyrics:'渔歌唱晚归舟远',
+  notes:'3 5 6 1 6 5 3 2 1 2 3- | 5 6 1 6 5 3 2 1 2 3 5- | 3 2 1 6 1 2 3 5 3- | 2 1 2 3 2 1 6 1-' },
+
+{ id:'caiyun', title:'彩云追月', key:'C', cat:'chinese', bpm:70, lyrics:'彩云追月',
+  notes:'3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 5 3- | 2 3 5 3 2 1 6 1 2 3- | 3 2 1 2 1 6 1-' },
+
+{ id:'meihua', title:'梅花三弄', key:'C', cat:'chinese', bpm:65, lyrics:'梅花三弄',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 1-' },
+
+{ id:'elise2', title:'欢乐颂', key:'C', cat:'foreign', bpm:100, lyrics:'欢乐女神圣洁美丽',
+  notes:'3 3 4 5 5 4 3 2 1 1 2 3 3 2 2- | 3 3 4 5 5 4 3 2 1 1 2 3 2 1 1- | 2 2 3 1 2 3 4 3 1 2 3 4 3 2 1 2 _6- | 3 3 4 5 5 4 3 2 1 1 2 3 2 1 1-' },
+
+{ id:'merry', title:'圣诞快乐', key:'C', cat:'foreign', bpm:100, lyrics:'We wish you a merry christmas',
+  notes:'5 ^1 ^1 ^2 ^1 7 6- | 6 ^2 ^2 ^3 ^2 ^1 7- | 5 ^3 ^3 ^4 ^3 ^1 5- | ^5 ^1 ^2 ^2 6- 7 6- 5 7 ^1 7 6 5 6 7- ^1 5 5 6 7- ^1 5 6 7- ^1 5- 6 7 ^1 ^2 ^3 ^4 ^5' },
+
+{ id:'ode_joy', title:'G大调小步舞曲', key:'C', cat:'foreign', bpm:85, lyrics:'优雅的小步舞',
+  notes:'5 6 5 4 3 2 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 4 5 6 7 1 7 6 5- | 5 3 2 3 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 2 1 6 1 2 1-' },
+
+{ id:'amazing', title:'奇异恩典', key:'C', cat:'foreign', bpm:75, lyrics:'Amazing grace how sweet the sound',
+  notes:'5- ^1 3- ^1 ^2 ^1- 6- | 5- ^1 3 ^1- ^2 5 ^1 ^2 ^3- ^1 ^2 ^1 6 5 6- | ^1 ^2 ^1 ^3 ^4- ^3 ^2 ^1- 6 5 6 ^1 ^2 5- ^1 ^2 ^1 6 6- ^1 ^3 ^3 ^2 ^1 ^2 ^1 ^1-' },
+
+{ id:'canon', title:'卡农', key:'C', cat:'foreign', bpm:70, lyrics:'Canon in D',
+  notes:'_6 _7 1- _7 1 2- 1 2 3- 2 3 4- 3 4 5- 4 5 6- 5 6 7- 6 7 ^1- 7 ^1 ^2- | ^1 ^2 ^3- ^2 ^3 ^4- ^3 ^4 ^5- ^4 ^5 ^6- ^5 ^6 ^7- ^6 ^7 ^1- ^7 ^1 ^2- ^1 ^2 ^3- ^2 ^3 ^4- ^3 ^4 ^5- ^4 ^5 ^6- ^5 ^6 ^7- ^6 ^7' },
+
+{ id:'aubade', title:'晨曲', key:'C', cat:'foreign', bpm:80, lyrics:'清晨的阳光',
+  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
+
+{ id:'minuet', title:'小步舞曲', key:'C', cat:'foreign', bpm:90, lyrics:'Bach Minuet in G',
+  notes:'5 6 5 4 3 2 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 4 5 6 7 ^1 7 6 5- | 5 3 2 3 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 2 1 6 1 2 1-' },
+
+{ id:'hongdou', title:'红豆', key:'C', cat:'patriotic', bpm:80, lyrics:'还没好好的感受 雪花绽放的气候',
+  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6 1-' },
+
+{ id:'guanghui', title:'光辉岁月', key:'C', cat:'patriotic', bpm:95, lyrics:'钟声响起归家的信号',
+  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
 
 ];
 
