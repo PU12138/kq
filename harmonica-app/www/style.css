@@ -305,83 +305,43 @@ html, body {
   padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 10px));
   background: var(--bg-card);
   border-top: 1px solid #2a2a4a;
+  max-height: 260px;
+  overflow-y: auto;
 }
 .keyboard-label {
   text-align: center;
   font-size: 11px;
   color: var(--text-dim);
-  margin-bottom: 4px;
-}
-
-/* 音区选择按钮 */
-.octave-selector {
-  display: flex;
-  gap: 4px;
   margin-bottom: 6px;
-  background: #1a1a2a;
-  padding: 4px;
-  border-radius: 8px;
-}
-.oct-btn {
-  flex: 1;
-  height: 36px;
-  border: 2px solid #3a3a5a;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text-dim);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  transition: all 0.15s;
-}
-.oct-btn.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: #7ac0ff;
-  box-shadow: 0 0 12px rgba(90,160,240,0.6);
-  transform: scale(1.05);
 }
 
-/* 两排琴键 */
-.keyboard-keys {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+/* 3排键盘容器 */
+.keyboard-row {
+  margin-bottom: 8px;
 }
+.keyboard-row:last-child {
+  margin-bottom: 0;
+}
+.row-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+  padding-left: 2px;
+}
+
 .key-row {
   display: flex;
   gap: 3px;
 }
-/* 半音切换按钮 */
-.sharp-toggle {
-  background: #2a3a4a;
-  color: var(--text-dim);
-  border: 1px solid #3a5a6a;
-  border-radius: 4px;
-  padding: 2px 8px;
-  font-size: 11px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.sharp-toggle.active {
-  background: #3a6a8a;
-  color: #fff;
-  border-color: #5a8aaa;
-}
-.key-row-sharp.hidden {
-  display: none;
-}
 .key-row-sharp {
-  padding: 0 12%;
-  height: 38px;
+  padding: 0 14%;
+  margin-top: 1px;
 }
 .key-btn {
   flex: 1;
   min-width: 0;
   border: 1px solid #2a4a6a;
-  border-radius: 6px;
+  border-radius: 5px;
   background: var(--bg-hole);
   color: var(--text);
   cursor: pointer;
@@ -396,45 +356,36 @@ html, body {
   justify-content: center;
 }
 .key-btn.key-natural {
-  height: 56px;
-}
-.key-btn.key-natural .key-num {
-  font-size: 18px;
+  height: 44px;
+  font-size: 15px;
   font-weight: 700;
-  line-height: 1;
-}
-.key-btn.key-natural .key-sol {
-  font-size: 10px;
-  color: var(--text-dim);
-  line-height: 1.2;
-}
-.key-btn.key-natural .key-act {
-  font-size: 9px;
-  color: #6a9aff;
-  line-height: 1;
-  margin-top: 2px;
+  line-height: 1.1;
 }
 .key-btn.key-sharp {
-  height: 36px;
-  font-size: 13px;
+  height: 28px;
+  font-size: 11px;
   font-weight: 600;
   background: #15282a;
   color: #8ab0ff;
 }
 /* 吹吸区分颜色 */
 .key-btn.key-natural[data-dir="blow"] {
-  border-bottom: 3px solid #4a8a5a;
+  border-bottom: 2px solid #4a8a5a;
 }
 .key-btn.key-natural[data-dir="draw"] {
-  border-bottom: 3px solid #8a6a4a;
+  border-bottom: 2px solid #8a6a4a;
+}
+.key-btn.key-sharp[data-dir="blow"] {
+  border-bottom: 2px solid #4a8a5a;
+}
+.key-btn.key-sharp[data-dir="draw"] {
+  border-bottom: 2px solid #8a6a4a;
 }
 .key-btn:active, .key-btn.pressed {
   background: var(--accent);
   color: #fff;
   transform: scale(0.96);
 }
-.key-btn.key-natural:active .key-sol,
-.key-btn.key-natural.pressed .key-sol,
 .key-btn.key-natural:active .key-act,
 .key-btn.key-natural.pressed .key-act {
   color: #ddeeff;

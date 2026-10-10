@@ -197,65 +197,93 @@ function playNote(noteName, duration, startTime = 0, velocity = 0.15) {
   const t = startTime || ctx.currentTime;
   const dur = Math.max(0.05, duration);
   
-  // 创建一个 Voice 并在 dur 秒后自动停止
-  const voice = createHarmonicaVoice(freq, velocity);
+  const voice = createHarmonicaVoiceAuto(freq, velocity);
   if (!voice) return;
   voice.start(t);
   voice.stop(t + dur);
 }
 
 /**
- * 创建口琴音色 Voice
- * 真实口琴 = 锯齿波(簧片谐波) + 低通滤波(琴体共振) + 微弱三角波 + 气息噪声
+ * 自动演奏用口琴音色
+ * 三角波(明亮) + 高通(去浑浊) + 温和低通 + 气息噪声
  */
-function createHarmonicaVoice(freq, velocity) {
+function createHarmonicaVoiceAuto(freq, velocity) {
+  return _createBaseVoice(freq, velocity, true);
+}
+
+/**
+ * 手动演奏用口琴音色
+ * 与自动相同但包络更响应触摸，停止更快
+ */
+function createHarmonicaVoiceManual(freq, velocity) {
+  return _createBaseVoice(freq, velocity, false);
+}
+
+/**
+ * 基础口琴音色（自动/手动共用核心，仅包络参数不同）
+ */
+function _createBaseVoice(freq, velocity, isAuto) {
   if (!State.audioCtx) return null;
   const ctx = State.audioCtx;
-  const v = Math.max(0.05, Math.min(0.4, velocity));
+  const v = Math.max(0.05, Math.min(0.45, velocity));
 
-  // === 1. 主簧片：锯齿波 + 低通 ===
-  // 锯齿波有丰富谐波，低通滚掉尖锐高频 → 接近金属哨片
+  // === 核心音色：三角波（天然明亮，是模拟口琴的经典选择）===
+  // 三角波的谐波分布比方波柔和，比锯齿波干净
   const reed = ctx.createOscillator();
-  reed.type = 'sawtooth';
-  // 起音：频率从96%滑到100%（哨片从静止到稳定振动）
-  reed.frequency.setValueAtTime(freq * 0.96, ctx.currentTime);
-  reed.frequency.linearRampToValueAtTime(freq, ctx.currentTime + 0.03);
+  reed.type = 'triangle';
+  // 起音频率微升（哨片起振）
+  reed.frequency.setValueAtTime(freq * 0.985, ctx.currentTime);
+  reed.frequency.linearRampToValueAtTime(freq, ctx.currentTime + 0.02);
 
-  // 低通滤波：琴体共振，只保留口琴频段（滚掉高频尖锐声）
+  // 第二个三角波 - 五度音（3:2倍频），让音色更丰满有共鸣
+  const reed3 = ctx.createOscillator();
+  reed3.type = 'triangle';
+  reed3.frequency.value = freq * 1.5;
+  const reed3Gain = ctx.createGain();
+  reed3Gain.gain.value = 0.2;
+
+  // === 滤波链 ===
+  // 1. 高通 - 去掉低频浑浊（150Hz以下不要，让声音干净）
+  const hipass = ctx.createBiquadFilter();
+  hipass.type = 'highpass';
+  hipass.frequency.value = Math.max(120, freq * 0.3);
+  hipass.Q.value = 0.7;
+
+  // 2. 低通 - 只滚掉极端高频（保留足够亮度）
   const lowpass = ctx.createBiquadFilter();
   lowpass.type = 'lowpass';
-  lowpass.frequency.value = freq * 3.5;  // 保留到3.5倍频，让谐波自然衰减
-  lowpass.Q.value = 0.5;
+  lowpass.frequency.value = Math.min(8000, freq * 6);  // 保留到6倍频
+  lowpass.Q.value = 0.6;
 
-  // === 2. 副簧片：三角波高八度（增加温和亮度）===
-  const reed2 = ctx.createOscillator();
-  reed2.type = 'triangle';
-  reed2.frequency.value = freq * 2;
-  const reed2Gain = ctx.createGain();
-  reed2Gain.gain.value = 0.12;
-
-  // === 3. 气息噪声（极弱，起音瞬间）===
+  // === 气息噪声（起音脉冲 + 持续极弱）===
   let noiseSrc = null, noiseGain = null;
-  const noiseBuf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * 2), ctx.sampleRate);
-  const nData = noiseBuf.getChannelData(0);
-  for (let i = 0; i < nData.length; i++) nData[i] = Math.random() * 2 - 1;
-  noiseSrc = ctx.createBufferSource();
-  noiseSrc.buffer = noiseBuf;
-  noiseSrc.loop = true;
-  noiseGain = ctx.createGain();
-  noiseGain.gain.value = 0;
+  try {
+    const noiseBuf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * 2), ctx.sampleRate);
+    const nData = noiseBuf.getChannelData(0);
+    for (let i = 0; i < nData.length; i++) nData[i] = Math.random() * 2 - 1;
+    noiseSrc = ctx.createBufferSource();
+    noiseSrc.buffer = noiseBuf;
+    noiseSrc.loop = true;
+    const noiseBP = ctx.createBiquadFilter();
+    noiseBP.type = 'highpass';
+    noiseBP.frequency.value = freq * 0.8;
+    noiseGain = ctx.createGain();
+    noiseGain.gain.value = 0;
+    noiseSrc.connect(noiseBP);
+    noiseBP.connect(noiseGain);
+  } catch(e) {}
 
-  // === 4. 总音量 ===
+  // === 总音量 ===
   const gain = ctx.createGain();
   gain.gain.value = 0;
 
-  // 连接：主簧片→低通→总音量→输出；副簧片→总音量→输出；噪声→输出
-  reed.connect(lowpass);
+  // 连接
+  reed.connect(hipass);
+  reed3Gain.connect(hipass);
+  hipass.connect(lowpass);
   lowpass.connect(gain);
-  reed2Gain.connect(gain);
   gain.connect(ctx.destination);
-  noiseSrc.connect(noiseGain);
-  noiseGain.connect(ctx.destination);
+  if (noiseSrc) { noiseGain.connect(ctx.destination); }
 
   let vib = null, vibGain = null;
 
@@ -266,16 +294,18 @@ function createHarmonicaVoice(freq, velocity) {
       if (this._started) return;
       this._started = true;
       const st = t || ctx.currentTime;
-      reed.start(st); reed2.start(st); noiseSrc.start(st);
+      reed.start(st); reed3.start(st); if (noiseSrc) noiseSrc.start(st);
 
-      // 起音：快速上升 + 微衰减到稳定
+      // 起音包络
       gain.gain.setValueAtTime(0, st);
-      gain.gain.linearRampToValueAtTime(v, st + 0.006);
-      gain.gain.linearRampToValueAtTime(v * 0.85, st + 0.04);
+      gain.gain.linearRampToValueAtTime(v, st + (isAuto ? 0.008 : 0.015));
+      gain.gain.linearRampToValueAtTime(v * 0.82, st + (isAuto ? 0.04 : 0.06));
 
-      // 起音气息脉冲（像吹气瞬间）
-      noiseGain.gain.setValueAtTime(0.02, st);
-      noiseGain.gain.exponentialRampToValueAtTime(0.002, st + 0.1);
+      // 气息脉冲
+      if (noiseGain) {
+        noiseGain.gain.setValueAtTime(0.025, st);
+        noiseGain.gain.exponentialRampToValueAtTime(0.003, st + 0.08);
+      }
     },
     stop(t) {
       if (this._stopped) return;
@@ -284,23 +314,27 @@ function createHarmonicaVoice(freq, velocity) {
       const cur = gain.gain.value;
       gain.gain.cancelScheduledValues(st);
       gain.gain.setValueAtTime(cur, st);
-      gain.gain.exponentialRampToValueAtTime(0.001, st + 0.06);
-      noiseGain.gain.cancelScheduledValues(st);
-      noiseGain.gain.setValueAtTime(noiseGain.gain.value, st);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.04);
+      const rel = isAuto ? 0.06 : 0.04;
+      gain.gain.exponentialRampToValueAtTime(0.001, st + rel);
+      if (noiseGain) {
+        noiseGain.gain.cancelScheduledValues(st);
+        noiseGain.gain.setValueAtTime(noiseGain.gain.value, st);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.03);
+      }
       reed.stop(st + 0.1);
-      reed2.stop(st + 0.1);
-      noiseSrc.stop(st + 0.1);
+      reed3.stop(st + 0.1);
+      if (noiseSrc) noiseSrc.stop(st + 0.1);
       if (vib) { try { vib.stop(st + 0.1); } catch(e){} }
     },
     setVibrato(on) {
       if (on && !vib) {
         vib = ctx.createOscillator();
         vibGain = ctx.createGain();
-        vib.frequency.value = 5;
-        vibGain.gain.value = freq * 0.005;  // 轻微颤音
+        vib.frequency.value = 5.5;
+        vibGain.gain.value = freq * 0.006;
         vib.connect(vibGain);
         vibGain.connect(reed.frequency);
+        vibGain.connect(reed3.frequency);
         vib.start();
       }
     }
@@ -584,22 +618,12 @@ function bindHoleEvents() {
  */
 function bindKeyboardEvents() {
   const keys = document.querySelectorAll('.key-btn');
-  const octBtns = document.querySelectorAll('.oct-btn');
-  
-  // 音区选择按钮
-  octBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      octBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      State.manualOctave = parseInt(btn.dataset.oct);
-    });
-  });
   
   keys.forEach(key => {
     const degree = parseInt(key.dataset.degree);
     const accidental = key.dataset.accidental || '';
     const dir = key.dataset.dir;
+    const octave = parseInt(key.dataset.oct) || 4;
     
     let activeVoice = null;
     let pressTime = 0;
@@ -607,11 +631,10 @@ function bindKeyboardEvents() {
     
     const onStart = (e) => {
       e.preventDefault();
-      if (activeVoice) return;  // 防止重复触发
+      if (activeVoice) return;
       key.classList.add('pressed');
       pressTime = Date.now();
-      activeVoice = startManualNote(degree, accidental, dir);
-      // 长按0.5秒后自动加颤音（模拟手震音）
+      activeVoice = startManualNote(degree, accidental, dir, octave);
       if (activeVoice) {
         vibTimer = setTimeout(() => {
           if (activeVoice) activeVoice.setVibrato(true);
@@ -621,9 +644,7 @@ function bindKeyboardEvents() {
     
     const onEnd = (e) => {
       if (!activeVoice) return;
-      const holdDur = (Date.now() - pressTime) / 1000;
       key.classList.remove('pressed');
-      // 短按(轻点)→快速衰减；长按→正常释放
       activeVoice.stop();
       if (vibTimer) { clearTimeout(vibTimer); vibTimer = null; }
       activeVoice = null;
@@ -636,36 +657,24 @@ function bindKeyboardEvents() {
     key.addEventListener('mouseup', onEnd);
     key.addEventListener('mouseleave', onEnd);
   });
-  
-  // #半音 切换按钮
-  const toggleBtn = document.getElementById('toggleSharpBtn');
-  const sharpRow = document.getElementById('sharpRow');
-  if (toggleBtn && sharpRow) {
-    toggleBtn.addEventListener('click', () => {
-      toggleBtn.classList.toggle('active');
-      sharpRow.classList.toggle('hidden');
-    });
-  }
 }
 
 /**
  * 开始手动演奏音符（返回 Voice，可控制停止）
  * 长按持续发声，轻按短音 —— 像真正拿口琴吹奏
  */
-function startManualNote(degree, accidental, dir) {
+function startManualNote(degree, accidental, dir, octave) {
   initAudio();
   const key = State.currentHarmonica ? State.currentHarmonica.key : 'C';
-  const octave = State.manualOctave || 4;
   const noteName = degreeToNote(degree, key, octave, accidental);
   if (!noteName) return null;
   const freq = noteToFreq(noteName);
   if (freq <= 0) return null;
-  // 吹气稍强，吸气稍弱（模拟吹吸力度差异）
-  const velocity = dir === 'blow' ? 0.22 : 0.18;
-  const voice = createHarmonicaVoice(freq, velocity);
+  // 吹气稍强，吸气稍弱
+  const velocity = dir === 'blow' ? 0.25 : 0.2;
+  const voice = createHarmonicaVoiceManual(freq, velocity);
   if (!voice) return null;
   voice.start();
-  // 长音0.4秒后自动加颤音
   return voice;
 }
 
