@@ -318,25 +318,30 @@ html, body {
   display: flex;
   gap: 4px;
   margin-bottom: 6px;
+  background: #1a1a2a;
+  padding: 4px;
+  border-radius: 8px;
 }
 .oct-btn {
   flex: 1;
-  height: 30px;
-  border: 1px solid #3a3a5a;
-  border-radius: 6px;
-  background: var(--bg-hole);
+  height: 36px;
+  border: 2px solid #3a3a5a;
+  border-radius: 8px;
+  background: transparent;
   color: var(--text-dim);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  transition: all 0.15s;
 }
 .oct-btn.active {
   background: var(--accent);
   color: #fff;
-  border-color: var(--accent);
-  box-shadow: 0 0 8px rgba(90,160,240,0.5);
+  border-color: #7ac0ff;
+  box-shadow: 0 0 12px rgba(90,160,240,0.6);
+  transform: scale(1.05);
 }
 
 /* 两排琴键 */
