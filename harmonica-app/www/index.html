@@ -60,26 +60,34 @@
     <!-- 手动演奏键盘（简化版） -->
     <div class="manual-keyboard">
       <div class="keyboard-label">
-        <span>手动演奏</span>
-        <span id="octaveDisplay">第4八度</span>
+        <span>手动演奏（长按持续发声）</span>
       </div>
-      <div class="octave-slider">
-        <label>音区: </label>
-        <input type="range" id="octaveSlider" min="2" max="6" step="1" value="4">
+      <!-- 音区选择按钮 -->
+      <div class="octave-selector" id="octaveSelector">
+        <button class="oct-btn" data-oct="2">低2</button>
+        <button class="oct-btn" data-oct="3">低3</button>
+        <button class="oct-btn active" data-oct="4">中4</button>
+        <button class="oct-btn" data-oct="5">高5</button>
+        <button class="oct-btn" data-oct="6">高6</button>
       </div>
+      <!-- 两排琴键：上排自然音，下排升降音（像钢琴） -->
       <div class="keyboard-keys" id="keyboardKeys">
-        <button class="key-btn" data-degree="1" data-dir="blow">1<br>do</button>
-        <button class="key-btn" data-degree="2" data-dir="blow">2<br>re</button>
-        <button class="key-btn" data-degree="3" data-dir="blow">3<br>mi</button>
-        <button class="key-btn" data-degree="4" data-dir="draw">4<br>fa</button>
-        <button class="key-btn" data-degree="5" data-dir="blow">5<br>sol</button>
-        <button class="key-btn" data-degree="6" data-dir="draw">6<br>la</button>
-        <button class="key-btn" data-degree="7" data-dir="draw">7<br>si</button>
-        <button class="key-btn key-sharp" data-degree="1" data-accidental="#" data-dir="blow">#1</button>
-        <button class="key-btn key-sharp" data-degree="2" data-accidental="#" data-dir="draw">#2</button>
-        <button class="key-btn key-sharp" data-degree="4" data-accidental="#" data-dir="draw">#4</button>
-        <button class="key-btn key-sharp" data-degree="5" data-accidental="#" data-dir="blow">#5</button>
-        <button class="key-btn key-sharp" data-degree="6" data-accidental="#" data-dir="draw">#6</button>
+        <div class="key-row key-row-natural">
+          <button class="key-btn key-natural" data-degree="1" data-dir="blow"><span class="key-num">1</span><span class="key-sol">do</span><span class="key-act">吹</span></button>
+          <button class="key-btn key-natural" data-degree="2" data-dir="blow"><span class="key-num">2</span><span class="key-sol">re</span><span class="key-act">吹</span></button>
+          <button class="key-btn key-natural" data-degree="3" data-dir="blow"><span class="key-num">3</span><span class="key-sol">mi</span><span class="key-act">吹</span></button>
+          <button class="key-btn key-natural" data-degree="4" data-dir="draw"><span class="key-num">4</span><span class="key-sol">fa</span><span class="key-act">吸</span></button>
+          <button class="key-btn key-natural" data-degree="5" data-dir="blow"><span class="key-num">5</span><span class="key-sol">sol</span><span class="key-act">吹</span></button>
+          <button class="key-btn key-natural" data-degree="6" data-dir="draw"><span class="key-num">6</span><span class="key-sol">la</span><span class="key-act">吸</span></button>
+          <button class="key-btn key-natural" data-degree="7" data-dir="draw"><span class="key-num">7</span><span class="key-sol">si</span><span class="key-act">吸</span></button>
+        </div>
+        <div class="key-row key-row-sharp">
+          <button class="key-btn key-sharp" data-degree="1" data-accidental="#" data-dir="blow">#1</button>
+          <button class="key-btn key-sharp" data-degree="2" data-accidental="#" data-dir="draw">#2</button>
+          <button class="key-btn key-sharp" data-degree="4" data-accidental="#" data-dir="draw">#4</button>
+          <button class="key-btn key-sharp" data-degree="5" data-accidental="#" data-dir="blow">#5</button>
+          <button class="key-btn key-sharp" data-degree="6" data-accidental="#" data-dir="draw">#6</button>
+        </div>
       </div>
     </div>
   </div>
@@ -177,9 +185,9 @@
 <div id="toast" class="toast"></div>
 
 <!-- Scripts -->
-<script src="harmonicas.js?v=8"></script>
-<script src="songs.js?v=8"></script>
-<script src="app.js?v=8"></script>
+<script src="harmonicas.js?v=9"></script>
+<script src="songs.js?v=9"></script>
+<script src="app.js?v=9"></script>
 
 </body>
 </html>
