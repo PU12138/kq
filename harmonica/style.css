@@ -136,3 +136,39 @@ body {
 .harmonica-row {
   display:flex; gap:3px; justify-content:center; width:100%;
 }
+
+/* ===== 琴谱显示 ===== */
+.sheet-music {
+  flex:1; min-height:0; display:flex; flex-direction:column;
+  background:#0d1117; border-bottom:1px solid #21262d;
+}
+.sheet-header {
+  display:flex; align-items:center; gap:10px;
+  padding:8px 12px; background:#161b22; border-bottom:1px solid #21262d; flex-shrink:0;
+}
+.btn-back {
+  background:transparent; border:1px solid #30363d; color:#58a6ff;
+  padding:3px 10px; border-radius:6px; font-size:12px; cursor:pointer;
+}
+.sheet-title-big { font-size:14px; font-weight:700; color:#e6edf3; }
+.sheet-notes {
+  flex:1; overflow-y:auto; padding:12px; -webkit-overflow-scrolling:touch;
+  font-family:"Courier New",monospace; line-height:2.2; font-size:20px;
+  letter-spacing:4px; color:#e6edf3;
+}
+.sheet-note {
+  display:inline-block; width:28px; text-align:center;
+  font-weight:700; position:relative;
+}
+.sheet-note.hi { color:#f778ba; }
+.sheet-note.lo { color:#56d4dd; }
+.sheet-note.rest { color:#484f58; font-weight:400; }
+.sheet-note.long::after {
+  content:'─'; display:block; font-size:14px; color:#8b949e;
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:100%; height:2px;
+}
+.sheet-lyrics {
+  padding:8px 12px; font-size:11px; color:#8b949e; background:#161b22;
+  border-top:1px solid #21262d; flex-shrink:0;
+}

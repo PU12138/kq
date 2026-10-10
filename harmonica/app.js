@@ -127,27 +127,108 @@ function initAudio() {
 }
 
 // ====== 简谱解析 ======
-function parseNotes(text) {
+function parseNotes(text, key = 'C') {
   const notes = [];
   const tokens = text.replace(/\|/g, ' ').split(/\s+/).filter(Boolean);
-  for (const tok of tokens) {
-    const m = tok.match(/^(\^|_|)?([#b]?)([1-7])(-+)?(\.)?$/);
-    const rest = tok === '0' || tok === '^0' || tok === '_0';
-    if (rest) {
-      const beats = 1 + (tok.includes('-') ? tok.match(/-/g).length : 0);
-      notes.push({ degree: 0, beats, isRest: true });
-      continue;
+  
+  // 字母格式检测: C5 E5 F5
+  const isLetterFormat = tokens.some(t => /^[A-G][#b]?[0-9]/.test(t));
+  
+  if (isLetterFormat) {
+    // 字母格式解析
+    const NOTE_MAP = { 'C':1,'D':2,'E':3,'F':4,'G':5,'A':6,'B':7 };
+    for (const tok of tokens) {
+      const m = tok.match(/^([A-G])([#b]?)([0-9])(-+)?$/);
+      if (!m) continue;
+      const letter = m[1]; const acc = m[2]; const octStr = m[3]; const ext = m[4] ? m[4].length : 0;
+      const degree = NOTE_MAP[letter];
+      const octave = parseInt(octStr);
+      const beats = 1 + ext;
+      notes.push({ degree, octave, acc, beats, _letter: tok });
     }
-    if (!m) continue;
-    const octave = m[1] === '^' ? 5 : (m[1] === '_' ? 3 : 4);
-    const acc = m[2] || '';
-    const deg = parseInt(m[3]);
-    const ext = m[4] ? m[4].length : 0;
-    const dotted = m[5] === '.' ? 0.5 : 0;
-    const beats = 1 + ext + dotted;
-    notes.push({ degree: deg, octave, acc, beats });
+  } else {
+    // 数字格式解析 (简谱)
+    for (const tok of tokens) {
+      const m = tok.match(/^(\^|_|)?([#b]?)([1-7])(-+)?(\.)?$/);
+      const rest = tok === '0' || tok === '^0' || tok === '_0';
+      if (rest) {
+        const beats = 1 + (tok.includes('-') ? tok.match(/-/g).length : 0);
+        notes.push({ degree: 0, beats, isRest: true });
+        continue;
+      }
+      if (!m) continue;
+      const octave = m[1] === '^' ? 5 : (m[1] === '_' ? 3 : 4);
+      const acc = m[2] || '';
+      const deg = parseInt(m[3]);
+      const ext = m[4] ? m[4].length : 0;
+      const dotted = m[5] === '.' ? 0.5 : 0;
+      const beats = 1 + ext + dotted;
+      notes.push({ degree: deg, octave, acc, beats });
+    }
   }
   return notes;
+}
+
+// 将解析后的音符转为简谱数字显示
+function notesToJiapu(parsed, key = 'C') {
+  // 字母格式: 需要转调
+  const DEGREE_TO_C = { 1:'1',2:'2',3:'3',4:'4',5:'5',6:'6',7:'7' };
+  const SEMI_TO_DEGREE = { 'C':1,'C#':1,'Db':2,'D':2,'D#':3,'Eb':3,'E':3,'F':4,'F#':4,'Gb':5,'G':5,'G#':5,'Ab':6,'A':6,'A#':7,'Bb':7,'B':7 };
+  
+  // 如果是字母格式，用实际字母显示
+  if (parsed.length > 0 && parsed[0]._letter) {
+    return parsed.map(n => {
+      const letter = n._letter.replace(/[0-9-]/g, '');
+      const octDigit = n._letter.match(/[0-9]/);
+      const num = DEGREE_TO_C[n.degree] || '?';
+      const dots = parseInt(octDigit) > 4 ? '˙' : '';
+      const dashes = '─'.repeat(Math.max(0, n.beats - 1));
+      return { text: num + dots + dashes, hi: parseInt(octDigit) > 4, rest: false };
+    });
+  }
+  
+  // 数字格式: 直接显示
+  const KEY_BASE = { 'C':4,'D':4,'E':4,'F':4,'G':4,'A':4,'B':4 };
+  return parsed.map(n => {
+    if (n.isRest) return { text: '0' + '─'.repeat(Math.max(0,n.beats-1)), hi:false, rest:true };
+    let num = DEGREE_TO_C[n.degree] || '?';
+    if (n.acc === '#') num = '#' + num;
+    const hi = n.octave >= 5;
+    const lo = n.octave <= 3;
+    const dots = hi ? '˙' : '';
+    const dashes = '─'.repeat(Math.max(0, n.beats - 1));
+    return { text: num + dots + dashes, hi, lo, rest:false };
+  });
+}
+
+// 渲染简谱到页面
+function renderSheetMusic(song) {
+  const listEl = document.getElementById('sheetList');
+  const musicEl = document.getElementById('sheetMusic');
+  document.getElementById('playbackBar').classList.remove('hidden');
+  
+  listEl.classList.add('hidden');
+  musicEl.classList.remove('hidden');
+  document.getElementById('sheetTitle').textContent = song.title + ' (' + song.key + '调)';
+  document.getElementById('sheetLyrics').textContent = song.lyrics || '';
+  
+  const parsed = parseNotes(song.notes, song.key);
+  State.parsedNotes = parsed;
+  
+  const jiapu = notesToJiapu(parsed, song.key);
+  const container = document.getElementById('sheetNotes');
+  
+  // 每8个音符一行
+  let html = '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+  for (const j of jiapu) {
+    let cls = 'sheet-note';
+    if (j.hi) cls += ' hi';
+    if (j.lo) cls += ' lo';
+    if (j.rest) cls += ' rest';
+    html += `<span class="${cls}">${j.text}</span>`;
+  }
+  html += '</div>';
+  container.innerHTML = html;
 }
 
 // ====== 自动演奏 ======
@@ -340,13 +421,17 @@ function renderSongList(filter = '') {
 function selectSong(song) {
   stopPlay();
   State.currentSong = song;
-  State.parsedNotes = parseNotes(song.notes);
-  renderSongList(document.getElementById('searchInput').value);
-  // 显示播放条
-  const bar = document.getElementById('playbackBar');
-  bar.classList.remove('hidden');
-  document.getElementById('playbackTitle').textContent = song.title;
+  renderSheetMusic(song);
   showToast(`已选: ${song.title}`);
+}
+
+function backToList() {
+  stopPlay();
+  State.currentSong = null;
+  document.getElementById('sheetList').classList.remove('hidden');
+  document.getElementById('sheetMusic').classList.add('hidden');
+  document.getElementById('playbackBar').classList.add('hidden');
+  renderSongList(document.getElementById('searchInput').value);
 }
 
 // ====== 录音 ======
@@ -471,6 +556,9 @@ function init() {
   document.getElementById('btnAddSong').addEventListener('click', openAddModal);
   document.getElementById('mCancel').addEventListener('click', closeAddModal);
   document.getElementById('mSave').addEventListener('click', saveUserSong);
+
+  // 返回列表
+  document.getElementById('btnBackToList').addEventListener('click', backToList);
 
   // 音频初始化
   document.body.addEventListener('touchstart', initAudio, { once: true });

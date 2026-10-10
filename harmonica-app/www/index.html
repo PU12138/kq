@@ -20,17 +20,26 @@
     </div>
   </header>
 
-  <!-- 上半：口琴谱 -->
-  <section class="top-half">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="🔍 搜索歌曲...">
+  <!-- 搜索 -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 搜索歌曲...">
+  </div>
+
+  <!-- 上半：歌谱列表（选歌后隐藏） -->
+  <section class="sheet-list" id="sheetList"></section>
+
+  <!-- 上半：琴谱显示（选歌后显示） -->
+  <section class="sheet-music hidden" id="sheetMusic">
+    <div class="sheet-header">
+      <button id="btnBackToList" class="btn-back">← 返回</button>
+      <span class="sheet-title-big" id="sheetTitle"></span>
     </div>
-    <div class="sheet-list" id="sheetList"></div>
+    <div class="sheet-notes" id="sheetNotes"></div>
+    <div class="sheet-lyrics" id="sheetLyrics"></div>
   </section>
 
-  <!-- 自动演奏控制条（选歌后显示） -->
+  <!-- 自动演奏控制条 -->
   <section class="playback-bar hidden" id="playbackBar">
-    <div class="pb-title" id="playbackTitle">小星星</div>
     <button id="btnPlay" class="btn-play">▶</button>
     <button id="btnStop" class="btn-stop">■</button>
     <span id="speedLabel" class="spd">1.0x</span>
