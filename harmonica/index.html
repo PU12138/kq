@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>口琴演奏家</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ====== 演奏页面 ====== -->
+  <div id="playPage" class="page active">
+    <!-- 口琴选择 -->
+    <div class="harmonica-selector">
+      <select id="harmonicaSelect"></select>
+      <button id="chromaticBtn" class="chromatic-btn">变音键</button>
+    </div>
+
+    <!-- 琴谱显示 -->
+    <div class="sheet-music" id="sheetMusic">
+      <div class="sheet-music-inner" id="sheetMusicInner"></div>
+    </div>
+
+    <!-- 播放控制 -->
+    <div class="playback-controls">
+      <button id="btnPlay" class="btn-play">▶ 播放</button>
+      <button id="btnStop" class="btn-stop">⏹ 停止</button>
+      <div class="speed-control">
+        <span id="speedLabel">1.0x</span>
+        <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0">
+      </div>
+    </div>
+
+    <!-- 口琴孔位 -->
+    <div class="harmonica-area">
+      <div class="harmonica-label" id="harmonicaLabel"></div>
+      <div class="harmonica-grid" id="harmonicaGrid"></div>
+    </div>
+  </div>
+
+  <!-- ====== 曲谱页面 ====== -->
+  <div id="songsPage" class="page">
+    <div class="page-header">
+      <span>曲谱库</span>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="搜索歌曲名称或歌词...">
+    </div>
+    <div class="category-tabs" id="categoryTabs"></div>
+    <div class="song-list" id="songList"></div>
+  </div>
+
+  <!-- ====== 添加琴谱页面 ====== -->
+  <div id="addPage" class="page">
+    <div class="page-header">
+      <span>添加琴谱</span>
+    </div>
+    <div class="add-song-page">
+      <div class="form-group">
+        <label>歌曲名称</label>
+        <input type="text" id="inputTitle" placeholder="如：我的祖国">
+      </div>
+      <div class="form-group">
+        <label>调性</label>
+        <select id="inputKey"></select>
+      </div>
+      <div class="form-group">
+        <label>速度 (BPM)</label>
+        <input type="number" id="inputBpm" value="100" min="40" max="240">
+      </div>
+      <div class="form-group">
+        <label>分类</label>
+        <select id="inputCat"></select>
+      </div>
+      <div class="form-group">
+        <label>琴谱内容</label>
+        <textarea id="inputNotes" placeholder="用简谱格式输入，空格分隔&#10;1 1 2 2 3 3 2- 4 4 3 3 2 2 1-"></textarea>
+        <div class="help-text">
+          格式说明：<br>
+          <code>1-7</code> = 唱名 do re mi fa sol la si<br>
+          <code>0</code> = 休止符<br>
+          <code>^1</code> = 高八度do，<code>_6</code> = 低八度la<br>
+          <code>#4</code> = 升fa<br>
+          <code>1-</code> = 二分音符(2拍)，<code>1--</code> = 3拍<br>
+          <code>1.</code> = 附点(1.5拍)<br>
+          <code>|</code> = 小节线(可选)
+        </div>
+      </div>
+      <div class="form-group">
+        <label>歌词（可选）</label>
+        <textarea id="inputLyrics" placeholder="输入歌词，无需空格"></textarea>
+      </div>
+      <button id="btnAddSong" class="btn-save">保存到曲录</button>
+    </div>
+  </div>
+
+  <!-- ====== 曲录页面 ====== -->
+  <div id="libraryPage" class="page">
+    <div class="page-header">
+      <span>我的曲录</span>
+    </div>
+    <div class="song-list" id="libraryList"></div>
+  </div>
+
+  <!-- ====== 底部导航 ====== -->
+  <nav class="bottom-nav">
+    <div class="nav-item active" data-page="play">
+      <span class="nav-icon">🎵</span>
+      <span>演奏</span>
+    </div>
+    <div class="nav-item" data-page="songs">
+      <span class="nav-icon">📜</span>
+      <span>曲谱</span>
+    </div>
+    <div class="nav-item" data-page="add">
+      <span class="nav-icon">➕</span>
+      <span>添加</span>
+    </div>
+    <div class="nav-item" data-page="library">
+      <span class="nav-icon">📚</span>
+      <span>曲录</span>
+    </div>
+  </nav>
+
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- Scripts -->
+<script src="harmonicas.js?v=2"></script>
+<script src="songs.js?v=2"></script>
+<script src="app.js?v=2"></script>
+
+</body>
+</html>
