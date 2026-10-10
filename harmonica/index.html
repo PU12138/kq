@@ -5,63 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#1a1a2e">
 <title>口琴大师</title>
-<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app">
 
-  <!-- 顶部标题栏 -->
+  <!-- 顶部 -->
   <header class="app-header">
     <h1>🎵 口琴大师</h1>
     <div class="header-btns">
-      <button id="btnRec" class="btn-rec">⏺ 录音</button>
-      <button id="btnRecStop" class="btn-rec-stop hidden">■ 停止</button>
+      <select id="harmonicaSelect"></select>
+      <button id="btnRec" class="btn-rec">⏺</button>
+      <button id="btnRecStop" class="btn-rec-stop hidden">■</button>
     </div>
   </header>
 
-  <!-- 上半部分：歌谱列表 -->
-  <section class="sheet-section">
+  <!-- 上半：口琴谱 -->
+  <section class="top-half">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="搜索歌曲名、歌词、拼音...">
+      <input type="text" id="searchInput" placeholder="🔍 搜索歌曲...">
     </div>
-    <div class="sheet-list" id="sheetList">
-      <!-- JS 动态生成 -->
-    </div>
+    <div class="sheet-list" id="sheetList"></div>
   </section>
 
-  <!-- 自动演奏控制（选歌后显示） -->
+  <!-- 自动演奏控制条（选歌后显示） -->
   <section class="playback-bar hidden" id="playbackBar">
-    <div class="playback-title" id="playbackTitle">小星星</div>
-    <div class="playback-controls">
-      <button id="btnPlay" class="btn-play">▶</button>
-      <button id="btnStop" class="btn-stop">■</button>
-      <div class="speed-wrap">
-        <span id="speedLabel">1.0x</span>
-        <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0">
-      </div>
-    </div>
+    <div class="pb-title" id="pbTitle">小星星</div>
+    <button id="btnPlay" class="btn-play">▶</button>
+    <button id="btnStop" class="btn-stop">■</button>
+    <span id="speedLabel" class="spd">1.0x</span>
+    <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0" class="spd-slider">
   </section>
 
-  <!-- 下半部分：24孔口琴 + 切换 -->
-  <section class="harmonica-section">
-    <div class="harmonica-toolbar">
-      <span class="h-label">口琴类型</span>
-      <select id="harmonicaSelect"></select>
-      <button id="btnAddSong" class="btn-add">+ 添加谱</button>
-    </div>
-    <div class="harmonica-body" id="harmonicaBody">
-      <!-- JS 动态生成 24 孔 -->
-    </div>
-    <div class="harmonica-hint">
-      <span class="dot blow"></span>吹气（长按持续发声）
-      <span class="dot draw"></span>吸气
+  <!-- 下半：24孔按钮 -->
+  <section class="bottom-half">
+    <div class="hole-grid" id="holeGrid"></div>
+    <div class="bottom-toolbar">
+      <span class="hint"><span class="d blow"></span>吹 <span class="d draw"></span>吸 长按持续发声</span>
+      <button id="btnAddSong" class="btn-add">+ 加谱</button>
     </div>
   </section>
 
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
 <!-- 添加琴谱弹窗 -->
@@ -69,7 +55,7 @@
   <div class="modal-content">
     <h3>添加琴谱</h3>
     <input type="text" id="mTitle" placeholder="歌曲名">
-    <textarea id="mNotes" placeholder="简谱：1 2 3 4 5 6 7&#10;格式：1-7唱名 0休止 ^高八度 _低八度 -延长"></textarea>
+    <textarea id="mNotes" placeholder="1 2 3 4 5 6 7&#10;^高八度 _低八度 -延长"></textarea>
     <div class="modal-btns">
       <button id="mCancel">取消</button>
       <button id="mSave">保存</button>
@@ -77,7 +63,6 @@
   </div>
 </div>
 
-<!-- Scripts -->
 <script src="harmonicas.js"></script>
 <script src="songs.js"></script>
 <script src="app.js"></script>

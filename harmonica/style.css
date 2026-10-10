@@ -1,340 +1,134 @@
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; overflow: hidden; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; overflow:hidden; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: #0d1117;
-  color: #e6edf3;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:#0d1117; color:#e6edf3;
+  touch-action:manipulation; user-select:none; -webkit-user-select:none;
 }
+#app { display:flex; flex-direction:column; height:100vh; height:100dvh; }
 
-#app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
-}
-
-/* ===== 顶部标题栏 ===== */
+/* 顶部 */
 .app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: calc(10px + env(safe-area-inset-top, 0)) 16px 10px;
-  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
-  border-bottom: 1px solid #21262d;
-  flex-shrink: 0;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:calc(8px + env(safe-area-inset-top,0)) 12px 8px;
+  background:#161b22; border-bottom:1px solid #21262d; flex-shrink:0;
 }
-.app-header h1 {
-  font-size: 18px;
-  font-weight: 700;
-  color: #58a6ff;
-}
-.header-btns { display: flex; gap: 8px; }
-.btn-rec, .btn-rec-stop {
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: none;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.btn-rec {
-  background: #da3633;
-  color: #fff;
-}
-.btn-rec-stop {
-  background: #30363d;
-  color: #fff;
-  animation: pulse 1s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-/* ===== 上半：歌谱列表 ===== */
-.sheet-section {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid #21262d;
-}
-.search-box { padding: 10px 16px; flex-shrink: 0; }
-.search-box input {
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid #30363d;
-  background: #161b22;
-  color: #e6edf3;
-  font-size: 14px;
-  outline: none;
-}
-.search-box input:focus { border-color: #58a6ff; }
-.sheet-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 8px 8px;
-  -webkit-overflow-scrolling: touch;
-}
-.sheet-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  margin: 2px 4px;
-  border-radius: 8px;
-  background: #161b22;
-  border: 1px solid #21262d;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.sheet-item:active { background: #21262d; }
-.sheet-item.active { background: #1f2a3a; border-color: #58a6ff; }
-.sheet-info { flex: 1; min-width: 0; }
-.sheet-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #e6edf3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.sheet-meta {
-  font-size: 11px;
-  color: #8b949e;
-  margin-top: 2px;
-}
-.sheet-key {
-  font-size: 11px;
-  background: #30363d;
-  color: #58a6ff;
-  padding: 2px 8px;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-
-/* ===== 自动演奏控制条 ===== */
-.playback-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  background: #161b22;
-  border-bottom: 1px solid #21262d;
-  flex-shrink: 0;
-}
-.playback-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #58a6ff;
-  max-width: 120px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.playback-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.btn-play, .btn-stop {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-play { background: #238636; color: #fff; }
-.btn-stop { background: #da3633; color: #fff; }
-.speed-wrap {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.speed-wrap span { font-size: 11px; color: #8b949e; min-width: 28px; }
-.speed-wrap input[type=range] { width: 80px; height: 20px; }
-
-/* ===== 下半：24孔口琴 ===== */
-.harmonica-section {
-  flex-shrink: 0;
-  background: #0d1117;
-  padding-bottom: env(safe-area-inset-bottom, 0);
-}
-.harmonica-toolbar {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  gap: 8px;
-}
-.h-label { font-size: 12px; color: #8b949e; }
+.app-header h1 { font-size:16px; font-weight:700; color:#58a6ff; }
+.header-btns { display:flex; gap:6px; align-items:center; }
 #harmonicaSelect {
-  flex: 1;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #30363d;
-  background: #161b22;
-  color: #e6edf3;
-  font-size: 13px;
-  outline: none;
+  padding:4px 8px; border-radius:6px; border:1px solid #30363d;
+  background:#0d1117; color:#e6edf3; font-size:12px; outline:none; max-width:120px;
 }
-.btn-add {
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid #388bfd;
-  background: transparent;
-  color: #58a6ff;
-  font-size: 12px;
-  cursor: pointer;
+.btn-rec,.btn-rec-stop {
+  width:32px; height:32px; border-radius:50%; border:none;
+  font-size:14px; cursor:pointer;
 }
-.harmonica-body {
-  background: linear-gradient(180deg, #2d1f0f 0%, #1a1208 100%);
-  border-radius: 10px;
-  padding: 10px 6px;
-  margin: 0 10px;
-  border: 2px solid #4a3820;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,220,150,0.1);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+.btn-rec { background:#da3633; color:#fff; }
+.btn-rec-stop { background:#30363d; color:#fff; animation:pulse 1s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.5;} }
+
+/* 上半：歌谱 */
+.top-half {
+  flex:1; min-height:0; display:flex; flex-direction:column;
+  border-bottom:1px solid #21262d;
 }
-.harmonica-row {
-  display: flex;
-  gap: 3px;
-  justify-content: center;
-  min-width: max-content;
+.search-box { padding:8px 12px; flex-shrink:0; }
+.search-box input {
+  width:100%; padding:9px 12px; border-radius:8px;
+  border:1px solid #30363d; background:#0d1117; color:#e6edf3;
+  font-size:14px; outline:none;
 }
-.harmonica-row + .harmonica-row { margin-top: 4px; }
+.search-box input:focus { border-color:#58a6ff; }
+.sheet-list { flex:1; overflow-y:auto; padding:2px 6px 6px; -webkit-overflow-scrolling:touch; }
+.sheet-item {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:9px 10px; margin:2px 2px; border-radius:6px;
+  background:#161b22; border:1px solid #21262d; cursor:pointer;
+}
+.sheet-item:active { background:#21262d; }
+.sheet-item.active { background:#1f2a3a; border-color:#58a6ff; }
+.sheet-title { font-size:13px; font-weight:600; color:#e6edf3; }
+.sheet-lyrics { font-size:10px; color:#8b949e; margin-top:2px; }
+.sheet-key { font-size:11px; background:#30363d; color:#58a6ff; padding:2px 7px; border-radius:8px; flex-shrink:0; }
+
+/* 自动演奏条 */
+.playback-bar {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 12px; background:#161b22; border-bottom:1px solid #21262d; flex-shrink:0;
+}
+.pb-title { font-size:12px; font-weight:600; color:#58a6ff; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.btn-play,.btn-stop {
+  width:32px; height:32px; border-radius:50%; border:none;
+  cursor:pointer; font-size:14px;
+}
+.btn-play { background:#238636; color:#fff; }
+.btn-stop { background:#da3633; color:#fff; }
+.spd { font-size:11px; color:#8b949e; min-width:28px; }
+.spd-slider { width:70px; }
+
+/* 下半：24孔按钮 */
+.bottom-half { flex-shrink:0; background:#0d1117; padding:8px 6px; padding-bottom:calc(8px + env(safe-area-inset-bottom,0)); }
+.hole-grid {
+  display:flex; flex-direction:column; gap:4px; background:linear-gradient(180deg,#2d1f0f,#1a1208);
+  border-radius:10px; padding:10px 6px; border:2px solid #4a3820;
+}
+.hole-row { display:flex; gap:3px; justify-content:center; }
 .hole {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.08s, box-shadow 0.1s;
-  position: relative;
-  border: none;
-  font-family: inherit;
+  width:calc((100% - 7*3px) / 8);
+  aspect-ratio:1;
+  max-width:42px; min-width:26px;
+  border-radius:50%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  border:none; cursor:pointer; font-family:inherit;
+  transition:transform .08s;
+  padding:2px;
 }
-.hole:active, .hole.active {
-  transform: scale(0.88);
-  box-shadow: 0 0 12px currentColor;
+.hole:active,.hole.active { transform:scale(.88); box-shadow:0 0 10px currentColor; }
+.hole.blow { background:radial-gradient(circle at 30% 30%,#3d7a4a,#1f4a2a); color:#7fd49a; }
+.hole.draw { background:radial-gradient(circle at 30% 30%,#7a4a3d,#4a2a1f); color:#d49a7f; }
+.hole-num { font-size:9px; opacity:.5; position:absolute; top:-10px; left:50%; transform:translateX(-50%); }
+.hole-note { font-size:10px; font-weight:700; line-height:1; }
+.hole-dir { font-size:7px; opacity:.6; line-height:1; margin-top:1px; }
+.bottom-toolbar { display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding:0 4px; }
+.hint { font-size:10px; color:#8b949e; display:flex; align-items:center; gap:4px; }
+.d { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:2px; }
+.d.blow { background:#3d7a4a; }
+.d.draw { background:#7a4a3d; }
+.btn-add {
+  padding:4px 10px; border-radius:6px;
+  border:1px solid #388bfd; background:transparent; color:#58a6ff;
+  font-size:11px; cursor:pointer;
 }
-.hole.blow {
-  background: radial-gradient(circle at 30% 30%, #3d7a4a, #1f4a2a);
-  color: #7fd49a;
-}
-.hole.draw {
-  background: radial-gradient(circle at 30% 30%, #7a4a3d, #4a2a1f);
-  color: #d49a7f;
-}
-.hole-num {
-  font-size: 9px;
-  opacity: 0.5;
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.hole-note {
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 1;
-}
-.hole-dir {
-  font-size: 7px;
-  opacity: 0.6;
-  line-height: 1;
-  margin-top: 1px;
-}
-.harmonica-hint {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  padding: 8px;
-  font-size: 11px;
-  color: #8b949e;
-}
-.dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 4px;
-  vertical-align: middle;
-}
-.dot.blow { background: #3d7a4a; }
-.dot.draw { background: #7a4a3d; }
 
-/* ===== Toast ===== */
+/* Toast */
 .toast {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.85);
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  z-index: 999;
-  opacity: 0;
-  transition: opacity 0.2s;
-  pointer-events: none;
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  background:rgba(0,0,0,.85); color:#fff; padding:10px 20px;
+  border-radius:8px; font-size:13px; z-index:999;
+  opacity:0; transition:opacity .2s; pointer-events:none;
 }
-.toast.show { opacity: 1; }
+.toast.show { opacity:1; }
 
-/* ===== Modal ===== */
+/* Modal */
 .modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  position:fixed; inset:0; background:rgba(0,0,0,.7);
+  display:flex; align-items:center; justify-content:center; z-index:1000;
 }
-.modal.hidden { display: none; }
+.modal.hidden { display:none; }
 .modal-content {
-  background: #161b22;
-  border-radius: 12px;
-  padding: 20px;
-  width: 85%;
-  max-width: 360px;
+  background:#161b22; border-radius:12px; padding:18px;
+  width:85%; max-width:340px;
 }
-.modal-content h3 { margin-bottom: 12px; color: #58a6ff; }
-.modal-content input, .modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border: 1px solid #30363d;
-  background: #0d1117;
-  color: #e6edf3;
-  font-size: 14px;
-  font-family: inherit;
-  outline: none;
+.modal-content h3 { margin-bottom:10px; color:#58a6ff; font-size:15px; }
+.modal-content input,.modal-content textarea {
+  width:100%; padding:9px; margin-bottom:8px; border-radius:8px;
+  border:1px solid #30363d; background:#0d1117; color:#e6edf3;
+  font-size:13px; font-family:inherit; outline:none;
 }
-.modal-content textarea { height: 100px; resize: none; }
-.modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
-.modal-btns button {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: none;
-  font-size: 13px;
-  cursor: pointer;
-}
-#mCancel { background: #30363d; color: #e6edf3; }
-#mSave { background: #238636; color: #fff; }
+.modal-content textarea { height:90px; resize:none; }
+.modal-btns { display:flex; gap:10px; justify-content:flex-end; }
+.modal-btns button { padding:7px 14px; border-radius:8px; border:none; font-size:12px; cursor:pointer; }
+#mCancel { background:#30363d; color:#e6edf3; }
+#mSave { background:#238636; color:#fff; }
 
-.hidden { display: none !important; }
+.hidden { display:none !important; }
