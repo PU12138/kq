@@ -20,11 +20,21 @@
 
   <!-- ====== 演奏页面 ====== -->
   <div id="playPage" class="page active">
+    <!-- 顶部操作栏 -->
+    <div class="top-actions">
+      <button id="btnSelectSong" class="top-action-btn">📜 选曲</button>
+      <button id="btnAddSongQuick" class="top-action-btn">➕ 添加琴谱</button>
+      <button id="btnLibrary" class="top-action-btn">📚 曲录</button>
+    </div>
+
     <!-- 口琴选择 -->
     <div class="harmonica-selector">
       <select id="harmonicaSelect"></select>
       <button id="chromaticBtn" class="chromatic-btn">变音键</button>
     </div>
+
+    <!-- 当前歌曲标题 -->
+    <div class="current-song-title" id="currentSongTitle">请选择一首歌曲</div>
 
     <!-- 琴谱显示 -->
     <div class="sheet-music" id="sheetMusic">
@@ -138,10 +148,9 @@
 <div id="toast" class="toast"></div>
 
 <!-- Scripts -->
-<script src="cordova.js"></script>
-<script src="harmonicas.js?v=4"></script>
-<script src="songs.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="harmonicas.js?v=5"></script>
+<script src="songs.js?v=5"></script>
+<script src="app.js?v=5"></script>
 
 </body>
 </html>

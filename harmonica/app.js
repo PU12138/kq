@@ -291,6 +291,11 @@ function loadSong(song) {
   State.parsedNotes = parseNotes(song.notes);
   State.playIndex = 0;
   renderSheetMusic();
+  // 更新当前歌曲标题显示
+  const titleEl = document.getElementById('currentSongTitle');
+  if (titleEl) {
+    titleEl.textContent = '当前: ' + song.title + ' (' + song.key + '调)';
+  }
 }
 
 /**
@@ -946,6 +951,11 @@ function init() {
   // 添加歌曲按钮
   document.getElementById('btnAddSong').addEventListener('click', handleAddSong);
   
+  // 演奏页顶部快捷按钮
+  document.getElementById('btnSelectSong').addEventListener('click', () => switchPage('songs'));
+  document.getElementById('btnAddSongQuick').addEventListener('click', () => switchPage('add'));
+  document.getElementById('btnLibrary').addEventListener('click', () => switchPage('library'));
+  
   // 添加歌曲页面的调性选择
   const inputKey = document.getElementById('inputKey');
   ['C','G','D','A','F','Bb','Eb'].forEach(k => {
@@ -987,5 +997,16 @@ function init() {
   document.body.addEventListener('mousedown', initAudio, { once: true });
 }
 
-// 启动
-document.addEventListener('DOMContentLoaded', init);
+// 启动 - 支持浏览器和 Cordova 环境
+function startApp() {
+  if (window.cordova) {
+    document.addEventListener('deviceready', init, false);
+  } else {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  }
+}
+startApp();

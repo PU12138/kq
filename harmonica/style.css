@@ -45,6 +45,44 @@ html, body {
   position: relative;
 }
 
+/* ===== 顶部操作栏（演奏页） ===== */
+.top-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+.top-action-btn {
+  flex: 1;
+  padding: 10px 8px;
+  background: var(--bg-hole);
+  color: var(--text);
+  border: 1px solid #2a4a6a;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.top-action-btn:active {
+  background: var(--primary);
+  color: #000;
+  border-color: var(--primary);
+}
+
+/* 当前歌曲标题 */
+.current-song-title {
+  padding: 6px 16px;
+  font-size: 13px;
+  color: var(--primary-light);
+  background: var(--bg-card);
+  text-align: center;
+  font-weight: 600;
+  flex-shrink: 0;
+  border-top: 1px solid #222;
+}
+
 /* ===== 顶部导航 ===== */
 .header {
   display: flex;
