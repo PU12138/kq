@@ -218,17 +218,26 @@ function renderSheetMusic(song) {
   const jiapu = notesToJiapu(parsed, song.key);
   const container = document.getElementById('sheetNotes');
   
-  // 每8个音符一行
-  let html = '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
-  for (const j of jiapu) {
-    let cls = 'sheet-note';
-    if (j.hi) cls += ' hi';
-    if (j.lo) cls += ' lo';
-    if (j.rest) cls += ' rest';
-    html += `<span class="${cls}">${j.text}</span>`;
+  // 每 8 个音符一行（含小节分隔），支持多行完整谱面
+  const PER_LINE = 8;
+  let html = '';
+  let lineNum = 0;
+  for (let i = 0; i < jiapu.length; i += PER_LINE) {
+    const line = jiapu.slice(i, i + PER_LINE);
+    lineNum++;
+    html += `<div class="sline"><span class="sline-num">${lineNum}</span>`;
+    for (const j of line) {
+      let cls = 'sheet-note';
+      if (j.hi) cls += ' hi';
+      if (j.lo) cls += ' lo';
+      if (j.rest) cls += ' rest';
+      html += `<span class="${cls}">${j.text}</span>`;
+    }
+    html += '<span class="sline-bar">│</span></div>';
   }
-  html += '</div>';
   container.innerHTML = html;
+  // 滚动到顶部
+  container.scrollTop = 0;
 }
 
 // ====== 自动演奏 ======
@@ -303,34 +312,44 @@ function stopPlay() {
   document.getElementById('btnPlay').textContent = '▶';
 }
 
-// ====== 口琴孔位渲染 ======
+// ====== 口琴孔位渲染（多排网格） ======
 function renderHarmonica() {
   const h = State.currentHarmonica;
   const body = document.getElementById('harmonicaBody');
-  let html = '';
+  const holes = h.holes;
+  const total = holes.length;     // 12 / 10 / 8
+  // 根据孔数自动选排数
+  let rows, cols;
+  if (total >= 12) { rows = 4; cols = 3; }  // 4 排 × 3 孔 = 12
+  else if (total >= 10) { rows = 4; cols = 3; }  // 10 孔也按 4×3 网格（留2格空）
+  else if (total >= 8) { rows = 4; cols = 2; }   // 8 孔 × 4 排 = 2
+  else { rows = 3; cols = Math.ceil(total / 3); }
 
-  // 吹孔行
-  html += '<div class="harmonica-row">';
-  for (const hole of h.holes) {
-    html += `<button class="hole blow" data-hole="${hole.n}" data-dir="blow">
-      <span class="hole-num">${hole.n}</span>
-      <span class="hole-note">${hole.blow}</span>
-      <span class="hole-dir">吹</span>
-    </button>`;
+  let html = `<div class="hgrid" style="--hcols:${cols};--hrows:${rows};">`;
+  for (let r = 0; r < rows; r++) {
+    html += '<div class="hgrid-row">';
+    for (let c = 0; c < cols; c++) {
+      const idx = r * cols + c;
+      const hole = holes[idx];
+      if (!hole) {
+        html += `<div class="hcell empty"></div>`;
+        continue;
+      }
+      html += `<div class="hcell">
+        <div class="hcell-num">${hole.n}</div>
+        <button class="hole blow" data-hole="${hole.n}" data-dir="blow">
+          <span class="hole-note">${hole.blow}</span>
+          <span class="hole-dir">吹</span>
+        </button>
+        <button class="hole draw" data-hole="${hole.n}" data-dir="draw">
+          <span class="hole-note">${hole.draw}</span>
+          <span class="hole-dir">吸</span>
+        </button>
+      </div>`;
+    }
+    html += '</div>';
   }
   html += '</div>';
-
-  // 吸孔行
-  html += '<div class="harmonica-row">';
-  for (const hole of h.holes) {
-    html += `<button class="hole draw" data-hole="${hole.n}" data-dir="draw">
-      <span class="hole-num">${hole.n}</span>
-      <span class="hole-note">${hole.draw}</span>
-      <span class="hole-dir">吸</span>
-    </button>`;
-  }
-  html += '</div>';
-
   body.innerHTML = html;
   bindHoleEvents();
 }
