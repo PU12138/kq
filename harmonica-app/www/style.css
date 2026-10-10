@@ -27,10 +27,10 @@ body {
 .btn-rec-stop { background:#30363d; color:#fff; animation:pulse 1s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.5;} }
 
-/* 上半：歌谱 70% 主区 */
+/* 上半：歌谱 主区，选歌后占更大 */
 .top-half {
-  flex:7 1 0; min-height:0; display:flex; flex-direction:column;
-  border-bottom:1px solid #21262d; overflow:hidden;
+  flex:1 1 0; min-height:0; display:flex; flex-direction:column;
+  border-bottom:1px solid #21262d;
 }
 .search-box { padding:6px 12px; flex-shrink:0; }
 .search-box input {
@@ -51,10 +51,11 @@ body {
 .sheet-lyrics { font-size:10px; color:#8b949e; margin-top:2px; }
 .sheet-key { font-size:11px; background:#30363d; color:#58a6ff; padding:2px 7px; border-radius:8px; flex-shrink:0; }
 
-/* 自动演奏条 */
+/* 自动演奏条 — 现在在 bottom-half 内 */
 .playback-bar {
   display:flex; align-items:center; gap:8px;
-  padding:8px 12px; background:#161b22; border-bottom:1px solid #21262d; flex-shrink:0;
+  padding:6px 10px; background:#161b22; border-bottom:1px solid #21262d; flex-shrink:0;
+  border-radius:8px 8px 0 0;
 }
 .pb-title { font-size:12px; font-weight:600; color:#58a6ff; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .btn-play,.btn-stop {
@@ -66,13 +67,13 @@ body {
 .spd { font-size:11px; color:#8b949e; min-width:28px; }
 .spd-slider { width:70px; }
 
-/* 下半：口琴按键 30% */
-.bottom-half { flex:3 1 0; min-height:140px; background:#0d1117; padding:6px 6px; padding-bottom:calc(6px + env(safe-area-inset-bottom,0)); display:flex; flex-direction:column; }
+/* 下半：播放条 + 口琴按键 */
+.bottom-half { flex-shrink:0; background:#0d1117; padding:0 6px 6px; padding-bottom:calc(0 + env(safe-area-inset-bottom,0)); display:flex; flex-direction:column; gap:0; }
 .hole-grid {
-  flex:1; min-height:0;
-  display:flex; flex-direction:column; gap:6px;
+  flex:1; min-height:130px;
+  display:flex; flex-direction:column; gap:5px;
   background:linear-gradient(180deg,#1a2a3a,#0f1a25);
-  border-radius:10px; padding:8px 8px; border:2px solid #2a3a4a;
+  border-radius:0 0 8px 8px; padding:6px 6px 5px; border:2px solid #2a3a4a; border-top:none;
 }
 .hrow {
   flex:1; display:flex; align-items:center; gap:6px; min-height:0;
@@ -148,14 +149,14 @@ body {
 
 .hidden { display:none !important; }
 
-/* ===== 琴谱显示 ===== */
+/* ===== 琴谱显示（按小节 + 高低音明显区分）===== */
 .sheet-music {
   flex:1; min-height:0; display:flex; flex-direction:column;
-  background:#0d1117; border-bottom:1px solid #21262d;
+  background:#0d1117;
 }
 .sheet-header {
-  display:flex; align-items:center; gap:10px;
-  padding:8px 12px; background:#161b22; border-bottom:1px solid #21262d; flex-shrink:0;
+  display:flex; align-items:center; gap:10px; flex-shrink:0;
+  padding:6px 10px; background:#161b22; border-bottom:1px solid #21262d;
 }
 .btn-back {
   background:transparent; border:1px solid #30363d; color:#58a6ff;
@@ -163,46 +164,83 @@ body {
 }
 .sheet-title-big { font-size:14px; font-weight:700; color:#e6edf3; }
 .sheet-notes {
-  flex:1; overflow-y:auto; padding:8px 6px 10px; -webkit-overflow-scrolling:touch;
-  font-family:"Courier New",monospace; line-height:1.8;
-  font-size:17px; letter-spacing:2px; color:#e6edf3;
+  flex:1; overflow-y:auto; padding:6px 6px 10px; -webkit-overflow-scrolling:touch;
   background:#0d1117;
+  /* 让谱面区域尽量大 */
+  min-height:220px;
 }
-.sline-wrap { margin:4px 0; }
-.sline {
-  display:flex; align-items:baseline; flex-wrap:nowrap;
-  gap:2px;
-  background:#141a22; border-radius:6px 6px 0 0;
-  padding:4px 4px 2px; border-left:2px solid #388bfd;
+
+/* 每一行（2 小节）*/
+.sline-wrap {
+  margin:4px 0 6px;
+  display:flex; flex-direction:column;
 }
-.sline-lyric {
-  display:flex; align-items:center; flex-wrap:nowrap;
-  gap:2px;
-  background:#111820; border-radius:0 0 6px 6px;
-  padding:0 4px 4px 4px; border-left:2px solid #388bfd;
+.sline-notes, .sline-lyr {
+  display:flex; align-items:center; flex-wrap:nowrap; gap:0;
+}
+.sline-notes {
+  background:#141a22;
+  padding:3px 6px;
+  border-radius:5px 5px 0 0;
+  border-left:2px solid #58a6ff;
+}
+.sline-lyr {
+  background:#111820;
+  padding:0 6px 3px;
+  border-radius:0 0 5px 5px;
+  border-left:2px solid #58a6ff;
   border-top:1px dashed #21262d;
 }
 .sline-num {
-  font-size:10px; color:#484f58; min-width:18px; text-align:right;
-  padding-right:4px; font-family:-apple-system,sans-serif;
+  font-size:9px; color:#484f58; min-width:16px; text-align:right;
+  padding-right:3px; flex-shrink:0; font-family:-apple-system,sans-serif;
 }
-.sline-bar {
-  margin-left:auto; color:#30363d; font-size:14px; padding:0 4px;
+.sline-end {
+  margin-left:auto; color:#30363d; font-size:13px; padding:0 3px; flex-shrink:0;
 }
-.sheet-note {
-  display:inline-block; width:22px; text-align:center;
-  font-weight:700; position:relative; flex-shrink:0;
-  line-height:1.4;
+.sbar-dot {
+  color:#30363d; font-size:12px; margin:0 4px; flex-shrink:0;
 }
-.sheet-note.hi { color:#f778ba; }
-.sheet-note.lo { color:#56d4dd; }
-.sheet-note.rest { color:#484f58; font-weight:400; }
-.slyric {
-  display:inline-block; width:22px; text-align:center;
-  font-family:-apple-system,sans-serif; font-size:11px; color:#8b949e;
-  flex-shrink:0; line-height:1.4;
+.bar {
+  display:flex; align-items:baseline; flex-wrap:nowrap; gap:0;
+  padding:0 4px;
+  border-right:1px solid #2a3a4a;
 }
-.sheet-lyrics {
-  padding:6px 12px; font-size:11px; color:#8b949e; background:#161b22;
-  border-top:1px solid #21262d; flex-shrink:0;
+.bar:last-child { border-right:none; }
+
+/* 音符 */
+.sn {
+  display:inline-block; text-align:center;
+  font-weight:800; font-size:18px;
+  flex-shrink:0;
+  min-width:20px;
+  line-height:1.3;
+  position:relative;
+  font-family:"Courier New",monospace;
 }
+.slyric { width:20px; text-align:center; font-size:11px; color:#8b949e; font-family:-apple-system,sans-serif; flex-shrink:0; }
+.sl { width:20px; text-align:center; font-size:10px; color:#8b949e; font-family:-apple-system,sans-serif; flex-shrink:0; line-height:1.4; }
+
+/* ===== 高低音颜色区分 ===== */
+/* 低音 (octave <= 3) — 蓝色 + 数字下方点 */
+.sn.rlow { color:#58a6ff; font-size:16px; }
+.sn.rlow::after {
+  content:attr(data-oct);
+  /* 用 ::after 画下点 */
+}
+/* 中音 (octave 4) — 白色/绿色，最醒目 */
+.sn.rmid { color:#7ee787; }
+/* 高音 (octave 5) — 粉色 + 数字上方点 */
+.sn.rhi { color:#ff7b9c; }
+.sn.rhi::before {
+  content:'·'; position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+  color:#ff7b9c; font-size:10px; line-height:1;
+}
+/* 倍高音 (octave >= 6) — 红色 + 双上点 */
+.sn.rhi2 { color:#ff6b6b; font-size:17px; }
+.sn.rhi2::before {
+  content:'··'; position:absolute; top:-11px; left:50%; transform:translateX(-50%);
+  color:#ff6b6b; font-size:9px; line-height:1; letter-spacing:-3px;
+}
+/* 休止符 */
+.sn.rrest { color:#484f58; font-weight:400; }

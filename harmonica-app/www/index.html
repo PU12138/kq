@@ -35,22 +35,20 @@
       <span class="sheet-title-big" id="sheetTitle"></span>
     </div>
     <div class="sheet-notes" id="sheetNotes"></div>
-    <div class="sheet-lyrics" id="sheetLyrics"></div>
   </section>
 
-  <!-- 自动演奏控制条 -->
-  <section class="playback-bar hidden" id="playbackBar">
-    <button id="btnPlay" class="btn-play">▶</button>
-    <button id="btnStop" class="btn-stop">■</button>
-    <span id="speedLabel" class="spd">1.0x</span>
-    <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0" class="spd-slider">
-  </section>
-
-  <!-- 下半：24孔按钮 -->
+  <!-- 下半：播放 + 口琴按键 -->
   <section class="bottom-half">
+    <!-- 自动演奏控制条 -->
+    <div class="playback-bar" id="playbackBar">
+      <button id="btnPlay" class="btn-play">▶</button>
+      <button id="btnStop" class="btn-stop">■</button>
+      <span id="speedLabel" class="spd">1.0x</span>
+      <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0" class="spd-slider">
+    </div>
     <div class="hole-grid" id="harmonicaBody"></div>
     <div class="bottom-toolbar">
-      <span class="hint"><span class="d blow"></span>吹 <span class="d draw"></span>吸 长按持续发声</span>
+      <span class="hint"><span class="lg">蓝低音</span><span class="mg">绿中音</span><span class="hg">红高音</span> 长按持续发声</span>
       <button id="btnAddSong" class="btn-add">+ 加谱</button>
     </div>
   </section>

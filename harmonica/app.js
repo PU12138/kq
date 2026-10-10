@@ -289,6 +289,52 @@ function alignLyrics(lyrics, parsedNotes) {
   return result;
 }
 
+// 将解析后的音符转为简谱数字显示
+// 返回 { display, range, beats }  其中 range = 'low' | 'mid' | 'hi' | 'hi2'
+function notesToJiapu(parsed, key = 'C') {
+  const DEGREE_TO_C = { 1:'1',2:'2',3:'3',4:'4',5:'5',6:'6',7:'7' };
+  
+  return parsed.map(n => {
+    if (n.isRest) {
+      const restText = '0' + '─'.repeat(Math.max(0, Math.floor(n.beats) - 1));
+      return { display: restText, range:'rest', beats: n.beats };
+    }
+    let num = DEGREE_TO_C[n.degree] || '?';
+    if (n.acc === '#') num = '#' + num;
+    
+    // 八度范围
+    const oct = n.octave;
+    let range;
+    if (oct <= 3) range = 'low';      // 低音 — 蓝色 + 下点
+    else if (oct === 4) range = 'mid'; // 中音 — 白色无点
+    else if (oct === 5) range = 'hi';  // 高音 — 粉色 + 上点
+    else range = 'hi2';                // 倍高音 — 红色 + 双上点
+    
+    // 延长线
+    const dashes = '─'.repeat(Math.max(0, Math.floor(n.beats) - 1));
+    return { display: num + dashes, range, beats: n.beats };
+  });
+}
+
+// 把音符按 4 拍一小节切分,返回二维数组(小节 → 音符)
+function splitIntoBars(jiapu) {
+  const B = 4; // 每小节 4 拍
+  const bars = [];
+  let cur = [];
+  let beats = 0;
+  for (const n of jiapu) {
+    cur.push(n);
+    beats += n.beats;
+    if (beats >= B) {
+      bars.push(cur);
+      cur = [];
+      beats = beats % B; // 余数留给下小节
+    }
+  }
+  if (cur.length) bars.push(cur);
+  return bars;
+}
+
 function renderSheetMusic(song) {
   const listEl = document.getElementById('sheetList');
   const musicEl = document.getElementById('sheetMusic');
@@ -297,41 +343,59 @@ function renderSheetMusic(song) {
   listEl.classList.add('hidden');
   musicEl.classList.remove('hidden');
   document.getElementById('sheetTitle').textContent = song.title + ' (' + song.key + '调)';
-  document.getElementById('sheetLyrics').textContent = ''; // 歌词现在嵌进每行
   
   const parsed = parseNotes(song.notes, song.key);
   State.parsedNotes = parsed;
   
   const jiapu = notesToJiapu(parsed, song.key);
   const lyricsArr = alignLyrics(song.lyrics, parsed);
-  const container = document.getElementById('sheetNotes');
+  const bars = splitIntoBars(jiapu);
+  // 把歌词也按小节切
+  const barLyrics = [];
+  let idx = 0;
+  for (const bar of bars) {
+    const group = [];
+    for (let i = 0; i < bar.length; i++) group.push(lyricsArr[idx++]);
+    barLyrics.push(group);
+  }
   
-  // 每 8 个音符一行
-  const PER_LINE = 8;
+  // 每行 2 小节
   let html = '';
   let lineNum = 0;
-  for (let i = 0; i < jiapu.length; i += PER_LINE) {
-    const jline = jiapu.slice(i, i + PER_LINE);
-    const lline = lyricsArr.slice(i, i + PER_LINE);
+  for (let bi = 0; bi < bars.length; bi += 2) {
     lineNum++;
+    const lineBars = bars.slice(bi, bi + 2);
+    const lineLyr  = barLyrics.slice(bi, bi + 2);
+    
     html += `<div class="sline-wrap">`;
-    html += `<div class="sline"><span class="sline-num">${lineNum}</span>`;
-    for (const j of jline) {
-      let cls = 'sheet-note';
-      if (j.hi) cls += ' hi';
-      if (j.lo) cls += ' lo';
-      if (j.rest) cls += ' rest';
-      html += `<span class="${cls}">${j.text}</span>`;
+    html += `<div class="sline-notes"><span class="sline-num">${lineNum}</span>`;
+    for (let b = 0; b < lineBars.length; b++) {
+      if (b > 0) html += '<span class="sbar-dot">·</span>'; // 小节间小点
+      html += `<div class="bar">`;
+      for (let j = 0; j < lineBars[b].length; j++) {
+        const n = lineBars[b][j];
+        let cls = 'sn';
+        cls += ' r' + n.range; // rlow / rmid / rhi / rhi2 / rrest
+        html += `<span class="${cls}">${n.display}</span>`;
+      }
+      html += `</div>`;
     }
-    html += '<span class="sline-bar">│</span></div>';
+    html += '<span class="sline-end">‖</span></div>';
     // 歌词行
-    html += `<div class="sline-lyric"><span class="sline-num">${lineNum}</span>`;
-    for (const l of lline) {
-      html += `<span class="slyric">${l || ''}</span>`;
+    html += `<div class="sline-lyr"><span class="sline-num">${lineNum}</span>`;
+    for (let b = 0; b < lineBars.length; b++) {
+      if (b > 0) html += '<span class="sbar-dot">·</span>';
+      html += `<div class="bar">`;
+      for (const l of lineLyr[b] || []) {
+        html += `<span class="sl">${l || ''}</span>`;
+      }
+      html += `</div>`;
     }
-    html += '<span class="sline-bar">│</span></div>';
+    html += '<span class="sline-end">‖</span></div>';
     html += `</div>`;
   }
+  
+  const container = document.getElementById('sheetNotes');
   container.innerHTML = html;
   container.scrollTop = 0;
 }
