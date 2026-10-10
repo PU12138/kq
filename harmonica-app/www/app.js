@@ -312,46 +312,136 @@ function stopPlay() {
   document.getElementById('btnPlay').textContent = '▶';
 }
 
-// ====== 口琴孔位渲染（多排网格） ======
+// ====== 口琴渲染（3行低中高 + 简谱数字） ======
+const NOTE_MIDI = { 'C':0,'C#':1,'Db':1,'D':2,'D#':3,'Eb':3,'E':4,'F':5,'F#':6,'Gb':6,'G':7,'G#':8,'Ab':8,'A':9,'A#':10,'Bb':10,'B':11 };
+function noteToMidi(note) {
+  const m = note.match(/^([A-G])([#b]?)(\d)$/);
+  if (!m) return -1;
+  return (parseInt(m[3]) + 1) * 12 + NOTE_MIDI[m[1] + (m[2] || '')];
+}
+// 字母音名 -> 简谱数字（C大调首调）
+const DEGREE_OF = { 'C':1,'D':2,'E':3,'F':4,'G':5,'A':6,'B':7 };
+function noteToJiapu(note, rootNote) {
+  if (!note) return { text:'?', octave:4 };
+  const m = note.match(/^([A-G])([#b]?)(\d)$/);
+  if (!m) return { text:'?', octave:4 };
+  // 算和根音的差，得到首调简谱
+  const rootMidi = noteToMidi(rootNote);
+  const curMidi = noteToMidi(note);
+  const diff = curMidi - rootMidi;   // -12..24 之类
+  const semis = diff % 12;
+  const octaveShift = Math.floor(diff / 12);
+  // 半音差 -> 度（首调）
+  const SEMI_TO_DEGREE = [1,1,2,3,3,4,5,5,6,7,7,1]; // 0=C, 1=C#=1 升, 2=D=2 ...
+  let degree = SEMI_TO_DEGREE[((semis % 12) + 12) % 12];
+  // 降/升
+  let acc = '';
+  if (m[2] === '#') acc = '#';
+  // 八度点
+  const baseOctave = 4;
+  const actualOctave = baseOctave + octaveShift;
+  let octaveMark = '';
+  if (actualOctave >= 6) octaveMark = '<sup>˙˙</sup>';  // 高两个八度
+  else if (actualOctave >= 5) octaveMark = '<sup>˙</sup>';
+  return { text: acc + degree + octaveMark, octave: actualOctave };
+}
+
 function renderHarmonica() {
   const h = State.currentHarmonica;
   const body = document.getElementById('harmonicaBody');
-  const holes = h.holes;
-  const total = holes.length;     // 12 / 10 / 8
-  // 根据孔数自动选排数
-  let rows, cols;
-  if (total >= 12) { rows = 4; cols = 3; }  // 4 排 × 3 孔 = 12
-  else if (total >= 10) { rows = 4; cols = 3; }  // 10 孔也按 4×3 网格（留2格空）
-  else if (total >= 8) { rows = 4; cols = 2; }   // 8 孔 × 4 排 = 2
-  else { rows = 3; cols = Math.ceil(total / 3); }
+  const rootNote = h.key + '4'; // C调就是 C4
 
-  let html = `<div class="hgrid" style="--hcols:${cols};--hrows:${rows};">`;
-  for (let r = 0; r < rows; r++) {
-    html += '<div class="hgrid-row">';
-    for (let c = 0; c < cols; c++) {
-      const idx = r * cols + c;
-      const hole = holes[idx];
-      if (!hole) {
-        html += `<div class="hcell empty"></div>`;
-        continue;
-      }
-      html += `<div class="hcell">
-        <div class="hcell-num">${hole.n}</div>
-        <button class="hole blow" data-hole="${hole.n}" data-dir="blow">
-          <span class="hole-note">${hole.blow}</span>
-          <span class="hole-dir">吹</span>
-        </button>
-        <button class="hole draw" data-hole="${hole.n}" data-dir="draw">
-          <span class="hole-note">${hole.draw}</span>
-          <span class="hole-dir">吸</span>
-        </button>
-      </div>`;
-    }
-    html += '</div>';
+  // 把所有吹吸音摊平成按钮列表，带上音高排序
+  const buttons = [];
+  h.holes.forEach(hole => {
+    [{dir:'blow', note:hole.blow}, {dir:'draw', note:hole.draw}].forEach(({dir, note}) => {
+      const jiapu = noteToJiapu(note, rootNote);
+      buttons.push({
+        hole: hole.n, dir, note, midi: noteToMidi(note),
+        jiapuText: jiapu.text, octave: jiapu.octave,
+      });
+    });
+  });
+  buttons.sort((a,b) => a.midi - b.midi);
+
+  // 分 3 行（低/中/高），按 octave 分界自动均分
+  // 先把 octave 列出来决定分界
+  const octs = buttons.map(b => b.octave);
+  // 找到 octave 跳变点：3/4 分界、4/5 分界、5/6 分界
+  let split1 = Math.floor(buttons.length / 3);
+  let split2 = Math.floor(buttons.length * 2 / 3);
+
+  // 如果恰好 24 或 12 个，按 octave 分界更好
+  if (h.holes.length >= 12) {
+    // 找 octave >= 5 第一个位置
+    const midIdx = buttons.findIndex(b => b.octave >= 5);
+    const hiIdx  = buttons.findIndex(b => b.octave >= 6);
+    if (midIdx > 0) split1 = midIdx;
+    if (hiIdx > split1) split2 = hiIdx;
   }
-  html += '</div>';
+
+  const lowRow  = buttons.slice(0, split1);
+  const midRow  = buttons.slice(split1, split2);
+  const highRow = buttons.slice(split2);
+  const rows = [
+    { label: '低音', items: lowRow },
+    { label: '中音', items: midRow },
+    { label: '高音', items: highRow },
+  ];
+
+  let html = '';
+  rows.forEach(row => {
+    html += `<div class="hrow">
+      <div class="hrow-label">${row.label}</div>
+      <div class="hrow-btns">`;
+    row.items.forEach(b => {
+      html += `<button class="hnote" data-hole="${b.hole}" data-dir="${b.dir}" title="孔 ${b.hole} · ${b.dir==='blow'?'吹':'吸'} · ${b.note}">
+        <span class="hnote-num">${b.jiapuText}</span>
+      </button>`;
+    });
+    html += `</div></div>`;
+  });
+
   body.innerHTML = html;
-  bindHoleEvents();
+  bindHNoteEvents();
+}
+
+function bindHNoteEvents() {
+  const btns = document.querySelectorAll('.hnote');
+  btns.forEach(btn => {
+    const n = parseInt(btn.dataset.hole);
+    const dir = btn.dataset.dir;
+    let voice = null, vibTimer = null;
+
+    const onStart = (e) => {
+      e.preventDefault();
+      if (voice) return;
+      initAudio();
+      const h = State.currentHarmonica;
+      const info = h.holes.find(x => x.n === n);
+      if (!info) return;
+      const noteName = dir === 'blow' ? info.blow : info.draw;
+      if (!noteName) return;
+      const freq = noteToFreq(noteName);
+      if (freq <= 0) return;
+      voice = createVoice(freq, 0.22);
+      voice.start();
+      btn.classList.add('active');
+      vibTimer = setTimeout(() => voice.setVibrato(true), 500);
+    };
+    const onEnd = (e) => {
+      if (!voice) return;
+      voice.stop(); voice = null;
+      btn.classList.remove('active');
+      if (vibTimer) { clearTimeout(vibTimer); vibTimer = null; }
+    };
+    btn.addEventListener('touchstart', onStart, { passive: false });
+    btn.addEventListener('touchend', onEnd, { passive: false });
+    btn.addEventListener('touchcancel', onEnd, { passive: false });
+    btn.addEventListener('mousedown', onStart);
+    btn.addEventListener('mouseup', onEnd);
+    btn.addEventListener('mouseleave', onEnd);
+  });
 }
 
 function bindHoleEvents() {
