@@ -1,5 +1,5 @@
 // 口琴大师 - 内置琴谱库 (1263首)
-const SONGS = [
+let SONGS = [
 {
 "title": "小星星-高音版",
 "notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
