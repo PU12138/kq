@@ -798,3 +798,109 @@ html, body {
   background: #333;
   border-radius: 2px;
 }
+
+/* ===== 手动演奏页面 ===== */
+.manual-top {
+  padding: 8px 12px;
+}
+.manual-harmonica {
+  padding: 12px;
+}
+.manual-harmonica-label {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.manual-harmonica-body {
+  background: linear-gradient(180deg, #3a2a1a 0%, #2a1a0a 100%);
+  border-radius: 12px;
+  padding: 12px 8px;
+  border: 2px solid #5a4a3a;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  overflow-x: auto;
+}
+.manual-hole-row {
+  display: flex;
+  gap: 4px;
+  min-width: max-content;
+}
+.manual-hole {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.manual-hole-num {
+  font-size: 10px;
+  color: #caa878;
+  font-weight: 700;
+}
+.manual-hole-btn {
+  width: 42px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+  transition: transform 0.08s;
+}
+.manual-hole-btn.blow {
+  background: linear-gradient(180deg, #3a6a4a 0%, #2a5a3a 100%);
+  border: 1px solid #5a8a6a;
+}
+.manual-hole-btn.draw {
+  background: linear-gradient(180deg, #6a4a3a 0%, #5a3a2a 100%);
+  border: 1px solid #8a6a4a;
+}
+.manual-hole-btn .manual-hole-note {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+.manual-hole-btn .manual-hole-dir {
+  font-size: 8px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1;
+}
+.manual-hole-btn.active,
+.manual-hole-btn:active {
+  transform: scale(0.92);
+  filter: brightness(1.4);
+}
+.manual-harmonica-hint {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.hint-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.hint-blow {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #3a6a4a;
+  border-radius: 2px;
+}
+.hint-draw {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #6a4a3a;
+  border-radius: 2px;
+}

@@ -487,7 +487,7 @@ function scheduler() {
         
         const freq = noteToFreq(noteName);
         if (freq > 0) {
-          const voice = createHarmonicaVoice(freq, velocity);
+          const voice = createHarmonicaVoiceAuto(freq, velocity);
           if (voice) {
             voice.start(playTime);
             voice.stop(playTime + noteDur);
@@ -562,6 +562,90 @@ function renderHarmonica() {
   
   // 绑定触摸/点击事件
   bindHoleEvents();
+}
+
+/**
+ * 手动演奏页面：渲染24孔口琴孔位（单排，像真实口琴）
+ */
+function renderManualHarmonica() {
+  const h = State.currentHarmonica;
+  const body = document.getElementById('manualHarmonicaBody');
+  const label = document.getElementById('manualHarmonicaLabel');
+  label.textContent = h.name;
+  
+  // 单排孔位，每个孔有吹/吸两个方向
+  let html = '<div class="manual-hole-row">';
+  for (const hole of h.holes) {
+    html += `<div class="manual-hole" data-hole="${hole.n}">
+      <div class="manual-hole-num">${hole.n}</div>
+      <button class="manual-hole-btn blow" data-hole="${hole.n}" data-dir="blow">
+        <span class="manual-hole-note">${hole.blow || '—'}</span>
+        <span class="manual-hole-dir">吹</span>
+      </button>
+      <button class="manual-hole-btn draw" data-hole="${hole.n}" data-dir="draw">
+        <span class="manual-hole-note">${hole.draw || '—'}</span>
+        <span class="manual-hole-dir">吸</span>
+      </button>
+    </div>`;
+  }
+  html += '</div>';
+  body.innerHTML = html;
+  
+  bindManualHoleEvents();
+}
+
+/**
+ * 手动演奏孔位事件绑定（长按持续发声）
+ */
+function bindManualHoleEvents() {
+  const btns = document.querySelectorAll('.manual-hole-btn');
+  const activeVoices = {};
+  
+  btns.forEach(btn => {
+    const hole = parseInt(btn.dataset.hole);
+    const dir = btn.dataset.dir;
+    
+    let voice = null;
+    let vibTimer = null;
+    
+    const onStart = (e) => {
+      e.preventDefault();
+      if (voice) return;
+      initAudio();
+      const harm = State.currentHarmonica;
+      const holeInfo = harm.holes.find(x => x.n === hole);
+      if (!holeInfo) return;
+      const noteName = dir === 'blow' ? holeInfo.blow : holeInfo.draw;
+      if (!noteName) return;
+      
+      const freq = noteToFreq(noteName);
+      if (freq <= 0) return;
+      const velocity = dir === 'blow' ? 0.25 : 0.2;
+      voice = createHarmonicaVoiceManual(freq, velocity);
+      if (!voice) return;
+      voice.start();
+      btn.classList.add('active');
+      
+      vibTimer = setTimeout(() => {
+        if (voice) voice.setVibrato(true);
+      }, 500);
+    };
+    
+    const onEnd = (e) => {
+      if (!voice) return;
+      voice.stop();
+      voice = null;
+      btn.classList.remove('active');
+      if (vibTimer) { clearTimeout(vibTimer); vibTimer = null; }
+    };
+    
+    btn.addEventListener('touchstart', onStart, { passive: false });
+    btn.addEventListener('touchend', onEnd, { passive: false });
+    btn.addEventListener('touchcancel', onEnd, { passive: false });
+    btn.addEventListener('mousedown', onStart);
+    btn.addEventListener('mouseup', onEnd);
+    btn.addEventListener('mouseleave', onEnd);
+  });
 }
 
 function makeHoleCell(hole, direction) {
@@ -889,6 +973,9 @@ function switchPage(page, fromBack = false) {
     document.getElementById('playPage').classList.add('active');
     renderHarmonica();
     renderSheetMusic();
+  } else if (page === 'manual') {
+    document.getElementById('manualPage').classList.add('active');
+    renderManualHarmonica();
   } else if (page === 'songs') {
     document.getElementById('songsPage').classList.add('active');
     renderSongList();
@@ -1111,6 +1198,9 @@ function init() {
     State.currentHarmonica = HARMONICAS.find(h => h.id === select.value);
     renderHarmonica();
     renderSheetMusic();
+    // 同步手动演奏口琴选择器
+    const mSelect = document.getElementById('manualHarmonicaSelect');
+    if (mSelect) mSelect.value = select.value;
     // 如果正在演奏，重新开始演奏以应用新的调性
     if (State.isPlaying || State.isPaused) {
       stopAutoPlay();
@@ -1118,6 +1208,26 @@ function init() {
     }
     showToast(`已切换: ${State.currentHarmonica.name}`);
   });
+  
+  // 手动演奏页面的口琴选择器
+  const mSelect = document.getElementById('manualHarmonicaSelect');
+  if (mSelect) {
+    HARMONICAS.forEach(h => {
+      const opt = document.createElement('option');
+      opt.value = h.id;
+      opt.textContent = h.name;
+      if (h.default) opt.selected = true;
+      mSelect.appendChild(opt);
+    });
+    mSelect.addEventListener('change', () => {
+      State.currentHarmonica = HARMONICAS.find(h => h.id === mSelect.value);
+      renderManualHarmonica();
+      // 同步自动演奏口琴选择器
+      const aSelect = document.getElementById('harmonicaSelect');
+      if (aSelect) aSelect.value = mSelect.value;
+      showToast(`已切换: ${State.currentHarmonica.name}`);
+    });
+  }
   
   // 绑定手动键盘
   bindKeyboardEvents();

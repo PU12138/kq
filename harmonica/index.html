@@ -18,7 +18,7 @@
 
 <div id="app">
 
-  <!-- ====== 演奏页面 ====== -->
+  <!-- ====== 自动演奏页面 ====== -->
   <div id="playPage" class="page active">
     <!-- 顶部操作栏 -->
     <div class="top-actions">
@@ -30,7 +30,6 @@
     <!-- 口琴选择 -->
     <div class="harmonica-selector">
       <select id="harmonicaSelect"></select>
-      <button id="chromaticBtn" class="chromatic-btn">变音键</button>
     </div>
 
     <!-- 当前歌曲标题 -->
@@ -51,76 +50,32 @@
       </div>
     </div>
 
-    <!-- 口琴孔位 -->
+    <!-- 自动演奏模式下的口琴孔位（高亮跟随） -->
     <div class="harmonica-area">
       <div class="harmonica-label" id="harmonicaLabel"></div>
       <div class="harmonica-grid" id="harmonicaGrid"></div>
     </div>
+  </div>
 
-    <!-- 手动演奏键盘（3排，低音/中音/高音，所有音都可见） -->
-    <div class="manual-keyboard">
-      <div class="keyboard-label">
-        <span>手动演奏（长按持续发声）</span>
+  <!-- ====== 手动演奏页面（24孔口琴孔位） ====== -->
+  <div id="manualPage" class="page">
+    <!-- 顶部口琴选择 -->
+    <div class="manual-top">
+      <div class="harmonica-selector">
+        <select id="manualHarmonicaSelect"></select>
       </div>
-      <!-- 低音排 (八度3) -->
-      <div class="keyboard-row">
-        <div class="row-label">低音</div>
-        <div class="key-row key-row-natural">
-          <button class="key-btn key-natural" data-oct="3" data-degree="1" data-dir="blow">1<br>C</button>
-          <button class="key-btn key-natural" data-oct="3" data-degree="2" data-dir="blow">2<br>D</button>
-          <button class="key-btn key-natural" data-oct="3" data-degree="3" data-dir="blow">3<br>E</button>
-          <button class="key-btn key-natural" data-oct="3" data-degree="4" data-dir="draw">4<br>F</button>
-          <button class="key-btn key-natural" data-oct="3" data-degree="5" data-dir="blow">5<br>G</button>
-          <button class="key-btn key-natural" data-oct="3" data-degree="6" data-dir="draw">6<br>A</button>
-          <button class="key-btn key-natural" data-oct="3" data-degree="7" data-dir="draw">7<br>B</button>
-        </div>
-        <div class="key-row key-row-sharp">
-          <button class="key-btn key-sharp" data-oct="3" data-degree="1" data-accidental="#" data-dir="blow">#1</button>
-          <button class="key-btn key-sharp" data-oct="3" data-degree="2" data-accidental="#" data-dir="draw">#2</button>
-          <button class="key-btn key-sharp" data-oct="3" data-degree="4" data-accidental="#" data-dir="draw">#4</button>
-          <button class="key-btn key-sharp" data-oct="3" data-degree="5" data-accidental="#" data-dir="blow">#5</button>
-          <button class="key-btn key-sharp" data-oct="3" data-degree="6" data-accidental="#" data-dir="draw">#6</button>
-        </div>
+    </div>
+
+    <!-- 24孔口琴实物图式孔位 -->
+    <div class="manual-harmonica">
+      <div class="manual-harmonica-label" id="manualHarmonicaLabel">复音24孔 C调</div>
+      <div class="manual-harmonica-body" id="manualHarmonicaBody">
+        <!-- JS 动态生成孔位 -->
       </div>
-      <!-- 中音排 (八度4) -->
-      <div class="keyboard-row">
-        <div class="row-label">中音</div>
-        <div class="key-row key-row-natural">
-          <button class="key-btn key-natural" data-oct="4" data-degree="1" data-dir="blow">1<br>C</button>
-          <button class="key-btn key-natural" data-oct="4" data-degree="2" data-dir="blow">2<br>D</button>
-          <button class="key-btn key-natural" data-oct="4" data-degree="3" data-dir="blow">3<br>E</button>
-          <button class="key-btn key-natural" data-oct="4" data-degree="4" data-dir="draw">4<br>F</button>
-          <button class="key-btn key-natural" data-oct="4" data-degree="5" data-dir="blow">5<br>G</button>
-          <button class="key-btn key-natural" data-oct="4" data-degree="6" data-dir="draw">6<br>A</button>
-          <button class="key-btn key-natural" data-oct="4" data-degree="7" data-dir="draw">7<br>B</button>
-        </div>
-        <div class="key-row key-row-sharp">
-          <button class="key-btn key-sharp" data-oct="4" data-degree="1" data-accidental="#" data-dir="blow">#1</button>
-          <button class="key-btn key-sharp" data-oct="4" data-degree="2" data-accidental="#" data-dir="draw">#2</button>
-          <button class="key-btn key-sharp" data-oct="4" data-degree="4" data-accidental="#" data-dir="draw">#4</button>
-          <button class="key-btn key-sharp" data-oct="4" data-degree="5" data-accidental="#" data-dir="blow">#5</button>
-          <button class="key-btn key-sharp" data-oct="4" data-degree="6" data-accidental="#" data-dir="draw">#6</button>
-        </div>
-      </div>
-      <!-- 高音排 (八度5) -->
-      <div class="keyboard-row">
-        <div class="row-label">高音</div>
-        <div class="key-row key-row-natural">
-          <button class="key-btn key-natural" data-oct="5" data-degree="1" data-dir="blow">1<br>C</button>
-          <button class="key-btn key-natural" data-oct="5" data-degree="2" data-dir="blow">2<br>D</button>
-          <button class="key-btn key-natural" data-oct="5" data-degree="3" data-dir="blow">3<br>E</button>
-          <button class="key-btn key-natural" data-oct="5" data-degree="4" data-dir="draw">4<br>F</button>
-          <button class="key-btn key-natural" data-oct="5" data-degree="5" data-dir="blow">5<br>G</button>
-          <button class="key-btn key-natural" data-oct="5" data-degree="6" data-dir="draw">6<br>A</button>
-          <button class="key-btn key-natural" data-oct="5" data-degree="7" data-dir="draw">7<br>B</button>
-        </div>
-        <div class="key-row key-row-sharp">
-          <button class="key-btn key-sharp" data-oct="5" data-degree="1" data-accidental="#" data-dir="blow">#1</button>
-          <button class="key-btn key-sharp" data-oct="5" data-degree="2" data-accidental="#" data-dir="draw">#2</button>
-          <button class="key-btn key-sharp" data-oct="5" data-degree="4" data-accidental="#" data-dir="draw">#4</button>
-          <button class="key-btn key-sharp" data-oct="5" data-degree="5" data-accidental="#" data-dir="blow">#5</button>
-          <button class="key-btn key-sharp" data-oct="5" data-degree="6" data-accidental="#" data-dir="draw">#6</button>
-        </div>
+      <div class="manual-harmonica-hint">
+        <span class="hint-item"><span class="hint-blow">■</span> 吹气</span>
+        <span class="hint-item"><span class="hint-draw">■</span> 吸气</span>
+        <span class="hint-item">长按持续发声</span>
       </div>
     </div>
   </div>
@@ -195,8 +150,12 @@
   <!-- ====== 底部导航 ====== -->
   <nav class="bottom-nav">
     <div class="nav-item active" data-page="play">
-      <span class="nav-icon">🎵</span>
-      <span>演奏</span>
+      <span class="nav-icon">▶</span>
+      <span>自动演奏</span>
+    </div>
+    <div class="nav-item" data-page="manual">
+      <span class="nav-icon">🎹</span>
+      <span>手动演奏</span>
     </div>
     <div class="nav-item" data-page="songs">
       <span class="nav-icon">📜</span>
@@ -218,9 +177,9 @@
 <div id="toast" class="toast"></div>
 
 <!-- Scripts -->
-<script src="harmonicas.js?v=10"></script>
-<script src="songs.js?v=10"></script>
-<script src="app.js?v=10"></script>
+<script src="harmonicas.js?v=11"></script>
+<script src="songs.js?v=11"></script>
+<script src="app.js?v=11"></script>
 
 </body>
 </html>
