@@ -538,13 +538,15 @@ function renderHarmonica() {
   
   label.textContent = h.name;
   
-  if (h.hasButton) {
-    btn.style.display = '';
-  } else {
-    btn.style.display = 'none';
-    State.chromaticBtn = false;
+  if (btn) {
+    if (h.hasButton) {
+      btn.style.display = '';
+    } else {
+      btn.style.display = 'none';
+      State.chromaticBtn = false;
+    }
+    updateChromaticBtn();
   }
-  updateChromaticBtn();
   
   // 构建吹孔行和吸孔行
   const maxHole = h.holes.length;
@@ -1232,13 +1234,16 @@ function init() {
   // 绑定手动键盘
   bindKeyboardEvents();
   
-  // 半音键按钮
-  document.getElementById('chromaticBtn').addEventListener('click', () => {
-    State.chromaticBtn = !State.chromaticBtn;
-    updateChromaticBtn();
-    renderHarmonica();
-    renderSheetMusic();
-  });
+  // 半音键按钮（如果存在）
+  const cBtn = document.getElementById('chromaticBtn');
+  if (cBtn) {
+    cBtn.addEventListener('click', () => {
+      State.chromaticBtn = !State.chromaticBtn;
+      updateChromaticBtn();
+      renderHarmonica();
+      renderSheetMusic();
+    });
+  }
   
   // 播放控制
   document.getElementById('btnPlay').addEventListener('click', () => {
