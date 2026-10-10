@@ -206,35 +206,35 @@ function playNote(noteName, duration, startTime = 0, velocity = 0.15) {
 
 /**
  * 创建口琴音色 Voice
- * 真实口琴 = 方波簧片(奇次谐波) + 八度三角波 + 温和带通 + 气息噪声
+ * 真实口琴 = 锯齿波(簧片谐波) + 低通滤波(琴体共振) + 微弱三角波 + 气息噪声
  */
 function createHarmonicaVoice(freq, velocity) {
   if (!State.audioCtx) return null;
   const ctx = State.audioCtx;
   const v = Math.max(0.05, Math.min(0.4, velocity));
 
-  // === 1. 主簧片：方波（只有奇次谐波，最接近金属哨片）===
+  // === 1. 主簧片：锯齿波 + 低通 ===
+  // 锯齿波有丰富谐波，低通滚掉尖锐高频 → 接近金属哨片
   const reed = ctx.createOscillator();
-  reed.type = 'square';
-  // 起音：频率从98%滑到100%（哨片起振瞬间）
-  reed.frequency.setValueAtTime(freq * 0.98, ctx.currentTime);
-  reed.frequency.linearRampToValueAtTime(freq, ctx.currentTime + 0.02);
+  reed.type = 'sawtooth';
+  // 起音：频率从96%滑到100%（哨片从静止到稳定振动）
+  reed.frequency.setValueAtTime(freq * 0.96, ctx.currentTime);
+  reed.frequency.linearRampToValueAtTime(freq, ctx.currentTime + 0.03);
 
-  // === 2. 副簧片：三角波高八度（增加明亮厚度，不刺耳）===
+  // 低通滤波：琴体共振，只保留口琴频段（滚掉高频尖锐声）
+  const lowpass = ctx.createBiquadFilter();
+  lowpass.type = 'lowpass';
+  lowpass.frequency.value = freq * 3.5;  // 保留到3.5倍频，让谐波自然衰减
+  lowpass.Q.value = 0.5;
+
+  // === 2. 副簧片：三角波高八度（增加温和亮度）===
   const reed2 = ctx.createOscillator();
   reed2.type = 'triangle';
   reed2.frequency.value = freq * 2;
   const reed2Gain = ctx.createGain();
-  reed2Gain.gain.value = 0.18;  // 主簧片的18%
+  reed2Gain.gain.value = 0.12;
 
-  // === 3. 温和滤波（不要peaking！带通就行）===
-  // 去掉极低和极高，让音色集中在口琴的频段
-  const filter = ctx.createBiquadFilter();
-  filter.type = 'bandpass';
-  filter.frequency.value = freq * 1.8;
-  filter.Q.value = 0.7;  // 宽一些，不要太尖锐
-
-  // === 4. 气息噪声（极弱，仅在起音时有一点）===
+  // === 3. 气息噪声（极弱，起音瞬间）===
   let noiseSrc = null, noiseGain = null;
   const noiseBuf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * 2), ctx.sampleRate);
   const nData = noiseBuf.getChannelData(0);
@@ -242,24 +242,19 @@ function createHarmonicaVoice(freq, velocity) {
   noiseSrc = ctx.createBufferSource();
   noiseSrc.buffer = noiseBuf;
   noiseSrc.loop = true;
-  const noiseBP = ctx.createBiquadFilter();
-  noiseBP.type = 'bandpass';
-  noiseBP.frequency.value = freq;
-  noiseBP.Q.value = 1;
   noiseGain = ctx.createGain();
   noiseGain.gain.value = 0;
-  noiseSrc.connect(noiseBP);
-  noiseBP.connect(noiseGain);
 
-  // === 5. 总音量 ===
+  // === 4. 总音量 ===
   const gain = ctx.createGain();
   gain.gain.value = 0;
 
-  // 连接
-  reed.connect(filter);
-  reed2Gain.connect(filter);
-  filter.connect(gain);
+  // 连接：主簧片→低通→总音量→输出；副簧片→总音量→输出；噪声→输出
+  reed.connect(lowpass);
+  lowpass.connect(gain);
+  reed2Gain.connect(gain);
   gain.connect(ctx.destination);
+  noiseSrc.connect(noiseGain);
   noiseGain.connect(ctx.destination);
 
   let vib = null, vibGain = null;
@@ -273,41 +268,39 @@ function createHarmonicaVoice(freq, velocity) {
       const st = t || ctx.currentTime;
       reed.start(st); reed2.start(st); noiseSrc.start(st);
 
-      // 起音：极快上升（哨片一推就响）
+      // 起音：快速上升 + 微衰减到稳定
       gain.gain.setValueAtTime(0, st);
-      gain.gain.linearRampToValueAtTime(v, st + 0.005);
-      gain.gain.linearRampToValueAtTime(v * 0.82, st + 0.04);
+      gain.gain.linearRampToValueAtTime(v, st + 0.006);
+      gain.gain.linearRampToValueAtTime(v * 0.85, st + 0.04);
 
-      // 起音时微弱的气息声（像吹气瞬间）
-      noiseGain.gain.setValueAtTime(0.025, st);
-      noiseGain.gain.exponentialRampToValueAtTime(0.003, st + 0.08);
+      // 起音气息脉冲（像吹气瞬间）
+      noiseGain.gain.setValueAtTime(0.02, st);
+      noiseGain.gain.exponentialRampToValueAtTime(0.002, st + 0.1);
     },
     stop(t) {
       if (this._stopped) return;
       this._stopped = true;
       const st = t || ctx.currentTime;
-      // 释放：快速衰减（停气就停声）
       const cur = gain.gain.value;
       gain.gain.cancelScheduledValues(st);
       gain.gain.setValueAtTime(cur, st);
-      gain.gain.exponentialRampToValueAtTime(0.001, st + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, st + 0.06);
       noiseGain.gain.cancelScheduledValues(st);
       noiseGain.gain.setValueAtTime(noiseGain.gain.value, st);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.03);
-      reed.stop(st + 0.08);
-      reed2.stop(st + 0.08);
-      noiseSrc.stop(st + 0.08);
-      if (vib) { try { vib.stop(st + 0.08); } catch(e){} }
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.04);
+      reed.stop(st + 0.1);
+      reed2.stop(st + 0.1);
+      noiseSrc.stop(st + 0.1);
+      if (vib) { try { vib.stop(st + 0.1); } catch(e){} }
     },
     setVibrato(on) {
       if (on && !vib) {
         vib = ctx.createOscillator();
         vibGain = ctx.createGain();
         vib.frequency.value = 5;
-        vibGain.gain.value = freq * 0.006;  // 轻微颤音，不要太夸张
+        vibGain.gain.value = freq * 0.005;  // 轻微颤音
         vib.connect(vibGain);
         vibGain.connect(reed.frequency);
-        vibGain.connect(reed2.frequency);
         vib.start();
       }
     }
@@ -420,7 +413,7 @@ function scheduler() {
   if (!State.isPlaying || !State.audioCtx) return;
   
   const secPerBeat = 60 / (State.currentSong.bpm * State.speed);
-  const lookAhead = 0.1; // 提前0.1秒安排
+  const lookAhead = 0.15; // 提前0.15秒安排，给AudioContext留出调度时间
   
   while (State.nextNoteTime < State.audioCtx.currentTime + lookAhead && State.playIndex < State.parsedNotes.length) {
     const note = State.parsedNotes[State.playIndex];
@@ -431,7 +424,7 @@ function scheduler() {
       const playKey = State.currentHarmonica ? State.currentHarmonica.key : State.currentSong.key;
       const noteName = noteToNoteName(note, playKey);
       if (noteName) {
-        // 根据节拍位置计算力度（强弱拍对比更鲜明，让节奏感更强）
+        // 根据节拍位置计算力度
         const beatInBar = State.beatCount % 4;
         let velocity;
         if (beatInBar === 0) velocity = 0.28;        // 强拍
@@ -441,41 +434,43 @@ function scheduler() {
         // 长音加强，高音加强
         if (note.beats >= 2) velocity += 0.03;
         if (note.octave > 0) velocity += 0.02;
-        // 音区越高，力度越强（口琴高音孔音量更大）
         if (note.degree >= 5) velocity += 0.01;
         
-        // 音符实际发音时长：制造清晰停顿（断奏），让每个音都清晰可辨
-        // 短音留更多空隙 → 节奏感更强
+        // 音符实际发音时长
         let noteDur;
         if (note.beats >= 2) {
-          noteDur = duration * 0.92;  // 长音几乎占满，尾部微停
+          noteDur = duration * 0.92;
         } else if (note.beats <= 0.5) {
-          noteDur = duration * 0.6;   // 短音大幅缩短，清晰断奏
+          noteDur = duration * 0.6;
         } else {
-          noteDur = duration * 0.75;  // 普通音符留25%空隙
+          noteDur = duration * 0.75;
         }
         
-        const ctx = State.audioCtx;
+        // 直接从当前音频时间开始，如果 nextNoteTime 已过去则立即播放
+        let playTime = State.nextNoteTime;
+        const now = State.audioCtx.currentTime;
+        if (playTime < now) playTime = now + 0.01;  // 只取最小值，确保立即响
+        
         const freq = noteToFreq(noteName);
         if (freq > 0) {
           const voice = createHarmonicaVoice(freq, velocity);
           if (voice) {
-            voice.start(State.nextNoteTime);
-            voice.stop(State.nextNoteTime + noteDur);
-            // 长音0.3秒后加颤音
+            voice.start(playTime);
+            voice.stop(playTime + noteDur);
+            // 长音加颤音
             if (noteDur > 0.5) {
               setTimeout(() => { if (voice) voice.setVibrato(true); }, 
-                Math.max(0, (State.nextNoteTime - ctx.currentTime + 0.3) * 1000));
+                Math.max(0, (playTime - now + 0.3) * 1000));
             }
           }
         }
-        // 在适当时间高亮UI
-        const delay = (State.nextNoteTime - State.audioCtx.currentTime) * 1000;
+        // 高亮UI
+        const delay = (playTime - now) * 1000;
         setTimeout(() => highlightPlayingNote(State.playIndex), Math.max(0, delay));
       }
     }
     
-    // 累加拍数（用于强弱拍计算）
+    // 不管是不是休止符，节拍和时间都要推进
     State.beatCount += note.beats;
     State.nextNoteTime += duration;
     State.playIndex++;
