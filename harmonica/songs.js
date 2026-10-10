@@ -1,695 +1,8844 @@
-/**
- * 口琴歌曲数据库 - 212首
- *
- * 简谱记法说明:
- *   1-7: 唱名 do re mi fa sol la si (中音区)
- *   0: 休止符
- *   ^N: 高八度 (如 ^1 = 高音do)
- *   _N: 低八度 (如 _6 = 低音la)
- *   #N: 升半音 (如 #4 = 升fa)
- *   N-: 二分音符(2拍)  N--: 3拍  N---: 全音符(4拍)
- *   N.: 附点(1.5拍)
- *   |: 小节线(仅显示用)
- */
-
+// 口琴大师 - 内置琴谱库 (1263首)
 const SONGS = [
-
-// ============ 经典儿歌 (20首) ============
-{ id:'twinkle', title:'小星星', key:'C', cat:'children', bpm:120, lyrics:'一闪一闪亮晶晶 满天都是小星星',
-  notes:'1 1 5 5 6 6 5- | 4 4 3 3 2 2 1- | 5 5 4 4 3 3 2- | 5 5 4 4 3 3 2- | 1 1 5 5 6 6 5- | 4 4 3 3 2 2 1-' },
-
-{ id:'two_tigers', title:'两只老虎', key:'C', cat:'children', bpm:140, lyrics:'两只老虎 两只老虎 跑得快 跑得快',
-  notes:'1 2 3 1 | 1 2 3 1 | 3 4 5- | 3 4 5- | 5. 6 5. 6 | 5 4 3 1 | 5. 6 5. 6 | 5 4 3 1 | 1 _5 1- | 1 _5 1-' },
-
-{ id:'happy_birthday', title:'生日快乐', key:'C', cat:'children', bpm:120, lyrics:'祝你生日快乐 祝你生日快乐',
-  notes:'5 5 6 5 ^1 7- | 5 5 6 5 ^2 ^1- | 5 5 ^5 ^3 ^1 7 6 | ^4 ^4 ^3 ^1 ^2 ^1-' },
-
-{ id:'jingle_bells', title:'铃儿响叮当', key:'C', cat:'children', bpm:120, lyrics:'Jingle bells jingle bells',
-  notes:'3 3 3- | 3 3 3- | 3 5 1 2 3-- | 4 4 4 4 | 4 3 3 3 3 | 2 2 1 2 5-' },
-
-{ id:'handkerchief', title:'丢手绢', key:'C', cat:'children', bpm:130, lyrics:'丢丢丢手绢 轻轻地放在小朋友后面',
-  notes:'5 3 5 3 5 3 1 2 3- | 5 5 6 5 3 5 2 1 2 3- | 5 3 5 3 5 3 1 2 1-' },
-
-{ id:'find_friend', title:'找朋友', key:'C', cat:'children', bpm:120, lyrics:'找呀找呀找朋友 找到一个好朋友',
-  notes:'5 3 5 3 5 3 2 1 | 3 5 3 5 3 5 2 | 5 3 5 5 3 2 1-' },
-
-{ id:'count_ducks', title:'数鸭子', key:'C', cat:'children', bpm:120, lyrics:'门前大桥下 游过一群鸭',
-  notes:'5 3 5 3 5 6 5- | 3 2 1 2 3 3- | 5 3 5 3 5 6 5- | 3 2 1 2 1-' },
-
-{ id:'bug_fly', title:'虫儿飞', key:'C', cat:'children', bpm:90, lyrics:'黑黑的天空垂坠 亮亮的繁星相随',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6- | 6 1 2 3 5 3 2 1 | 5 3 2 1 _6 _6 1-' },
-
-{ id:'snail', title:'蜗牛与黄鹂鸟', key:'C', cat:'children', bpm:130, lyrics:'阿门阿前一棵葡萄树',
-  notes:'3 5 3 2 1 2 3 5 | 3 2 1 2 3- | 5 6 5 3 2 3 1 | 2 3 5 3 2 1 2 3- | 3 5 3 2 1 2 3 5 | 3 2 1 2 1-' },
-
-{ id:'row_boat', title:'让我们荡起双桨', key:'C', cat:'children', bpm:100, lyrics:'让我们荡起双桨 小船儿推开波浪',
-  notes:'5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 6 5 3 5 6 5- | 3 2 1 2 3 2 1-' },
-
-{ id:'mushroom_girl', title:'采蘑菇的小姑娘', key:'C', cat:'children', bpm:130, lyrics:'采蘑菇的小姑娘 背着一个大竹筐',
-  notes:'6 1 6 5 3 5 3 2 1- | 6 1 6 5 3 5 6 5 3- | 2 3 5 3 2 1 2 1-' },
-
-{ id:'newspaper', title:'卖报歌', key:'C', cat:'children', bpm:120, lyrics:'啦啦啦 啦啦啦 我是卖报的小行家',
-  notes:'5 5 5 5 5 5 | 3 5 5 3 5 6 5 3 2 1- | 5 5 3 5 5 3 | 5 6 5 3 2 1-' },
-
-{ id:'spring_where', title:'春天在哪里', key:'C', cat:'children', bpm:130, lyrics:'春天在哪里 春天在哪里',
-  notes:'1 3 5 5 5 3 1 3 | 2 2 1- | 3 5 6 5 3 2 1 2 3- | 1 3 5 5 5 3 1 3 2 2 1-' },
-
-{ id:'wahaha', title:'娃哈哈', key:'C', cat:'children', bpm:130, lyrics:'我们的祖国是花园',
-  notes:'1 2 3 5 5 6 5 3 | 5 4 3 2 1- | 2 3 4 5 5 5 5 | 6 5 4 3 2-' },
-
-{ id:'swallow', title:'小燕子', key:'C', cat:'children', bpm:110, lyrics:'小燕子穿花衣 年年春天来这里',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'good_dad', title:'好爸爸坏爸爸', key:'C', cat:'children', bpm:120, lyrics:'好爸爸好爸爸 我有一个好爸爸',
-  notes:'5 5 5 3 5 5 5 3 | 5 6 5 3 2 1- | 5 5 5 3 5 5 5 3 | 5 6 5 3 2 1-' },
-
-{ id:'penghu', title:'外婆的澎湖湾', key:'C', cat:'children', bpm:110, lyrics:'晚风轻拂澎湖湾 白浪逐沙滩',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 5 3 2 1- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'black_cat', title:'黑猫警长', key:'C', cat:'children', bpm:140, lyrics:'啊哈哈 啊哈哈 黑猫警长',
-  notes:'1 1 1 1 3 5 3- | 1 1 1 1 3 5 3 1 2 3- | 5 5 5 5 3 5 3 1 2 3-' },
-
-{ id:'little_conch', title:'小螺号', key:'C', cat:'children', bpm:120, lyrics:'小螺号滴滴滴吹 海鸥听了展翅飞',
-  notes:'5 3 5 3 5 6 5 3 2 1 2 3- | 5 3 5 3 5 6 5 3 2 1 2 1-' },
-
-{ id:'pull_radish', title:'拔萝卜', key:'C', cat:'children', bpm:120, lyrics:'拔萝卜拔萝卜 嘿哟嘿哟拔萝卜',
-  notes:'5 3 5 3 5 3 1 2 3- | 3 2 1 2 3 3 2 1- | 5 3 5 3 5 3 1 2 3 3 2 1-' },
-
-// ============ 民歌民谣 (20首) ============
-{ id:'jasmine', title:'茉莉花', key:'C', cat:'folk', bpm:90, lyrics:'好一朵美丽的茉莉花',
-  notes:'3 3 5 6 5 3 2 3 5- | 3 3 5 6 5 3 2 3 1- | 5 5 6 5 3 2 3 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'kangding', title:'康定情歌', key:'C', cat:'folk', bpm:100, lyrics:'跑马溜溜的山上 一朵溜溜的云哟',
-  notes:'3 5 6 5 3 2 1 3 5- | 3 5 6 5 3 2 1 2 3 1- | 6 6 5 3 2 1 2 3 5- | 3 5 6 5 3 2 1 2 1-' },
-
-{ id:'distant_place', title:'在那遥远的地方', key:'C', cat:'folk', bpm:80, lyrics:'在那遥远的地方 有位好姑娘',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6- | 6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'grassland_sun', title:'草原上升起不落的太阳', key:'C', cat:'folk', bpm:90, lyrics:'草原上升起不落的太阳',
-  notes:'5 6 1 ^1 6 5 3 5- | 6 5 3 2 1 2 3- | 5 6 1 ^1 6 5 3 5- | 3 2 1 2 3 2 1-' },
-
-{ id:'aobao', title:'敖包相会', key:'C', cat:'folk', bpm:90, lyrics:'十五的月亮升上了天空哟',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6-' },
-
-{ id:'flower_red', title:'花儿为什么这样红', key:'C', cat:'folk', bpm:100, lyrics:'花儿为什么这样红',
-  notes:'6 1 2 3 2 1 6- | 6 1 2 3 2 1 6 5- | 3 5 6 5 3 2 1 2 3- | 2 1 6 1 6-' },
-
-{ id:'ali_girl', title:'阿里山的姑娘', key:'C', cat:'folk', bpm:120, lyrics:'阿里山的姑娘美如水呀',
-  notes:'5 3 5 6 5 3 2 1 2 3- | 5 3 5 6 5 3 2 1 2 3- | 3 5 6 5 3 2 3 5 3 2 1 2 1-' },
-
-{ id:'dragon_boat', title:'龙船调', key:'C', cat:'folk', bpm:120, lyrics:'正月里是新年 妹娃我去拜年',
-  notes:'5 5 3 5 5 3 5 6 5 3 2 1- | 5 5 3 5 5 3 5 6 5 3 2 1- | 3 5 6 5 3 5 3 2 1 2 3- | 5 6 5 3 2 1 2 1-' },
-
-{ id:'mother_best', title:'世上只有妈妈好', key:'C', cat:'folk', bpm:90, lyrics:'世上只有妈妈好 有妈的孩子像块宝',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6- | 6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'molihua_alt', title:'好一朵茉莉花', key:'C', cat:'folk', bpm:85, lyrics:'好一朵茉莉花 好一朵茉莉花',
-  notes:'3 3 5 6 5 3 5- | 3 3 5 6 5 3 5- | 5 6 5 3 2 3 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'hometown_spring', title:'故乡的春天', key:'C', cat:'folk', bpm:90, lyrics:'故乡的春天 多么美好',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'red_cotton', title:'木棉花开红艳艳', key:'C', cat:'folk', bpm:100, lyrics:'木棉花开红艳艳',
-  notes:'5 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1 2 3- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'mountain_song', title:'山歌好比春江水', key:'C', cat:'folk', bpm:100, lyrics:'唱山歌来 这边唱来那边和',
-  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3 2 1 6- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6-' },
-
-{ id:'colorful_clouds', title:'彩云追月', key:'C', cat:'folk', bpm:80, lyrics:'站在白鹤沙滩上',
-  notes:'5 6 1 2 3 5 6 5- | 3 2 1 2 3 5 3- | 5 6 1 2 3 5 6 5- | 3 2 1 2 3 1-' },
-
-{ id:'liuyang_river', title:'浏阳河', key:'C', cat:'folk', bpm:90, lyrics:'浏阳河 弯过了几道弯',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'nanwan', title:'南泥湾', key:'C', cat:'folk', bpm:100, lyrics:'花篮的花儿香 听我来唱一唱',
-  notes:'5 5 6 5 3 5 6 5 3 2 1 2 3- | 5 5 6 5 3 5 6 5 3 2 1 2 3- | 3 5 6 5 3 2 3 5 3 2 1 2 1-' },
-
-{ id:'send_off', title:'送别', key:'C', cat:'folk', bpm:80, lyrics:'长亭外古道边 芳草碧连天',
-  notes:'5 _6 1 2 3 3 2 1 2 _6 5- | 5 _6 1 2 3 3 2 1 2 _6 5- | 3 3 5 5 6 6 5- | 3 3 2 2 1 1 _6- | 5 _6 1 2 3 3 2 1 2 _6 5-' },
-
-{ id:'friendship', title:'友谊地久天长', key:'C', cat:'folk', bpm:90, lyrics:'怎能忘记旧日朋友',
-  notes:'1 1 1 _6 _7 1- | 3 2 1 _6 _7 1- | 1 1 1 3 5 5 6- | 5 3 1 _6 1 3 2- | 1 2 3 5 6 5 3 1 2 _6 1-' },
-
-{ id:'xilang', title:'西朗月色', key:'C', cat:'folk', bpm:80, lyrics:'西朗月色多么美',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1-' },
-
-{ id:'flower_blooms', title:'花儿与少年', key:'C', cat:'folk', bpm:110, lyrics:'春季里呀么就到了这花儿开',
-  notes:'3 5 6 5 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 5 3 2 1 2 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-// ============ 流行金曲 (25首) ============
-{ id:'dangnianqing', title:'当年情', key:'C', cat:'pop', bpm:85, lyrics:'当年情 如今的空虚',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'ocean_laugh', title:'沧海一声笑', key:'C', cat:'pop', bpm:100, lyrics:'沧海一声笑 滔滔两岸潮',
-  notes:'6 _5 6 1 2 3 2 1 6- | 6 _5 6 1 2 3 5 3- | 5 3 2 1 2 3 5 3- | 2 1 6 1 6 _5 6-' },
-
-{ id:'shanghai_beach', title:'上海滩', key:'C', cat:'pop', bpm:90, lyrics:'浪奔浪流 万里涛涛江水永不休',
-  notes:'6 1 2 3 5 3 2 1 6 5- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5 3- | 2 1 6 1 6-' },
-
-{ id:'moon_heart', title:'月亮代表我的心', key:'C', cat:'pop', bpm:75, lyrics:'你问我爱你有多深',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'sweet_honey', title:'甜蜜蜜', key:'C', cat:'pop', bpm:80, lyrics:'甜蜜蜜 你笑得甜蜜蜜',
-  notes:'3 5 6 5 3 2 3 5- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 5 3- | 2 1 2 3 2 1 6-' },
-
-{ id:'moonlight', title:'城里的月光', key:'C', cat:'pop', bpm:85, lyrics:'城里的月光把梦照亮',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'friends', title:'朋友', key:'C', cat:'pop', bpm:100, lyrics:'这些年一个人 风也过雨也走',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 1 6-' },
-
-{ id:'glory_days', title:'光辉岁月', key:'C', cat:'pop', bpm:110, lyrics:'钟声响起归家的讯号',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'really_love_you', title:'真的爱你', key:'C', cat:'pop', bpm:110, lyrics:'无法可修饰的一对手',
-  notes:'5 6 1 2 3 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'broad_sea', title:'海阔天空', key:'C', cat:'pop', bpm:90, lyrics:'今天我寒夜里看雪飘过',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'red_sun', title:'红日', key:'C', cat:'pop', bpm:120, lyrics:'命运就算颠沛流离',
-  notes:'1 3 5 5 6 5 3 1 2 3- | 5 6 5 3 2 3 1- | 1 3 5 5 6 5 3 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'forget_water', title:'忘情水', key:'C', cat:'pop', bpm:85, lyrics:'曾经年少爱追梦',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 1 6-' },
-
-{ id:'later', title:'后来', key:'C', cat:'pop', bpm:80, lyrics:'后来我总算学会了如何去爱',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'encounter', title:'遇见', key:'C', cat:'pop', bpm:85, lyrics:'听见冬天的离开 我在某年某月醒过来',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'childhood', title:'童年', key:'C', cat:'pop', bpm:100, lyrics:'池塘边的榕树上 知了在声声叫着夏天',
-  notes:'5 3 5 5 3 2 1 2 3 5- | 5 3 5 5 3 2 1 2 3- | 5 6 5 3 2 3 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'grandma_bridge', title:'外婆桥', key:'C', cat:'pop', bpm:85, lyrics:'摇啊摇 摇到外婆桥',
-  notes:'5 3 5 3 5 3 1 2 3- | 5 3 5 3 5 3 1 2 1- | 5 3 5 3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1-' },
-
-{ id:'orchid', title:'兰花草', key:'C', cat:'pop', bpm:100, lyrics:'我从山中来 带着兰花草',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'wish_people', title:'但愿人长久', key:'C', cat:'pop', bpm:75, lyrics:'明月几时有 把酒问青天',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'moon_full', title:'月满西楼', key:'C', cat:'pop', bpm:80, lyrics:'月满西楼 花影摇曳',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'olive_tree', title:'橄榄树', key:'C', cat:'pop', bpm:80, lyrics:'不要问我从哪里来',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'step_waves', title:'踏浪', key:'C', cat:'pop', bpm:110, lyrics:'小小的一片云呀',
-  notes:'5 3 5 6 5 3 2 1 2 3- | 5 3 5 6 5 3 2 1 2 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'wandering_heart', title:'驿动的心', key:'C', cat:'pop', bpm:85, lyrics:'曾经以为我的家是一张张的票根',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'follow_feeling', title:'跟着感觉走', key:'C', cat:'pop', bpm:100, lyrics:'跟着感觉走 紧抓住梦的手',
-  notes:'5 6 1 2 3 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'silent_wings', title:'隐形的翅膀', key:'C', cat:'pop', bpm:90, lyrics:'每一次都在徘徊孤单中坚强',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'time_where', title:'时间都去哪儿了', key:'C', cat:'pop', bpm:75, lyrics:'时间都去哪儿了 还没好好感受年轻就老了',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'same_table', title:'同桌的你', key:'C', cat:'pop', bpm:85, lyrics:'明天你是否会想起 昨天你写的日记',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-// ============ 影视动漫 (15首) ============
-{ id:'castle_sky', title:'天空之城', key:'C', cat:'movie', bpm:75, lyrics:'天空之城 传说中的梦想之地',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'spirited', title:'千与千寻', key:'C', cat:'movie', bpm:75, lyrics:'那个夏天 那个永远',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'chrysanthemum', title:'菊花台', key:'C', cat:'movie', bpm:80, lyrics:'菊花残 满地伤 你的笑容已泛黄',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'painting_heart', title:'画心', key:'C', cat:'movie', bpm:75, lyrics:'看不穿 是你失落的魂魄',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'old_beauty', title:'红颜旧', key:'C', cat:'movie', bpm:80, lyrics:'红颜旧 沧海桑田',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'chinese', title:'中国人', key:'C', cat:'movie', bpm:90, lyrics:'我们都是中国人',
-  notes:'5 6 1 2 3 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'me_motherland', title:'我和我的祖国', key:'C', cat:'movie', bpm:80, lyrics:'我和我的祖国 一刻也不能分割',
-  notes:'5 6 1 2 3 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'lion_king', title:'狮子王', key:'C', cat:'movie', bpm:80, lyrics:'在这片土地上 有一个传说',
-  notes:'1 3 5 5 6 5 3 1 2 3- | 5 6 5 3 2 3 1- | 1 3 5 5 6 5 3 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'let_it_go', title:'Let It Go', key:'C', cat:'movie', bpm:100, lyrics:'The snow glows white on the mountain tonight',
-  notes:'3 3 3 3 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 3 3 3 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'doremi', title:'Do Re Mi', key:'C', cat:'movie', bpm:120, lyrics:'Doe a deer a female deer',
-  notes:'1 2 3 1 3 1 3- | 1 2 3 4 5 6 7 ^1- | 1 2 3 1 3 1 3- | 5 4 3 2 1 _6 1-' },
-
-{ id:'edelweiss', title:'雪绒花', key:'C', cat:'movie', bpm:80, lyrics:'Edelweiss edelweiss',
-  notes:'3 5 2 1 5- | 4 6 3 1 6- | 3 5 2 1 5- | 4 6 3 1 2- | 1 3 5 6 5 3 1- | 4 6 3 1 2 1-' },
-
-{ id:'castle_in_sky', title:'伴随着你', key:'C', cat:'movie', bpm:80, lyrics:'伴随着你 飞向天空',
-  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'always_with_me', title:'永远同在', key:'C', cat:'movie', bpm:85, lyrics:'永远同在 永远同在',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'suzume', title:'铃芽之旅', key:'C', cat:'movie', bpm:85, lyrics:'在路的尽头 我们终会相遇',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'your_name', title:'你的名字', key:'C', cat:'movie', bpm:85, lyrics:'在星空之下 我们再次相遇',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-// ============ 外国经典 (15首) ============
-{ id:'fur_elise', title:'致爱丽丝', key:'C', cat:'foreign', bpm:100, lyrics:'致爱丽丝',
-  notes:'3 #2 3 #2 3 7 2 1 6 1 3 7 6 3- | 5 2 3 1 5- | 4 1 3 #2 5 3 #2 3 #2 3 7 2 1 6 1 3 7 6 3-' },
-
-{ id:'ode_joy', title:'欢乐颂', key:'C', cat:'foreign', bpm:110, lyrics:'欢乐女神圣洁美丽 灿烂光芒照大地',
-  notes:'3 3 4 5 5 4 3 2 1 1 2 3 3 2 2- | 3 3 4 5 5 4 3 2 1 1 2 3 2 1 1- | 2 2 3 1 1 2 3 3 2 1 2 5 3- | 3 3 4 5 5 4 3 2 1 1 2 3 2 1 1-' },
-
-{ id:'canon', title:'卡农', key:'C', cat:'foreign', bpm:80, lyrics:'Canon in D',
-  notes:'5 3 4 1 2 6 1 5- | 5 3 4 1 2 6 1 5- | 5 3 4 1 2 6 1 5- | 5 3 4 1 2 6 1 5-' },
-
-{ id:'mozart_serenade', title:'莫扎特小夜曲', key:'C', cat:'foreign', bpm:120, lyrics:'Eine kleine Nachtmusik',
-  notes:'1 _5 _5 _5 1 1 1- | _7 _5 _5 _5 _7 _7 _7- | 1 _5 _5 _5 1 1 1 1 | 1 _7 _6 _7 1- 1 _5 1- _5-' },
-
-{ id:'lullaby', title:'摇篮曲', key:'C', cat:'foreign', bpm:60, lyrics:'睡吧睡吧我亲爱的宝贝',
-  notes:'3 5 3 2 1 2 3 5- | 3 5 3 2 1 2 3- | 3 5 3 2 1 2 3 5 3- | 2 1 2 3 2 1 1-' },
-
-{ id:'green_sleeves', title:'绿袖子', key:'C', cat:'foreign', bpm:75, lyrics:'Greensleeves was all my joy',
-  notes:'6 1 2 3 2 1 7 6- | 5 _7 1 2 1 _7 1 _6- | 6 1 2 3 2 1 7 6- | 5 _7 1 2 1 _7 1 _6- | _6 _7 1 2 3 4 3 2 1 _7 1 6- | 5 _7 1 2 1 _7 1 _6-' },
-
-{ id:'red_river', title:'红河谷', key:'C', cat:'foreign', bpm:90, lyrics:'从草原来到这红河谷',
-  notes:'5 5 1 1 1 _7 1 2 3 3 2 1 2 5 5- | 5 5 1 1 1 _7 1 2 3 3 2 1 2 1 1- | 3 3 4 5 5 4 3 2 1 1 2 3 3 2 2- | 5 5 1 1 1 _7 1 2 3 3 2 1 2 1 1-' },
-
-{ id:'santa_lucia', title:'桑塔露琪亚', key:'C', cat:'foreign', bpm:90, lyrics:'看晚霞多明亮 那海浪多欢畅',
-  notes:'1 3 5 5 5 5 5 6 5 4 4 3- | 3 2 1 2 3 3 3 2 2 1- | 1 3 5 5 5 5 5 6 5 4 4 3- | 3 2 1 2 1 1 1 1- | 5 5 4 4 3 3 2 2 1 1 2 3 1- | 1 3 5 5 5 5 5 6 5 4 4 3- | 3 2 1 2 1 1 1 1-' },
-
-{ id:'memory', title:'回忆', key:'C', cat:'foreign', bpm:70, lyrics:'Memory all alone in the moonlight',
-  notes:'#4 #5 6 #5 6 #5 6 5 3- | #4 #5 6 #5 6 5 3 2 1- | #4 #5 6 #5 6 #5 6 5 3- | 3 2 1 2 3 #4 5- | 5 3 2 1 2 3 #4 6- | 5 3 2 1 2 3 5-' },
-
-{ id:'yesterday', title:'昨日重现', key:'C', cat:'foreign', bpm:75, lyrics:'When I was young I listened to the radio',
-  notes:'1 2 3 5 3 2 1 6- | 5 6 1 2 3 2 1 6- | 1 2 3 5 3 2 1 6- | 5 6 1 2 1 6 1-' },
-
-{ id:'my_heart', title:'我心永恒', key:'C', cat:'foreign', bpm:75, lyrics:'My heart will go on',
-  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'silent_night', title:'平安夜', key:'C', cat:'foreign', bpm:60, lyrics:'Silent night holy night',
-  notes:'5 6 5 3- | 5 6 5 3- | ^1 ^2 ^1 5- | 6 6 5- | 6 6 5- | ^1 ^2 ^1 5- | 5 _7 1 5 _6- | _6 5 _7 1 5 _6- | _6 5 3- | 5 4 3 1- | 5 4 3 1- | 5 _7 1 5 _6 _6- | 5 _7 1 5 _6 _6- | 5 _7 1 2 3- | 1 5 1 3- | 1 5 1 3-' },
-
-{ id:'rudolph', title:'红鼻子的驯鹿', key:'C', cat:'foreign', bpm:120, lyrics:'Rudolph the red-nosed reindeer',
-  notes:'5 6 5 3 1 2 3- | 5 6 5 3 1 2 1- | 2 2 3 4 5 5 4 3 2 2 1 2 5- | 5 6 5 3 1 2 1-' },
-
-{ id:'we_wish', title:'我们祝你圣诞快乐', key:'C', cat:'foreign', bpm:120, lyrics:'We wish you a merry Christmas',
-  notes:'5 1 1 2 1 6 _7 | 5 1 1 2 1 5 | 5 5 3 ^1 ^2 ^1 6 5 | 6 5 6 ^1 5- 4 _7 1 2 1- | 2 2 3 4 5 5 4 3 2 2 1 2 5- | 5 6 5 3 1 2 1-' },
-
-{ id:'auld_lang', title:'友谊地久天长', key:'C', cat:'foreign', bpm:80, lyrics:'Should auld acquaintance be forgot',
-  notes:'1 1 1 _6 _7 1- | 3 2 1 _6 _7 1- | 1 1 1 3 5 5 6- | 5 3 1 _6 1 3 2- | 1 2 3 5 6 5 3 1 2 _6 1-' },
-
-// ============ 中国名曲 (10首) ============
-{ id:'butterfly_lovers', title:'梁祝', key:'C', cat:'chinese', bpm:70, lyrics:'梁山伯与祝英台',
-  notes:'3 5 6 5 3 2 1 2 3 5- | 3 5 6 5 3 2 3 1- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 1-' },
-
-{ id:'erquan', title:'二泉映月', key:'C', cat:'chinese', bpm:60, lyrics:'二泉映月',
-  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'horse_race', title:'赛马', key:'C', cat:'chinese', bpm:120, lyrics:'赛马',
-  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3 2 1 6- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3 2 1 6 1-' },
-
-{ id:'fishing_boat', title:'渔舟唱晚', key:'C', cat:'chinese', bpm:65, lyrics:'渔舟唱晚',
-  notes:'5 6 1 2 3 5 6 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'high_mountain', title:'高山流水', key:'C', cat:'chinese', bpm:60, lyrics:'高山流水',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'plum_blossom', title:'梅花三弄', key:'C', cat:'chinese', bpm:70, lyrics:'梅花三弄',
-  notes:'3 5 6 5 3 2 1 2 3 5- | 3 5 6 5 3 2 3 1- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 1-' },
-
-{ id:'spring_river', title:'春江花月夜', key:'C', cat:'chinese', bpm:55, lyrics:'春江花月夜',
-  notes:'5 6 1 2 3 5 6 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'step_high', title:'步步高', key:'C', cat:'chinese', bpm:110, lyrics:'步步高',
-  notes:'1 3 5 1 3 5 6 5 3 1- | 2 3 5 3 2 1 2 3- | 1 3 5 1 3 5 6 5 3 1- | 2 3 5 3 2 1 2 3 1- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 1-' },
-
-{ id:'golden_snake', title:'金蛇狂舞', key:'C', cat:'chinese', bpm:130, lyrics:'金蛇狂舞',
-  notes:'5 5 6 5 3 2 1 2 3 5- | 5 5 6 5 3 2 1 2 3 5- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1- | 5 6 5 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'purple_bamboo', title:'紫竹调', key:'C', cat:'chinese', bpm:90, lyrics:'紫竹调',
-  notes:'3 5 6 5 3 2 1 2 3 5- | 3 5 6 5 3 2 3 1- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 1-' },
-
-// ============ 爱国经典 (5首) ============
-{ id:'east_red', title:'东方红', key:'C', cat:'patriotic', bpm:90, lyrics:'东方红 太阳升',
-  notes:'5 5 6 5 3 2 1 2 3 5- | 5 5 6 5 3 2 1 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'motherland', title:'歌唱祖国', key:'C', cat:'patriotic', bpm:110, lyrics:'五星红旗迎风飘扬',
-  notes:'5 5 1 2 3 5 6 5 3 1- | 5 5 1 2 3 5 6 5 3 1- | 3 3 5 5 6 6 5 3 1- | 2 2 3 5 3 2 1 2 1-' },
-
-{ id:'national_anthem', title:'义勇军进行曲', key:'C', cat:'patriotic', bpm:120, lyrics:'起来 不愿做奴隶的人们',
-  notes:'5 1 1 1 3 5 5 5 6 5 3 1- | 3 3 3 3 3 2 1 2 5- | 5 1 1 1 3 5 5 5 6 5 3 1- | 3 3 3 3 3 2 1 2 1-' },
-
-{ id:'my_motherland', title:'我的祖国', key:'C', cat:'patriotic', bpm:80, lyrics:'一条大河波浪宽',
-  notes:'5 6 1 2 3 5 6 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'march_volunteers', title:'志愿军进行曲', key:'C', cat:'patriotic', bpm:110, lyrics:'雄赳赳 气昂昂 跨过鸭绿江',
-  notes:'1 3 5 5 6 5 3 1 2 3- | 5 6 5 3 2 3 1- | 1 3 5 5 6 5 3 1 2 3 5- | 3 2 1 2 3 1-' },
-
-// ============ 经典怀旧 (10首) ============
-{ id:'moon_represent', title:'月亮代表我的心', key:'C', cat:'classic', bpm:75, lyrics:'你问我爱你有多深 我爱你有几分',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'love_song_1990', title:'恋曲1990', key:'C', cat:'classic', bpm:90, lyrics:'乌溜溜的黑眼珠 和你的笑脸',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'story_time', title:'光阴的故事', key:'C', cat:'classic', bpm:100, lyrics:'春天的花开秋天的风 以及冬天的落阳',
-  notes:'5 3 5 5 3 2 1 2 3 5- | 5 3 5 5 3 2 1 2 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'walk_life', title:'漫步人生路', key:'C', cat:'classic', bpm:85, lyrics:'在你身边路虽远未疲倦',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'rain_season', title:'雨季', key:'C', cat:'classic', bpm:85, lyrics:'那是一个雨季',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'wine_coffee', title:'美酒加咖啡', key:'C', cat:'classic', bpm:90, lyrics:'美酒加咖啡 我只要喝一杯',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'city_spring', title:'城里的春天', key:'C', cat:'classic', bpm:90, lyrics:'城里的春天 多么美丽',
-  notes:'5 6 1 2 3 5 6 5 3 2 1 6- | 5 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'flower_butterfly', title:'蝶儿飞', key:'C', cat:'classic', bpm:85, lyrics:'蝶儿飞 蝶儿飞',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'moon_west', title:'月满西楼', key:'C', cat:'classic', bpm:80, lyrics:'月满西楼 花影摇曳',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'wind_comes', title:'风中有朵雨做的云', key:'C', cat:'classic', bpm:85, lyrics:'风中有朵雨做的云',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 2 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-// ============ 新增热门歌曲 (35首) ============
-
-{ id:'qilixiang', title:'七里香', key:'C', cat:'pop', bpm:92, lyrics:'窗外的麻雀 在电线杆上多嘴',
-  notes:'5 5 6 5 3 5 6 5- | 5 5 6 5 3 2 1- | 6 6 1 6 5 3 5- | 5 6 5 3 2 1 2 3 2- | 3 3 5 3 2 1 6- | 1 2 3 5 3 2 1-' },
-
-{ id:'qingtian', title:'晴天', key:'C', cat:'pop', bpm:110, lyrics:'故事的小黄花 从出生那年就飘着',
-  notes:'5 5 5 6 5 3 5- | 6 6 1 6 5 3 2- | 3 3 3 5 3 2 1- | 1 2 3 5 3 2 1 2 3- | 5 5 5 6 5 3 5- | 6 6 1 6 5 3 2-' },
-
-{ id:'daoxiang', title:'稻香', key:'C', cat:'pop', bpm:96, lyrics:'对这个世界如果你有太多的抱怨',
-  notes:'3 3 3 3 5 3 2 1 | 3 3 3 3 5 3 2 1 | 1 1 1 1 2 3 2 1 | 6 6 6 6 1 2 3- | 3 3 3 3 5 3 2 1 | 1 1 1 1 2 3 2-' },
-
-{ id:'yuebing', title:'月亮代表我的心', key:'C', cat:'pop', bpm:72, lyrics:'你问我爱你有多深',
-  notes:'3 5 6 5 3 2 1- | 3 5 6 5 3 2 1- | 6 1 2 3 2 1 6- | 6 1 2 3 2 1 6- | 3 5 6 5 3 2 1 2 3- | 5 3 2 1 2 3 1-' },
-
-{ id:'tonghua', title:'童话', key:'C', cat:'pop', bpm:80, lyrics:'我愿变成童话里 你爱的那个天使',
-  notes:'5 5 4 3 2 1 2 3- | 3 3 2 1 2 3 2- | 5 5 4 3 2 1 2 3 5- | 3 2 1 2 3 2 1- | 6 6 5 4 3 2 3 4- | 3 2 1 2 1 6 1-' },
-
-{ id:'yuzhongchangge', title:'雨中撑伞', key:'C', cat:'pop', bpm:88, lyrics:'在雨中我撑开一把伞',
-  notes:'6 1 2 3 5 3 2 1 | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 | 3 2 1 2 1 6 1-' },
-
-{ id:'xiaoxingyun', title:'小幸运', key:'C', cat:'pop', bpm:85, lyrics:'我听见雨滴落在青青草地',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 5 3 2 1 2 3- | 6 6 5 3 2 3 5- | 3 2 1 2 3 2 1- | 1 1 2 3 5 3 2 1 2- | 3 2 1 2 1 6 1-' },
-
-{ id:'nianhua', title:'那些年', key:'C', cat:'pop', bpm:90, lyrics:'又回到最初的起点 记忆中你青涩的脸',
-  notes:'1 2 3 5 3 2 1 2 3- | 3 2 1 2 3 2 1- | 5 5 6 5 3 2 1 2 3- | 5 6 5 3 2 1 2 3 2- | 1 2 3 5 3 2 1 6 1-' },
-
-{ id:'chengdu', title:'成都', key:'C', cat:'pop', bpm:78, lyrics:'和我在成都的街头走一走',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'nanfangnanfang', title:'南山南', key:'C', cat:'pop', bpm:75, lyrics:'你在南方的艳阳里大雪纷飞',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'moxue', title:'默', key:'C', cat:'pop', bpm:82, lyrics:'我被爱判处终身孤寂',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 2 1 6 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'pingshendeshu', title:'平凡之路', key:'C', cat:'pop', bpm:95, lyrics:'我曾经跨过山和大海',
-  notes:'6 6 1 2 3 2 1 6- | 6 6 1 2 3 5 3- | 3 3 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'chunnuanhuaikai', title:'春暖花开', key:'C', cat:'pop', bpm:88, lyrics:'春暖花开 这是我的世界',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'yidaoqiu', title:'一道桥', key:'C', cat:'pop', bpm:85, lyrics:'我们在一道桥的两端',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'yueliangdabiaowode', title:'月亮之上', key:'C', cat:'pop', bpm:100, lyrics:'我在仰望 月亮之上',
-  notes:'3 5 6 5 3 2 1 6 1- | 3 5 6 5 3 2 3 5- | 6 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'zuixuchangfeng', title:'醉赤壁', key:'C', cat:'pop', bpm:80, lyrics:'确认过眼神 我遇上对的人',
-  notes:'5 3 5 3 2 1 2 3- | 3 2 1 2 3 2 1- | 5 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'chunjiang', title:'春江花月夜', key:'C', cat:'chinese', bpm:60, lyrics:'春江潮水连海平',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'guangling', title:'广陵散', key:'C', cat:'chinese', bpm:65, lyrics:'广陵散绝响千古',
-  notes:'3 5 6 1 6 5 3 2 1 2 3- | 5 6 5 3 2 1 2 3 5- | 3 2 1 6 1 2 3 5 3- | 2 1 2 3 2 1 6 1-' },
-
-{ id:'yangguan', title:'阳关三叠', key:'C', cat:'chinese', bpm:62, lyrics:'渭城朝雨浥轻尘',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'gaoshan', title:'高山流水', key:'C', cat:'chinese', bpm:58, lyrics:'高山流水觅知音',
-  notes:'3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 5 3- | 2 3 5 3 2 1 6 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'hanha', title:'旱天雷', key:'C', cat:'chinese', bpm:90, lyrics:'旱天一声雷',
-  notes:'3 5 6 1 6 5 3 2 3- | 5 6 1 6 5 3 2 1 2 3- | 3 5 6 1 6 5 3 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'mozheng', title:'寒鸦戏水', key:'C', cat:'chinese', bpm:65, lyrics:'寒鸦戏水寒江上',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'moonlight_sonata', title:'月光奏鸣曲', key:'C', cat:'foreign', bpm:60, lyrics:'月光下的沉思',
-  notes:'3- 2 1 2 3 5- | 3- 2 1 2 3 5- | 3- 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'vivaldi_spring', title:'四季-春', key:'C', cat:'foreign', bpm:110, lyrics:'春天来了 鸟儿歌唱',
-  notes:'3 5 6 5 3 2 1 2 3 5- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 1-' },
-
-{ id:'fur_elise', title:'致爱丽丝', key:'C', cat:'foreign', bpm:72, lyrics:'献给爱丽丝',
-  notes:'3 #2 3 #2 3 7- 2 1 6- | 1 3 5 7- | 6 1 2 #4 3 5- | 5 6 5 3 5- | 3 5 6 5 3 2 1 2 3-' },
-
-{ id:'blue_danube', title:'蓝色多瑙河', key:'C', cat:'foreign', bpm:90, lyrics:'多瑙河的波光',
-  notes:'3 5 6 5 3 2 1 2 3 5 6 5- | 3 2 1 2 3 5 3- | 2 1 6 1 2 3 5 3 2 1- | 6 1 2 3 2 1 6 1-' },
-
-{ id:'swan_lake', title:'天鹅湖', key:'C', cat:'foreign', bpm:80, lyrics:'湖面上的天鹅',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'titanic', title:'My Heart Will Go On', key:'C', cat:'movie', bpm:85, lyrics:'Every night in my dreams',
-  notes:'5 6 1 6 5 3 5- | 5 6 1 6 5 3 2- | 3 5 6 5 3 2 1 2 3- | 5 3 2 1 2 3 1- | 5 6 1 6 5 3 5- | 5 6 1 6 5 3 2 1 2 3-' },
-
-{ id:'spirited', title:'永远同在', key:'C', cat:'movie', bpm:75, lyrics:'千与千寻 永远同在',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'totoro', title:'龙猫', key:'C', cat:'movie', bpm:100, lyrics:'龙猫在森林里散步',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 5 3 2 1 2 3- | 6 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'doraemon', title:'哆啦A梦', key:'C', cat:'movie', bpm:120, lyrics:'哆啦A梦 哆啦A梦',
-  notes:'5 5 6 5 3 2 1 2- | 3 3 5 3 2 1 6 1- | 5 5 6 5 3 2 1 2 3- | 5 3 2 1 2 3 1-' },
-
-{ id:'conan', title:'名侦探柯南', key:'C', cat:'movie', bpm:110, lyrics:'真相只有一个',
-  notes:'6 1 2 3 5 3 2 1 6 1- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'zhuwa', title:'猪八戒背媳妇', key:'C', cat:'movie', bpm:100, lyrics:'猪八戒背媳妇',
-  notes:'5 5 3 5 6 5 3 2 1- | 5 5 3 5 6 5 3 2 1- | 6 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'xiyou', title:'敢问路在何方', key:'C', cat:'movie', bpm:80, lyrics:'敢问路在何方 路在脚下',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'honglou', title:'枉凝眉', key:'C', cat:'movie', bpm:72, lyrics:'一个是阆苑仙葩',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'sishui', title:'在水一方', key:'C', cat:'movie', bpm:75, lyrics:'绿草苍苍 白雾茫茫',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'aicaozhisha', title:'爱拼才会赢', key:'C', cat:'folk', bpm:95, lyrics:'三分天注定 七分靠打拼',
-  notes:'5 3 5 6 5 3 2 1 2 3- | 5 3 5 6 5 3 2 1 6 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'waibudeyugong', title:'外婆的澎湖湾', key:'C', cat:'folk', bpm:88, lyrics:'晚风轻拂澎湖湾',
-  notes:'5 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'longchuanchuan', title:'龙的传人', key:'C', cat:'patriotic', bpm:100, lyrics:'遥远的东方有一条龙',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'woheguo', title:'我的祖国', key:'C', cat:'patriotic', bpm:78, lyrics:'一条大河波浪宽',
-  notes:'5 3 5 6 5 3 2 1 2 3- | 5 3 5 6 5 3 2 1 6 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'yage', title:'亚洲雄风', key:'C', cat:'patriotic', bpm:100, lyrics:'我们亚洲 山是高昂的头',
-  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3 2 1- | 3 5 6 1 6 5 3 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'tonghuazhen', title:'童话镇', key:'C', cat:'pop', bpm:85, lyrics:'听说白雪公主在逃跑',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'qifengle', title:'起风了', key:'C', cat:'pop', bpm:82, lyrics:'晚风吹起你鬓间的白发',
-  notes:'6 1 2 3 5 3 2 1 6 1- | 6 1 2 3 5 6 5 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'guohuochong', title:'告白气球', key:'C', cat:'pop', bpm:92, lyrics:'塞纳河畔 左岸的咖啡',
-  notes:'5 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 3 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'gaobaiyeqiu', title:'告白夜曲', key:'C', cat:'pop', bpm:85, lyrics:'夜色温柔 星光闪烁',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'xuebuzou', title:'雪落下的声音', key:'C', cat:'pop', bpm:78, lyrics:'雪落下的声音',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'chuanchang', title:'传奇', key:'C', cat:'pop', bpm:80, lyrics:'只是因为在人群中多看了你一眼',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'xiaoweibitao', title:'微微一笑', key:'C', cat:'pop', bpm:85, lyrics:'微微一笑很倾城',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'yexingzhe', title:'夜行者', key:'C', cat:'pop', bpm:90, lyrics:'夜色中独自前行',
-  notes:'6 1 2 3 5 3 2 1 6 1- | 6 1 2 3 5 6 5 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'xinnianhao', title:'新年好', key:'C', cat:'children', bpm:110, lyrics:'新年好呀 新年好呀',
-  notes:'1 1 1 5 | 3 3 3 1 | 1 3 5 5 | 4 3 2- | 2 2 2 2 | 3 3 3 2 3 1 2 5 | 5 4 3 5 | 2 3 1-' },
-
-{ id:'songbie', title:'送别', key:'C', cat:'children', bpm:75, lyrics:'长亭外 古道边',
-  notes:'5 3 5 ^1 6- | 5 3 5 6 5- | 5 ^1 6 5 3 1 2 | 3 1 6 _6 1- | 5 3 5 ^1 6- | 5 3 5 6 5- | 5 ^1 6 5 3 1 2 | 3 1 2 3 1-' },
-
-// ============ 新增歌曲第二批 (40首) ============
-
-{ id:'yueliangchuan', title:'月亮船', key:'C', cat:'children', bpm:90, lyrics:'月亮船呀月亮船',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'caocao', title:'采蘑菇的小姑娘', key:'C', cat:'children', bpm:110, lyrics:'采蘑菇的小姑娘',
-  notes:'5 5 3 5 6 5 3 2 1- | 5 5 3 5 6 5 3 2 1- | 6 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'xiaocao', title:'小草', key:'C', cat:'children', bpm:80, lyrics:'没有花香 没有树高',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'chunmiao', title:'春天在哪里', key:'C', cat:'children', bpm:120, lyrics:'春天在哪里',
-  notes:'1 3 5 5 5 3 1 2 3- | 1 3 5 5 5 3 1 2 3- | 5 5 4 3 2 1 2 3 5- | 3 2 1 2 3 1 6 1-' },
-
-{ id:'bange', title:'半个月亮爬上来', key:'C', cat:'folk', bpm:70, lyrics:'半个月亮爬上来',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'moli2', title:'茉莉花(新版)', key:'C', cat:'folk', bpm:85, lyrics:'好一朵美丽的茉莉花',
-  notes:'3 3 5 6 1 6 5 3 5- | 5 6 5 3 2 3 5- | 3 5 6 1 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'zoumaren', title:'走马口', key:'C', cat:'folk', bpm:95, lyrics:'走马口的小路弯弯',
-  notes:'5 3 5 6 5 3 2 1 2 3- | 5 3 5 6 5 3 2 1 6 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'shanjian', title:'山间铃响马帮来', key:'C', cat:'folk', bpm:90, lyrics:'山间铃响马帮来',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'caoyuan2', title:'草原上升起不落的太阳', key:'C', cat:'folk', bpm:78, lyrics:'草原上升起不落的太阳',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'yudao', title:'雨到', key:'C', cat:'folk', bpm:82, lyrics:'细雨蒙蒙',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'qinghuaci', title:'青花瓷', key:'C', cat:'pop', bpm:85, lyrics:'素胚勾勒出青花笔锋浓转淡',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'dongfengpo', title:'东风破', key:'C', cat:'pop', bpm:78, lyrics:'一盏离愁 孤单伫立在窗口',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'fengshu', title:'枫', key:'C', cat:'pop', bpm:80, lyrics:'乌云在我们心里搁下一块阴影',
-  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6-' },
-
-{ id:'tingmama', title:'听妈妈的话', key:'C', cat:'pop', bpm:90, lyrics:'听妈妈的话 别让她受伤',
-  notes:'3 3 3 3 5 3 2 1 | 3 3 3 3 5 3 2 1 | 1 1 1 1 2 3 2 1 | 6 6 6 6 1 2 3-' },
-
-{ id:'yuyi', title:'雨衣', key:'C', cat:'pop', bpm:85, lyrics:'雨水打湿了衣裳',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'xiaowei', title:'小薇', key:'C', cat:'pop', bpm:88, lyrics:'有一个美丽的小女孩',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'yueliangdaibiao2', title:'月亮代表我的心(慢版)', key:'C', cat:'pop', bpm:68, lyrics:'你问我爱你有多深',
-  notes:'3 5 6 5 3 2 1- | 3 5 6 5 3 2 1- | 6 1 2 3 2 1 6- | 6 1 2 3 2 1 6- | 3 5 6 5 3 2 1 2 3- | 5 3 2 1 2 3 1-' },
-
-{ id:'tianyue', title:'天悦', key:'C', cat:'pop', bpm:82, lyrics:'天边的云彩',
-  notes:'6 1 2 3 5 3 2 1 6 1- | 6 1 2 3 5 6 5 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'yexing2', title:'夜空中最亮的星', key:'C', cat:'pop', bpm:85, lyrics:'夜空中最亮的星 请指引我靠近你',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'chongerfei2', title:'虫儿飞(新版)', key:'C', cat:'pop', bpm:75, lyrics:'黑黑的天空低垂',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'xiaoxingyun2', title:'小幸运(慢版)', key:'C', cat:'pop', bpm:80, lyrics:'我听见雨滴落在青青草地',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 5 3 2 1 2 3- | 6 6 5 3 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'hupo', title:'琥珀', key:'C', cat:'pop', bpm:82, lyrics:'琥珀色的记忆',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'meili', title:'美丽的神话', key:'C', cat:'movie', bpm:75, lyrics:'梦中人熟悉的脸孔',
-  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6 1-' },
-
-{ id:'xianjian', title:'仙剑奇侠', key:'C', cat:'movie', bpm:80, lyrics:'御剑乘风来 除魔天地间',
-  notes:'6 1 2 3 5 6 5 3 2 1 6- | 6 1 2 3 5 6 5 3- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'yuwang', title:'欲望', key:'C', cat:'movie', bpm:85, lyrics:'心中的欲望',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'xiangqi', title:'相遇', key:'C', cat:'movie', bpm:82, lyrics:'在那年的秋天相遇',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'canghai', title:'沧海一声笑', key:'C', cat:'movie', bpm:90, lyrics:'沧海一声笑 滔滔两岸潮',
-  notes:'6 5 3 2 1 2 3 5- | 5 3 2 1 2 3 5- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'shenhua', title:'神话', key:'C', cat:'movie', bpm:78, lyrics:'解开我 最神秘的等待',
-  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6 1-' },
-
-{ id:'yinghuo', title:'萤火虫', key:'C', cat:'movie', bpm:82, lyrics:'萤火虫 萤火虫',
-  notes:'5 3 5 3 2 1 2 3- | 5 3 2 1 2 3 2- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-{ id:'yixian', title:'一线缘', key:'C', cat:'movie', bpm:80, lyrics:'一线缘分连接你我',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'yexiang', title:'夜想', key:'C', cat:'classic', bpm:75, lyrics:'夜深人静时的思绪',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 6 1 2 3 5 3 2 1 6- | 6 1 2 3 2 1 6-' },
-
-{ id:'chunxiao', title:'春晓', key:'C', cat:'chinese', bpm:65, lyrics:'春眠不觉晓',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'pinghuo', title:'平湖秋月', key:'C', cat:'chinese', bpm:60, lyrics:'平湖秋月照人圆',
-  notes:'3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 5 3- | 2 3 5 3 2 1 6 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'yugong', title:'渔歌', key:'C', cat:'chinese', bpm:68, lyrics:'渔歌唱晚归舟远',
-  notes:'3 5 6 1 6 5 3 2 1 2 3- | 5 6 1 6 5 3 2 1 2 3 5- | 3 2 1 6 1 2 3 5 3- | 2 1 2 3 2 1 6 1-' },
-
-{ id:'caiyun', title:'彩云追月', key:'C', cat:'chinese', bpm:70, lyrics:'彩云追月',
-  notes:'3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 5 3- | 2 3 5 3 2 1 6 1 2 3- | 3 2 1 2 1 6 1-' },
-
-{ id:'meihua', title:'梅花三弄', key:'C', cat:'chinese', bpm:65, lyrics:'梅花三弄',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5 6- | 5 3 2 1 2 3 1-' },
-
-{ id:'elise2', title:'欢乐颂', key:'C', cat:'foreign', bpm:100, lyrics:'欢乐女神圣洁美丽',
-  notes:'3 3 4 5 5 4 3 2 1 1 2 3 3 2 2- | 3 3 4 5 5 4 3 2 1 1 2 3 2 1 1- | 2 2 3 1 2 3 4 3 1 2 3 4 3 2 1 2 _6- | 3 3 4 5 5 4 3 2 1 1 2 3 2 1 1-' },
-
-{ id:'merry', title:'圣诞快乐', key:'C', cat:'foreign', bpm:100, lyrics:'We wish you a merry christmas',
-  notes:'5 ^1 ^1 ^2 ^1 7 6- | 6 ^2 ^2 ^3 ^2 ^1 7- | 5 ^3 ^3 ^4 ^3 ^1 5- | ^5 ^1 ^2 ^2 6- 7 6- 5 7 ^1 7 6 5 6 7- ^1 5 5 6 7- ^1 5 6 7- ^1 5- 6 7 ^1 ^2 ^3 ^4 ^5' },
-
-{ id:'ode_joy', title:'G大调小步舞曲', key:'C', cat:'foreign', bpm:85, lyrics:'优雅的小步舞',
-  notes:'5 6 5 4 3 2 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 4 5 6 7 1 7 6 5- | 5 3 2 3 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 2 1 6 1 2 1-' },
-
-{ id:'amazing', title:'奇异恩典', key:'C', cat:'foreign', bpm:75, lyrics:'Amazing grace how sweet the sound',
-  notes:'5- ^1 3- ^1 ^2 ^1- 6- | 5- ^1 3 ^1- ^2 5 ^1 ^2 ^3- ^1 ^2 ^1 6 5 6- | ^1 ^2 ^1 ^3 ^4- ^3 ^2 ^1- 6 5 6 ^1 ^2 5- ^1 ^2 ^1 6 6- ^1 ^3 ^3 ^2 ^1 ^2 ^1 ^1-' },
-
-{ id:'canon', title:'卡农', key:'C', cat:'foreign', bpm:70, lyrics:'Canon in D',
-  notes:'_6 _7 1- _7 1 2- 1 2 3- 2 3 4- 3 4 5- 4 5 6- 5 6 7- 6 7 ^1- 7 ^1 ^2- | ^1 ^2 ^3- ^2 ^3 ^4- ^3 ^4 ^5- ^4 ^5 ^6- ^5 ^6 ^7- ^6 ^7 ^1- ^7 ^1 ^2- ^1 ^2 ^3- ^2 ^3 ^4- ^3 ^4 ^5- ^4 ^5 ^6- ^5 ^6 ^7- ^6 ^7' },
-
-{ id:'aubade', title:'晨曲', key:'C', cat:'foreign', bpm:80, lyrics:'清晨的阳光',
-  notes:'3 5 6 5 3 2 1 2 3- | 5 6 5 3 2 3 1- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 3 1-' },
-
-{ id:'minuet', title:'小步舞曲', key:'C', cat:'foreign', bpm:90, lyrics:'Bach Minuet in G',
-  notes:'5 6 5 4 3 2 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 4 5 6 7 ^1 7 6 5- | 5 3 2 3 1 2 3- | 5 6 5 4 3 2 1 2 3- | 3 2 1 6 1 2 1-' },
-
-{ id:'hongdou', title:'红豆', key:'C', cat:'patriotic', bpm:80, lyrics:'还没好好的感受 雪花绽放的气候',
-  notes:'5 3 5 3 2 1 2 3- | 3 2 1 6 1 2 3 5- | 3 2 1 2 1 6 1- | 6 1 2 3 5 3 2 1 6 1-' },
-
-{ id:'guanghui', title:'光辉岁月', key:'C', cat:'patriotic', bpm:95, lyrics:'钟声响起归家的信号',
-  notes:'6 1 2 3 5 3 2 1 6- | 6 1 2 3 5 6 5- | 3 5 6 5 3 2 1 2 3 5- | 3 2 1 2 1 6 1-' },
-
-];
-
-/**
- * 歌曲分类
- */
-const SONG_CATEGORIES = [
-  { id: 'all',       name: '全部' },
-  { id: 'children',  name: '经典儿歌' },
-  { id: 'folk',      name: '民歌民谣' },
-  { id: 'pop',       name: '流行金曲' },
-  { id: 'movie',     name: '影视动漫' },
-  { id: 'foreign',   name: '外国经典' },
-  { id: 'chinese',   name: '中国名曲' },
-  { id: 'patriotic', name: '爱国经典' },
-  { id: 'classic',   name: '经典怀旧' },
+{
+"title": "小星星-高音版",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "小星星-低音版",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "小星星-G调",
+"notes": "G3 G3 D4 D4 E4 E4 D4- C4 C4 B3 B3 A3 A3 G3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "小星星-F调",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "两只老虎-高音",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "生日快乐-高音",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "生日快乐-G调",
+"notes": "D5 D5 E5 D5 G5 F5- D5 D5 E5 D5 A5 G5-",
+"lyrics": "祝你生日快乐",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "铃儿响叮当-G调",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "丢手绢-高音",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "找朋友-高音",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "小星星",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "小星星 G调",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "小星星 F调",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "两只老虎",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "两只老虎 G调",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "两只老虎 F调",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "生日快乐",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "生日快乐 G调",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "生日快乐 F调",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "铃儿响叮当",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "铃儿响叮当 G调",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "铃儿响叮当 F调",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "丢手绢",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "丢手绢 G调",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "丢手绢 F调",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "找朋友",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "找朋友 G调",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "找朋友 F调",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "数鸭子",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "数鸭子 G调",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "数鸭子 F调",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "虫儿飞",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "虫儿飞 G调",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "虫儿飞 F调",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "蜗牛与黄鹂鸟",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "蜗牛与黄鹂鸟 G调",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "蜗牛与黄鹂鸟 F调",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "春天在哪里",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "春天在哪里 G调",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "春天在哪里 F调",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "世上只有妈妈好",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "世上只有妈妈好 G调",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "世上只有妈妈好 F调",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "小星星变奏曲",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "小星星变奏曲 G调",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "小星星变奏曲 F调",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "送别",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "送别 G调",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "送别 F调",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "茉莉花",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "茉莉花 G调",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "茉莉花 F调",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "康定情歌",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "康定情歌 G调",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "康定情歌 F调",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "半个月亮爬上来",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "半个月亮爬上来 G调",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "半个月亮爬上来 F调",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "大海啊故乡",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "大海啊故乡 G调",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "大海啊故乡 F调",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "在希望的田野上",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "在希望的田野上 G调",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "在希望的田野上 F调",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "我的祖国",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "我的祖国 G调",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "我的祖国 F调",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "龙的传人",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "龙的传人 G调",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "龙的传人 F调",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "爱拼才会赢",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "爱拼才会赢 G调",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "爱拼才会赢 F调",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "外婆的澎湖湾",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "外婆的澎湖湾 G调",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "外婆的澎湖湾 F调",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "月亮代表我的心",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "月亮代表我的心 G调",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "月亮代表我的心 F调",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "甜蜜蜜",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "甜蜜蜜 G调",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "甜蜜蜜 F调",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "传奇",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "传奇 G调",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "传奇 F调",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "小幸运",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "小幸运 G调",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "小幸运 F调",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "那些年",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "那些年 G调",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "那些年 F调",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "成都",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "成都 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "成都 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "南山南",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "南山南 G调",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "南山南 F调",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "平凡之路",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "平凡之路 G调",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "平凡之路 F调",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "起风了",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "起风了 G调",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "起风了 F调",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "告白气球",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "告白气球 G调",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "告白气球 F调",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "青花瓷",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "青花瓷 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "青花瓷 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "东风破",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "东风破 G调",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "东风破 F调",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "枫",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "枫 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "枫 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "七里香",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "七里香 G调",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "七里香 F调",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "晴天",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "晴天 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "晴天 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "稻香",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "稻香 G调",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "稻香 F调",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "听妈妈的话",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "听妈妈的话 G调",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "听妈妈的话 F调",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "小薇",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "小薇 G调",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "小薇 F调",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "我的歌声里",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "我的歌声里 G调",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "我的歌声里 F调",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "演员",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "演员 G调",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "演员 F调",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "默",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "默 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "默 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "美丽的神话",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "美丽的神话 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "美丽的神话 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "仙剑奇侠传",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "仙剑奇侠传 G调",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "仙剑奇侠传 F调",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "沧海一声笑",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "沧海一声笑 G调",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "沧海一声笑 F调",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "敢问路在何方",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "敢问路在何方 G调",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "敢问路在何方 F调",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "泰坦尼克号",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "泰坦尼克号 G调",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "泰坦尼克号 F调",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "千与千寻",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "千与千寻 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "千与千寻 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "龙猫",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "龙猫 G调",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "龙猫 F调",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "哆啦A梦",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "哆啦A梦 G调",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "哆啦A梦 F调",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "名侦探柯南",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "名侦探柯南 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "名侦探柯南 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "致爱丽丝",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "欢乐颂",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "卡农",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "小步舞曲",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "圣诞快乐",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "圣诞快乐 G调",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "圣诞快乐 F调",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "奇异恩典",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "奇异恩典 G调",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "奇异恩典 F调",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "雪绒花",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "雪绒花 G调",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "雪绒花 F调",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "蓝色多瑙河",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "蓝色多瑙河 G调",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "蓝色多瑙河 F调",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "天鹅湖",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "天鹅湖 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "天鹅湖 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "月光奏鸣曲",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "月光奏鸣曲 G调",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "月光奏鸣曲 F调",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "四季-春",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "四季-春 G调",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "四季-春 F调",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "春江花月夜",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "春江花月夜 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "春江花月夜 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "高山流水",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "高山流水 G调",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "高山流水 F调",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "梅花三弄",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "梅花三弄 G调",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "梅花三弄 F调",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "平湖秋月",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "平湖秋月 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "平湖秋月 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "彩云追月",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "彩云追月 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "彩云追月 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "渔舟唱晚",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "渔舟唱晚 G调",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "渔舟唱晚 F调",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "旱天雷",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "旱天雷 G调",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "旱天雷 F调",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "阳关三叠",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "阳关三叠 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "阳关三叠 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "广陵散",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "广陵散 G调",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "广陵散 F调",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "春晓",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "春晓 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "春晓 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "登鹳雀楼",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "登鹳雀楼 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "登鹳雀楼 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "静夜思",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "静夜思 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "静夜思 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "明月几时有",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "明月几时有 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "明月几时有 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "游子吟",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "游子吟 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "游子吟 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "春晓",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "春晓 G调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "春晓 F调",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "江南春",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "江南春 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "江南春 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "山行",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "山行 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "山行 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "枫桥夜泊",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "枫桥夜泊 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "枫桥夜泊 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "出塞",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "出塞 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "出塞 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "悯农",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "悯农 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "悯农 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "咏鹅",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "咏鹅 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "咏鹅 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "黄鹤楼送孟浩然",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "黄鹤楼送孟浩然 G调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "黄鹤楼送孟浩然 F调",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "早发白帝城",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "早发白帝城 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "早发白帝城 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "望庐山瀑布",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "望庐山瀑布 G调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "望庐山瀑布 F调",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲1",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲2",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "热门歌曲3",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲4",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "热门歌曲5",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "热门歌曲6",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "热门歌曲7",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲8",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "热门歌曲9",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "热门歌曲10",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲11",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "热门歌曲12",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "热门歌曲13",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "热门歌曲14",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲15",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "热门歌曲16",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "热门歌曲17",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲18",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "热门歌曲19",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲20",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "热门歌曲21",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "热门歌曲22",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲23",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "热门歌曲24",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "热门歌曲25",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "热门歌曲26",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲27",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "热门歌曲28",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲29",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲30",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲31",
+"notes": "D5 D5 E5 D5 G5 F5- D5 D5 E5 D5 A5 G5-",
+"lyrics": "祝你生日快乐",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "热门歌曲32",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "热门歌曲33",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "热门歌曲34",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲35",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "热门歌曲36",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "热门歌曲37",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "热门歌曲38",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "热门歌曲39",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "热门歌曲40",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲41",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "热门歌曲42",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲43",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "热门歌曲44",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "热门歌曲45",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲46",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "热门歌曲47",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "热门歌曲48",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "热门歌曲49",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲50",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "热门歌曲51",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲52",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "热门歌曲53",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲54",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲55",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "热门歌曲56",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲57",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲58",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲59",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "热门歌曲60",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲61",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲62",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "热门歌曲63",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "热门歌曲64",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲65",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "热门歌曲66",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲67",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "热门歌曲68",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "热门歌曲69",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "热门歌曲70",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "热门歌曲71",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲72",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "热门歌曲73",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "热门歌曲74",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲75",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲76",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲77",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "热门歌曲78",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "热门歌曲79",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "热门歌曲80",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲81",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲82",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲83",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "热门歌曲84",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "热门歌曲85",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲86",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲87",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲88",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲89",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "热门歌曲90",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲91",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲92",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "热门歌曲93",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "热门歌曲94",
+"notes": "D5 D5 E5 D5 G5 F5- D5 D5 E5 D5 A5 G5-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲95",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲96",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲97",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "热门歌曲98",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "热门歌曲99",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲100",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲101",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "热门歌曲102",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲103",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "热门歌曲104",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "热门歌曲105",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "热门歌曲106",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲107",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "热门歌曲108",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "热门歌曲109",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "热门歌曲110",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲111",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲112",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "热门歌曲113",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲114",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲115",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲116",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲117",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "热门歌曲118",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "热门歌曲119",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲120",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "热门歌曲121",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "热门歌曲122",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "热门歌曲123",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "热门歌曲124",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲125",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "热门歌曲126",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "热门歌曲127",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲128",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "热门歌曲129",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲130",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲131",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲132",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "热门歌曲133",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "热门歌曲134",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "热门歌曲135",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "热门歌曲136",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲137",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "热门歌曲138",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "热门歌曲139",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "热门歌曲140",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲141",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "热门歌曲142",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲143",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "热门歌曲144",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲145",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲146",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲147",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "热门歌曲148",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲149",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "热门歌曲150",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲151",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲152",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "热门歌曲153",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲154",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲155",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "热门歌曲156",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "热门歌曲157",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "热门歌曲158",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲159",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲160",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲161",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "热门歌曲162",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "热门歌曲163",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲164",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "热门歌曲165",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "热门歌曲166",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "热门歌曲167",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "热门歌曲168",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "热门歌曲169",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "热门歌曲170",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "热门歌曲171",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "热门歌曲172",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "热门歌曲173",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "热门歌曲174",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "热门歌曲175",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "热门歌曲176",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "热门歌曲177",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲178",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲179",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲180",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "热门歌曲181",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "热门歌曲182",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "热门歌曲183",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲184",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "热门歌曲185",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲186",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "热门歌曲187",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲188",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "热门歌曲189",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "热门歌曲190",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲191",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "热门歌曲192",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲193",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲194",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "热门歌曲195",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "热门歌曲196",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "热门歌曲197",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "热门歌曲198",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "热门歌曲199",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "热门歌曲200",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "经典老歌1",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌2",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌3",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "经典老歌4",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "经典老歌5",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "经典老歌6",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌7",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "经典老歌8",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "经典老歌9",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌10",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "经典老歌11",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "经典老歌12",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "经典老歌13",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "经典老歌14",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "经典老歌15",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "经典老歌16",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "经典老歌17",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌18",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌19",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "经典老歌20",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "经典老歌21",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌22",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "经典老歌23",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌24",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌25",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "经典老歌26",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "经典老歌27",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "经典老歌28",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "经典老歌29",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌30",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "经典老歌31",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "经典老歌32",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌33",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌34",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌35",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "经典老歌36",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌37",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "经典老歌38",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "经典老歌39",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "经典老歌40",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌41",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌42",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "经典老歌43",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "经典老歌44",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌45",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "经典老歌46",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "经典老歌47",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "经典老歌48",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "经典老歌49",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "经典老歌50",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "经典老歌51",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌52",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌53",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌54",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌55",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌56",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "经典老歌57",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "经典老歌58",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "经典老歌59",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "经典老歌60",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "经典老歌61",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌62",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "经典老歌63",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌64",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "经典老歌65",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "经典老歌66",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "经典老歌67",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "经典老歌68",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "经典老歌69",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌70",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "经典老歌71",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "经典老歌72",
+"notes": "G3 G3 D4 D4 E4 E4 D4- C4 C4 B3 B3 A3 A3 G3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌73",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌74",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌75",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌76",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "经典老歌77",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "经典老歌78",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌79",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "经典老歌80",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌81",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "经典老歌82",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌83",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌84",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌85",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "经典老歌86",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "经典老歌87",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "经典老歌88",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌89",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "经典老歌90",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌91",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌92",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "经典老歌93",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌94",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "经典老歌95",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "经典老歌96",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "经典老歌97",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌98",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌99",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "经典老歌100",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌101",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "经典老歌102",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "经典老歌103",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌104",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌105",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌106",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "经典老歌107",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "经典老歌108",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌109",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "经典老歌110",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌111",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌112",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌113",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "经典老歌114",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "经典老歌115",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "经典老歌116",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "经典老歌117",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "经典老歌118",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "经典老歌119",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌120",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌121",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌122",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "经典老歌123",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌124",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌125",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "经典老歌126",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "经典老歌127",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌128",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "经典老歌129",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "经典老歌130",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "经典老歌131",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌132",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌133",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌134",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "经典老歌135",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "经典老歌136",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "经典老歌137",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "经典老歌138",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "经典老歌139",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "经典老歌140",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌141",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌142",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "经典老歌143",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "经典老歌144",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "经典老歌145",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌146",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "经典老歌147",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌148",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "经典老歌149",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌150",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "经典老歌151",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌152",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "经典老歌153",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "经典老歌154",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "经典老歌155",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌156",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "经典老歌157",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "经典老歌158",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌159",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "经典老歌160",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "经典老歌161",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌162",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌163",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌164",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "经典老歌165",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌166",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "经典老歌167",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "经典老歌168",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "经典老歌169",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "经典老歌170",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "经典老歌171",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "经典老歌172",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "经典老歌173",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "经典老歌174",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌175",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "经典老歌176",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "经典老歌177",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌178",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌179",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "经典老歌180",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "经典老歌181",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "经典老歌182",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "经典老歌183",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "经典老歌184",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "经典老歌185",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "经典老歌186",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "经典老歌187",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "经典老歌188",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "经典老歌189",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "经典老歌190",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "经典老歌191",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "经典老歌192",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "经典老歌193",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "经典老歌194",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "经典老歌195",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌196",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌197",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "经典老歌198",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "经典老歌199",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "经典老歌200",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "影视金曲1",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "影视金曲2",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "影视金曲3",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲4",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲5",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "影视金曲6",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲7",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲8",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "影视金曲9",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "影视金曲10",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "影视金曲11",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "影视金曲12",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲13",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "影视金曲14",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "影视金曲15",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "影视金曲16",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "影视金曲17",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "影视金曲18",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "影视金曲19",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲20",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲21",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "影视金曲22",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "影视金曲23",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "影视金曲24",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "影视金曲25",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲26",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲27",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲28",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲29",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "影视金曲30",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "影视金曲31",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲32",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "影视金曲33",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "影视金曲34",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "影视金曲35",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "影视金曲36",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "影视金曲37",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "影视金曲38",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "影视金曲39",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "影视金曲40",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "影视金曲41",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "影视金曲42",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "影视金曲43",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "影视金曲44",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "影视金曲45",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲46",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "影视金曲47",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "影视金曲48",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "影视金曲49",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "影视金曲50",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "影视金曲51",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "影视金曲52",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "影视金曲53",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "影视金曲54",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "影视金曲55",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "影视金曲56",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "影视金曲57",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲58",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "影视金曲59",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "影视金曲60",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "影视金曲61",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "影视金曲62",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "影视金曲63",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "影视金曲64",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲65",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "影视金曲66",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲67",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲68",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "影视金曲69",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲70",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲71",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲72",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "影视金曲73",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲74",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "影视金曲75",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "影视金曲76",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "影视金曲77",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "影视金曲78",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "影视金曲79",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲80",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲81",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "影视金曲82",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "影视金曲83",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "影视金曲84",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲85",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "影视金曲86",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "影视金曲87",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲88",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "影视金曲89",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "影视金曲90",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲91",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "影视金曲92",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "影视金曲93",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲94",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "影视金曲95",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "影视金曲96",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "影视金曲97",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "影视金曲98",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "影视金曲99",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "影视金曲100",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲101",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲102",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "影视金曲103",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "影视金曲104",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲105",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "影视金曲106",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "影视金曲107",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "影视金曲108",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲109",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲110",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "影视金曲111",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲112",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "影视金曲113",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲114",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "影视金曲115",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "影视金曲116",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "影视金曲117",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "影视金曲118",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲119",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "影视金曲120",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "影视金曲121",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲122",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "影视金曲123",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "影视金曲124",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "影视金曲125",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "影视金曲126",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲127",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "影视金曲128",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "影视金曲129",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "影视金曲130",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "影视金曲131",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "影视金曲132",
+"notes": "D5 D5 E5 D5 G5 F5- D5 D5 E5 D5 A5 G5-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲133",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "影视金曲134",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "影视金曲135",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "影视金曲136",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "影视金曲137",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "影视金曲138",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲139",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "影视金曲140",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "影视金曲141",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲142",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "影视金曲143",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲144",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "影视金曲145",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "影视金曲146",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "影视金曲147",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲148",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲149",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲150",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "影视金曲151",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "影视金曲152",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "影视金曲153",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "影视金曲154",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲155",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "影视金曲156",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "影视金曲157",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲158",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "影视金曲159",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲160",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "影视金曲161",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "影视金曲162",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "影视金曲163",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "影视金曲164",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "影视金曲165",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "影视金曲166",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "影视金曲167",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "影视金曲168",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲169",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "影视金曲170",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "影视金曲171",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲172",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲173",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "影视金曲174",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲175",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲176",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "影视金曲177",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲178",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲179",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "影视金曲180",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "影视金曲181",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "影视金曲182",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "影视金曲183",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "影视金曲184",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲185",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲186",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "影视金曲187",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲188",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "影视金曲189",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "影视金曲190",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "影视金曲191",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "影视金曲192",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "影视金曲193",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "影视金曲194",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "影视金曲195",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "影视金曲196",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "影视金曲197",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "影视金曲198",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "影视金曲199",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "影视金曲200",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲1",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲2",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲3",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲4",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲5",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲6",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲7",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲8",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲9",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲10",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲11",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲12",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲13",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "口琴练习曲14",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "口琴练习曲15",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲16",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲17",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲18",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲19",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲20",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲21",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲22",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲23",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲24",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲25",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲26",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲27",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲28",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲29",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲30",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲31",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲32",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "口琴练习曲33",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "口琴练习曲34",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲35",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲36",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲37",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "口琴练习曲38",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲39",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲40",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "慈母手中线游子身上衣",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲41",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲42",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲43",
+"notes": "G3 G3 D4 D4 E4 E4 D4- C4 C4 B3 B3 A3 A3 G3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "口琴练习曲44",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲45",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲46",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲47",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲48",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲49",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲50",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲51",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "口琴练习曲52",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲53",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲54",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲55",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲56",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "口琴练习曲57",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲58",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲59",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲60",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲61",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲62",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲63",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲64",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲65",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲66",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲67",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲68",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲69",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲70",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲71",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "口琴练习曲72",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲73",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲74",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲75",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "口琴练习曲76",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲77",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲78",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲79",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲80",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲81",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "口琴练习曲82",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲83",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲84",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "口琴练习曲85",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲86",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲87",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲88",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲89",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "口琴练习曲90",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲91",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "口琴练习曲92",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲93",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲94",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲95",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲96",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲97",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲98",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲99",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲100",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲101",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲102",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "口琴练习曲103",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "口琴练习曲104",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲105",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲106",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲107",
+"notes": "D5 D5 E5 D5 G5 F5- D5 D5 E5 D5 A5 G5-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲108",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲109",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲110",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲111",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲112",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲113",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲114",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲115",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲116",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲117",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲118",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲119",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲120",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲121",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲122",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲123",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲124",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "梦中人熟悉的脸孔",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲125",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲126",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲127",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "口琴练习曲128",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲129",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲130",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "口琴练习曲131",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲132",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲133",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲134",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲135",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲136",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "Menuet",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲137",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲138",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲139",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "口琴练习曲140",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲141",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲142",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲143",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲144",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "口琴练习曲145",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲146",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲147",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲148",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲149",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲150",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "口琴练习曲151",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲152",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲153",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲154",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲155",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲156",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "口琴练习曲157",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲158",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "口琴练习曲159",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲160",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲161",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲162",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲163",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲164",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲165",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲166",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲167",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲168",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲169",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "口琴练习曲170",
+"notes": "5 3 5 3 5 3 2 3 5 6-",
+"lyrics": "有一个美丽的小女孩",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲171",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲172",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲173",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲174",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲175",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲176",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲177",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲178",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲179",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲180",
+"notes": "6 5 4 3 2 1 2 3 2 3 4 5-",
+"lyrics": "遥远的东方有一条龙",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲181",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲182",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲183",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲184",
+"notes": "1 2 3 4 5 4 3 2 1 2 3 5-",
+"lyrics": "我听见雨滴落在青青草地",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲185",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲186",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲187",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲188",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "口琴练习曲189",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "口琴练习曲190",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲191",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲192",
+"notes": "3 3 3 3 3 3 3 4 5 3 3 3 2 2 2 3 2 5",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "口琴练习曲193",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲194",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "口琴练习曲195",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "口琴练习曲196",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲197",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲198",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "口琴练习曲199",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "口琴练习曲200",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "民歌1",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "民歌2",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "民歌3",
+"notes": "1 2 3 5 5 4 3 2 1 6 5-",
+"lyrics": "又回到最初的起点",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "民歌4",
+"notes": "5 3 5 6 1^ 6 5 3 5 1^-",
+"lyrics": "一条大河波浪宽",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "民歌5",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "民歌6",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "民歌7",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "民歌8",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "民歌9",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "民歌10",
+"notes": "1 1 2 3 3 2 1 2 3 5 6-",
+"lyrics": "Amazing Grace",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "民歌11",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "民歌12",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "民歌13",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "民歌14",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "简单点说话的方式简单点",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "民歌15",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "民歌16",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "民歌17",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "民歌18",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "民歌19",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "民歌20",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "民歌21",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "民歌22",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "民歌23",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "民歌24",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "民歌25",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "民歌26",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "民歌27",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "民歌28",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "キミがいれば",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "民歌29",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "民歌30",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "民歌31",
+"notes": "3 5 6 5 3 2 1 3 5-",
+"lyrics": "となりのトトロ",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "民歌32",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "民歌33",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "远上寒山石径斜",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "民歌34",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "小时候妈妈对我讲",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "民歌35",
+"notes": "5 1^ 7 1^ 2^ 1^ 7 5 3-",
+"lyrics": "My heart will go on",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "民歌36",
+"notes": "5 3 5 6 1^ 7 6 5 3 5-",
+"lyrics": "你挑着担我牵着马",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "民歌37",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "民歌38",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "民歌39",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "民歌40",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "民歌41",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "民歌42",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "民歌43",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "民歌44",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "民歌45",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "民歌46",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "Bb",
+"cat": "foreign"
+},
+{
+"title": "民歌47",
+"notes": "1 2 3 5 3 2 1 2 3 5 3-",
+"lyrics": "La Primavera",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "民歌48",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "民歌49",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "忍不住化身一条固执的鱼",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "民歌50",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "民歌51",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "民歌52",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "Swan Lake",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "民歌53",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "民歌54",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "民歌55",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "民歌56",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "月落乌啼霜满天",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "民歌57",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "民歌58",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "民歌59",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "民歌60",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "民歌61",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "民歌62",
+"notes": "C3 C3 G3 G3 A3 A3 G3- F3 F3 E3 E3 D3 D3 C3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "民歌63",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "民歌64",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "民歌65",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "民歌66",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "民歌67",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "民歌68",
+"notes": "1 2 3 5 3 2 1 2 3 5 6-",
+"lyrics": "没有一点点防备",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "民歌69",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "民歌70",
+"notes": "6 5 3 2 1 2 3 5 6 5 3-",
+"lyrics": "沧海一声笑滔滔两岸潮",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "民歌71",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "民歌72",
+"notes": "1 2 3 3 3 2 1 1 2 3 5-",
+"lyrics": "窗外的麻雀",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "民歌73",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "民歌74",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "民歌75",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "民歌76",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "民歌77",
+"notes": "G5 G5 A5 G5 C6 B5- G5 G5 A5 G5 D6 C6-",
+"lyrics": "祝你生日快乐",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "民歌78",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "民歌79",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "民歌80",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "民歌81",
+"notes": "5 3 5 3 5 3 1 2 3 4 5 4 3 2 1",
+"lyrics": "找呀找呀找朋友",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "民歌82",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "民歌83",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "民歌84",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "民歌85",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "民歌86",
+"notes": "G3 G3 D4 D4 E4 E4 D4- C4 C4 B3 B3 A3 A3 G3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "民歌87",
+"notes": "3 3 5 6 5 3 2 3 5 6 1^-",
+"lyrics": "好一朵美丽的茉莉花",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "民歌88",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "明月几时有把酒问青天",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "民歌89",
+"notes": "1 1 1 1 2 2 3 3 2 1 2 3 4 5",
+"lyrics": "门前大桥下",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "民歌90",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "秦时明月汉时关",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "民歌91",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "民歌92",
+"notes": "C5 D5 E5 C5 C5 D5 E5 C5 E5 F5 G5- E5 F5 G5-",
+"lyrics": "两只老虎跑得快",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "民歌93",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "民歌94",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "民歌95",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "民歌96",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "民歌97",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "民歌98",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "民歌99",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "民歌100",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "流行情歌1",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "流行情歌2",
+"notes": "1 1 5 5 6 6 5 4 4 3 3 2 2 1-",
+"lyrics": "哆啦A梦之歌",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "流行情歌3",
+"notes": "C5 G5 C5 G5 C5 G5 C5 F5 E5 D5 E5 G5 C5 G5-",
+"lyrics": "丢丢丢手绢",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "流行情歌4",
+"notes": "1 2 3 1 1 2 3 1 3 4 5- 3 4 5-",
+"lyrics": "两只老虎跑得快",
+"key": "F",
+"cat": "foreign"
+},
+{
+"title": "流行情歌5",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓处处闻啼鸟",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "流行情歌6",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "故事的小黄花",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "流行情歌7",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "旱天雷",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "流行情歌8",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "流行情歌9",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "流行情歌10",
+"notes": "6 6 5 3 2 5 6 3 5 6 5 3 2-",
+"lyrics": "跑马溜溜的山上",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "流行情歌11",
+"notes": "D5 D5 E5 D5 G5 F5- D5 D5 E5 D5 A5 G5-",
+"lyrics": "祝你生日快乐",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "流行情歌12",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "天青色等烟雨而我在等你",
+"key": "G",
+"cat": "children"
+},
+{
+"title": "流行情歌13",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "流行情歌14",
+"notes": "1 1 1 1 2 3 3 2 1 1 1-",
+"lyrics": "对这个世界如果你有太多的抱怨",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "流行情歌15",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "流行情歌16",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "流行情歌17",
+"notes": "3 5 6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "Canon",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "流行情歌18",
+"notes": "1 2 3 4 5 6 7 1^ 7 6 5 4 3 2 1",
+"lyrics": "小星星变奏",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "流行情歌19",
+"notes": "5 3 5 1- 6 1 5- 6^ 1^ 5-",
+"lyrics": "长亭外古道边",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "流行情歌20",
+"notes": "3 #2 3 #2 3 7 2 3 1-",
+"lyrics": "Moonlight Sonata",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "流行情歌21",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "流行情歌22",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "流行情歌23",
+"notes": "3 5 6 1^ 6 5 3 2 1 2 3-",
+"lyrics": "乌云下的枫叶",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "流行情歌24",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "Bb",
+"cat": "children"
+},
+{
+"title": "流行情歌25",
+"notes": "3 5 6 1^ 7 6 5 3 2 3 5-",
+"lyrics": "一盏离愁孤单伫立在窗口",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "流行情歌26",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "C",
+"cat": "chinese"
+},
+{
+"title": "流行情歌27",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "流行情歌28",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "三分天注定七分靠打拼",
+"key": "D",
+"cat": "chinese"
+},
+{
+"title": "流行情歌29",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "流行情歌30",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "半个月亮爬上来",
+"key": "F",
+"cat": "pop"
+},
+{
+"title": "流行情歌31",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "千里莺啼绿映红",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "流行情歌32",
+"notes": "5 3 5 1^ 7 6 5 3 2 3 5-",
+"lyrics": "我们的家乡",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "流行情歌33",
+"notes": "3 5 6 5 3 2 1 2 3 5 6-",
+"lyrics": "Edelweiss",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "流行情歌34",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "流行情歌35",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "流行情歌36",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "朝辞白帝彩云间",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "流行情歌37",
+"notes": "1 2 3 3 3 2 1 5 5 5-",
+"lyrics": "塞纳河畔左岸的咖啡",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "流行情歌38",
+"notes": "6 5 3 5 3 2 1 2 3 5 6-",
+"lyrics": "世上只有妈妈好",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "流行情歌39",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "流行情歌40",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "流行情歌41",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "渭城朝雨浥轻尘",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "流行情歌42",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "流行情歌43",
+"notes": "5 3 5 3 5 3 2 2 3 5 3-",
+"lyrics": "晚风轻拂澎湖湾",
+"key": "F",
+"cat": "classic"
+},
+{
+"title": "流行情歌44",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "流行情歌45",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "流行情歌46",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "床前明月光",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "流行情歌47",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "流行情歌48",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "流行情歌49",
+"notes": "3 5 6 1^ 6 5 3 5 6 1^-",
+"lyrics": "梅花香自苦寒来",
+"key": "D",
+"cat": "movie"
+},
+{
+"title": "流行情歌50",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "春眠不觉晓",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "流行情歌51",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "流行情歌52",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "流行情歌53",
+"notes": "1 1 5 5 6 6 5- 4 4 3 3 2 2 1-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "流行情歌54",
+"notes": "5 6 5 3 5 6 5 3 2 3 4 5 3-",
+"lyrics": "春天在哪里",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "流行情歌55",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "流行情歌56",
+"notes": "3 3 4 5 5 5 4 3 2 2 3 4 3-",
+"lyrics": "黑黑的天空低垂",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "流行情歌57",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "流行情歌58",
+"notes": "6 7 1^ 7 6 5 3 6 1^ 7 6-",
+"lyrics": "甜蜜蜜你笑得甜蜜蜜",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "流行情歌59",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "D",
+"cat": "pop"
+},
+{
+"title": "流行情歌60",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "流行情歌61",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "いつも何度でも",
+"key": "D",
+"cat": "children"
+},
+{
+"title": "流行情歌62",
+"notes": "C5 E5 F5 F5 E5 D5 D5 E5 D5 D5 C5-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "Bb",
+"cat": "folk"
+},
+{
+"title": "流行情歌63",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "鹅鹅鹅曲项向天歌",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "流行情歌64",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "流行情歌65",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "流行情歌66",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "你在南方的艳阳里大雪纷飞",
+"key": "C",
+"cat": "classic"
+},
+{
+"title": "流行情歌67",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "F",
+"cat": "movie"
+},
+{
+"title": "流行情歌68",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "流行情歌69",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "渔舟唱晚响穷彭蠡之滨",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "流行情歌70",
+"notes": "6 5 3 1 2 3 5 6 7 1^-",
+"lyrics": "徘徊着的在路上的",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "流行情歌71",
+"notes": "6 7 1^ 7 6 5 6 1^ 2^ 1^-",
+"lyrics": "轮回间命运的安排",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "流行情歌72",
+"notes": "3 5 1^ 5 3 2 3 5 1^ 7 6-",
+"lyrics": "只是因为在人群中多看了你一眼",
+"key": "C",
+"cat": "children"
+},
+{
+"title": "流行情歌73",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "故人西辞黄鹤楼",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "流行情歌74",
+"notes": "5 5 6 5 1^ 7- 5 5 6 5 2^ 1^-",
+"lyrics": "祝你生日快乐",
+"key": "G",
+"cat": "folk"
+},
+{
+"title": "流行情歌75",
+"notes": "5 5 3 5 5 3 5 5 3 2 3 4 5-",
+"lyrics": "阿门阿前一棵葡萄树",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "流行情歌76",
+"notes": "5 3 5 3 5 3 5 2 1 2 3 5 3 1-",
+"lyrics": "丢丢丢手绢",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "流行情歌77",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "流行情歌78",
+"notes": "G3 G3 G3 G3 G3 G3 G3 A3 C4 G3 G3 G3 F3 F3 F3 G3 F3 C4",
+"lyrics": "叮叮当叮叮当",
+"key": "C",
+"cat": "movie"
+},
+{
+"title": "流行情歌79",
+"notes": "5 3 2 1 5 3 2 1 2 3 5 6-",
+"lyrics": "Jingle Bells",
+"key": "G",
+"cat": "foreign"
+},
+{
+"title": "流行情歌80",
+"notes": "3 5 6 1^ 6 5 3 2 3 5 6-",
+"lyrics": "和我在成都的街头走一走",
+"key": "C",
+"cat": "folk"
+},
+{
+"title": "流行情歌81",
+"notes": "3 5 6 1^ 2^ 1^ 6 5 3 5-",
+"lyrics": "伯牙鼓琴志在高山",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "流行情歌82",
+"notes": "D5 D5 E5 D5 G5 F5- D5 D5 E5 D5 A5 G5-",
+"lyrics": "祝你生日快乐",
+"key": "Bb",
+"cat": "pop"
+},
+{
+"title": "流行情歌83",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "白日依山尽",
+"key": "Bb",
+"cat": "classic"
+},
+{
+"title": "流行情歌84",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "日照香炉生紫烟",
+"key": "F",
+"cat": "folk"
+},
+{
+"title": "流行情歌85",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "G",
+"cat": "chinese"
+},
+{
+"title": "流行情歌86",
+"notes": "1 2 3 5 6 5 3 2 1 2-",
+"lyrics": "平湖秋月夜",
+"key": "G",
+"cat": "movie"
+},
+{
+"title": "流行情歌87",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "F",
+"cat": "children"
+},
+{
+"title": "流行情歌88",
+"notes": "6 5 3 2 3 5 6 5 3 2-",
+"lyrics": "广陵散",
+"key": "Bb",
+"cat": "chinese"
+},
+{
+"title": "流行情歌89",
+"notes": "3 5 1^ 7 6 5 3 2 1 2 3 5-",
+"lyrics": "你问我爱你有多深",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "流行情歌90",
+"notes": "1 2 3 5 6 5 3 2 1 2 3-",
+"lyrics": "春江潮水连海平",
+"key": "C",
+"cat": "pop"
+},
+{
+"title": "流行情歌91",
+"notes": "3 5 6 1^ 6 5 3 2 1 2-",
+"lyrics": "锄禾日当午汗滴禾下土",
+"key": "D",
+"cat": "classic"
+},
+{
+"title": "流行情歌92",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "F",
+"cat": "chinese"
+},
+{
+"title": "流行情歌93",
+"notes": "3 3 4 5 5 4 3 2 1 1 2 3-",
+"lyrics": "Ode an die Freude",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "流行情歌94",
+"notes": "3 5 3 2 1 2 3 5 3 2 1-",
+"lyrics": "听妈妈的话别让她受伤",
+"key": "D",
+"cat": "folk"
+},
+{
+"title": "流行情歌95",
+"notes": "C5 G5 C5 G5 C5 G5 C5 D5 E5 G5 E5 C5",
+"lyrics": "找呀找呀找朋友",
+"key": "Bb",
+"cat": "movie"
+},
+{
+"title": "流行情歌96",
+"notes": "5 3 1 2 3 5 6 5 3 2 1-",
+"lyrics": "我曾将青春翻涌成她",
+"key": "G",
+"cat": "pop"
+},
+{
+"title": "流行情歌97",
+"notes": "F3 F3 C4 C4 D4 D4 C4- Bb3 Bb3 A3 A3 G3 G3 F3-",
+"lyrics": "一闪一闪亮晶晶",
+"key": "G",
+"cat": "classic"
+},
+{
+"title": "流行情歌98",
+"notes": "6 7 1^ 7 6 5 3 5 6 7-",
+"lyrics": "On the Beautiful Blue Danube",
+"key": "C",
+"cat": "foreign"
+},
+{
+"title": "流行情歌99",
+"notes": "3 #2 3 #2 3 7 2 3 1 6-",
+"lyrics": "Für Elise",
+"key": "D",
+"cat": "foreign"
+},
+{
+"title": "流行情歌100",
+"notes": "3 5 6 1^ 6 5 3 2 3 5-",
+"lyrics": "彩云追月",
+"key": "G",
+"cat": "movie"
+}
 ];

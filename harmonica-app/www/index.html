@@ -1,185 +1,85 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#1a1a2e">
-  <meta name="apple-mobile-web-app-title" content="口琴">
-  <title>口琴演奏家 v2.0</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1a1a2e">
+<title>口琴大师</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div id="app">
 
-  <!-- ====== 自动演奏页面 ====== -->
-  <div id="playPage" class="page active">
-    <!-- 顶部操作栏 -->
-    <div class="top-actions">
-      <button id="btnSelectSong" class="top-action-btn">📜 选曲</button>
-      <button id="btnAddSongQuick" class="top-action-btn">➕ 添加琴谱</button>
-      <button id="btnLibrary" class="top-action-btn">📚 曲录</button>
+  <!-- 顶部标题栏 -->
+  <header class="app-header">
+    <h1>🎵 口琴大师</h1>
+    <div class="header-btns">
+      <button id="btnRec" class="btn-rec">⏺ 录音</button>
+      <button id="btnRecStop" class="btn-rec-stop hidden">■ 停止</button>
     </div>
+  </header>
 
-    <!-- 口琴选择 -->
-    <div class="harmonica-selector">
-      <select id="harmonicaSelect"></select>
+  <!-- 上半部分：歌谱列表 -->
+  <section class="sheet-section">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="搜索歌曲名、歌词、拼音...">
     </div>
-
-    <!-- 当前歌曲标题 -->
-    <div class="current-song-title" id="currentSongTitle">请选择一首歌曲</div>
-
-    <!-- 琴谱显示 -->
-    <div class="sheet-music" id="sheetMusic">
-      <div class="sheet-music-inner" id="sheetMusicInner"></div>
+    <div class="sheet-list" id="sheetList">
+      <!-- JS 动态生成 -->
     </div>
+  </section>
 
-    <!-- 播放控制 -->
+  <!-- 自动演奏控制（选歌后显示） -->
+  <section class="playback-bar hidden" id="playbackBar">
+    <div class="playback-title" id="playbackTitle">小星星</div>
     <div class="playback-controls">
-      <button id="btnPlay" class="btn-play">▶ 播放</button>
-      <button id="btnStop" class="btn-stop">⏹ 停止</button>
-      <div class="speed-control">
+      <button id="btnPlay" class="btn-play">▶</button>
+      <button id="btnStop" class="btn-stop">■</button>
+      <div class="speed-wrap">
         <span id="speedLabel">1.0x</span>
         <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0">
       </div>
     </div>
+  </section>
 
-    <!-- 自动演奏模式下的口琴孔位（高亮跟随） -->
-    <div class="harmonica-area">
-      <div class="harmonica-label" id="harmonicaLabel"></div>
-      <div class="harmonica-grid" id="harmonicaGrid"></div>
+  <!-- 下半部分：24孔口琴 + 切换 -->
+  <section class="harmonica-section">
+    <div class="harmonica-toolbar">
+      <span class="h-label">口琴类型</span>
+      <select id="harmonicaSelect"></select>
+      <button id="btnAddSong" class="btn-add">+ 添加谱</button>
     </div>
-  </div>
-
-  <!-- ====== 手动演奏页面（24孔口琴孔位） ====== -->
-  <div id="manualPage" class="page">
-    <!-- 顶部口琴选择 -->
-    <div class="manual-top">
-      <div class="harmonica-selector">
-        <select id="manualHarmonicaSelect"></select>
-      </div>
+    <div class="harmonica-body" id="harmonicaBody">
+      <!-- JS 动态生成 24 孔 -->
     </div>
-
-    <!-- 24孔口琴实物图式孔位 -->
-    <div class="manual-harmonica">
-      <div class="manual-harmonica-label" id="manualHarmonicaLabel">复音24孔 C调</div>
-      <div class="manual-harmonica-body" id="manualHarmonicaBody">
-        <!-- JS 动态生成孔位 -->
-      </div>
-      <div class="manual-harmonica-hint">
-        <span class="hint-item"><span class="hint-blow">■</span> 吹气</span>
-        <span class="hint-item"><span class="hint-draw">■</span> 吸气</span>
-        <span class="hint-item">长按持续发声</span>
-      </div>
+    <div class="harmonica-hint">
+      <span class="dot blow"></span>吹气（长按持续发声）
+      <span class="dot draw"></span>吸气
     </div>
-  </div>
-
-  <!-- ====== 曲谱页面 ====== -->
-  <div id="songsPage" class="page">
-    <div class="page-header">
-      <button class="back-btn" data-back="play">‹ 返回</button>
-      <span>曲谱库</span>
-    </div>
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="搜索歌曲名称或歌词...">
-    </div>
-    <div class="category-tabs" id="categoryTabs"></div>
-    <div class="song-list" id="songList"></div>
-  </div>
-
-  <!-- ====== 添加琴谱页面 ====== -->
-  <div id="addPage" class="page">
-    <div class="page-header">
-      <button class="back-btn" data-back="play">‹ 返回</button>
-      <span>添加琴谱</span>
-    </div>
-    <div class="add-song-page">
-      <div class="form-group">
-        <label>歌曲名称</label>
-        <input type="text" id="inputTitle" placeholder="如：我的祖国">
-      </div>
-      <div class="form-group">
-        <label>调性</label>
-        <select id="inputKey"></select>
-      </div>
-      <div class="form-group">
-        <label>速度 (BPM)</label>
-        <input type="number" id="inputBpm" value="100" min="40" max="240">
-      </div>
-      <div class="form-group">
-        <label>分类</label>
-        <select id="inputCat"></select>
-      </div>
-      <div class="form-group">
-        <label>琴谱内容</label>
-        <textarea id="inputNotes" placeholder="用简谱格式输入，空格分隔&#10;1 1 2 2 3 3 2- 4 4 3 3 2 2 1-"></textarea>
-        <div class="help-text">
-          格式说明：<br>
-          <code>1-7</code> = 唱名 do re mi fa sol la si<br>
-          <code>0</code> = 休止符<br>
-          <code>^1</code> = 高八度do，<code>_6</code> = 低八度la<br>
-          <code>#4</code> = 升fa<br>
-          <code>1-</code> = 二分音符(2拍)，<code>1--</code> = 3拍<br>
-          <code>1.</code> = 附点(1.5拍)<br>
-          <code>|</code> = 小节线(可选)
-        </div>
-      </div>
-      <div class="form-group">
-        <label>歌词（可选）</label>
-        <textarea id="inputLyrics" placeholder="输入歌词，无需空格"></textarea>
-      </div>
-      <button id="btnAddSong" class="btn-save">保存到曲录</button>
-    </div>
-  </div>
-
-  <!-- ====== 曲录页面 ====== -->
-  <div id="libraryPage" class="page">
-    <div class="page-header">
-      <button class="back-btn" data-back="play">‹ 返回</button>
-      <span>我的曲录</span>
-    </div>
-    <div class="song-list" id="libraryList"></div>
-  </div>
-
-  <!-- ====== 底部导航 ====== -->
-  <nav class="bottom-nav">
-    <div class="nav-item active" data-page="play">
-      <span class="nav-icon">▶</span>
-      <span>自动演奏</span>
-    </div>
-    <div class="nav-item" data-page="manual">
-      <span class="nav-icon">🎹</span>
-      <span>手动演奏</span>
-    </div>
-    <div class="nav-item" data-page="songs">
-      <span class="nav-icon">📜</span>
-      <span>曲谱</span>
-    </div>
-    <div class="nav-item" data-page="add">
-      <span class="nav-icon">➕</span>
-      <span>添加</span>
-    </div>
-    <div class="nav-item" data-page="library">
-      <span class="nav-icon">📚</span>
-      <span>曲录</span>
-    </div>
-  </nav>
+  </section>
 
 </div>
 
 <!-- Toast -->
 <div id="toast" class="toast"></div>
 
-<!-- Scripts -->
-<script src="harmonicas.js?v=11"></script>
-<script src="songs.js?v=11"></script>
-<script src="app.js?v=11"></script>
+<!-- 添加琴谱弹窗 -->
+<div id="addModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>添加琴谱</h3>
+    <input type="text" id="mTitle" placeholder="歌曲名">
+    <textarea id="mNotes" placeholder="简谱：1 2 3 4 5 6 7&#10;格式：1-7唱名 0休止 ^高八度 _低八度 -延长"></textarea>
+    <div class="modal-btns">
+      <button id="mCancel">取消</button>
+      <button id="mSave">保存</button>
+    </div>
+  </div>
+</div>
 
+<!-- Scripts -->
+<script src="harmonicas.js"></script>
+<script src="songs.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
