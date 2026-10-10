@@ -19,99 +19,161 @@ const State = {
   isRecording: false,
 };
 
-// ====== 音色：三角波 + 五度叠加 + 高通去浑浊 ======
+// ====== 复音口琴音色（真实物理建模） ======
+// 核心：两个簧片略微失谐（detune 3-6 cents）产生经典"复音"颤音
+// 簧片 = 方波（奇次谐波丰富 → 口琴金属感）
+// 加 2 次谐波（八度）+ 5 次谐波（三音）增强亮度
+// 高通去低频浑浊 + 带通共振模拟簧片腔体
+// 呼吸噪声（粉噪声）在音头最明显
 function createVoice(freq, velocity) {
   if (!State.audioCtx) return null;
   const ctx = State.audioCtx;
-  const v = Math.max(0.05, Math.min(0.45, velocity));
+  const v = Math.max(0.06, Math.min(0.5, velocity));
+  const t0 = ctx.currentTime;
 
-  const reed = ctx.createOscillator();
-  reed.type = 'triangle';
-  reed.frequency.setValueAtTime(freq * 0.985, ctx.currentTime);
-  reed.frequency.linearRampToValueAtTime(freq, ctx.currentTime + 0.02);
+  // ===== 主簧片（方波 - 最像复音口琴的核心波形） =====
+  const reed1 = ctx.createOscillator();
+  reed1.type = 'square';
+  reed1.frequency.value = freq;
 
-  const reed5 = ctx.createOscillator();
-  reed5.type = 'triangle';
-  reed5.frequency.value = freq * 1.5;
-  const reed5Gain = ctx.createGain();
-  reed5Gain.gain.value = 0.2;
+  // ===== 第二簧片（轻微失谐，+4 cents）=====
+  // 复音口琴的精髓：两簧片拍频产生自然颤音
+  const reed2 = ctx.createOscillator();
+  reed2.type = 'square';
+  reed2.frequency.value = freq * Math.pow(2, 4 / 1200); // +4 cents ≈ 自然颤音
 
-  const hipass = ctx.createBiquadFilter();
-  hipass.type = 'highpass';
-  hipass.frequency.value = Math.max(120, freq * 0.3);
+  // ===== 谐波叠层 =====
+  // 2 次谐波（八度上）- 增加亮度
+  const h2 = ctx.createOscillator();
+  h2.type = 'triangle';
+  h2.frequency.value = freq * 2;
 
-  const lowpass = ctx.createBiquadFilter();
-  lowpass.type = 'lowpass';
-  lowpass.frequency.value = Math.min(8000, freq * 6);
+  // 5 次谐波（三音）- 增加口琴特有的金属共鸣
+  const h5 = ctx.createOscillator();
+  h5.type = 'triangle';
+  h5.frequency.value = freq * 5;
 
-  // 气息噪声
-  let noiseSrc = null, noiseGain = null;
+  // ===== 各声部增益 =====
+  const g1 = ctx.createGain(); g1.gain.value = 0.55;   // 主簧片 55%
+  const g2 = ctx.createGain(); g2.gain.value = 0.35;   // 第二簧片 35%
+  const gH2 = ctx.createGain(); gH2.gain.value = 0.18; // 2次谐波 18%
+  const gH5 = ctx.createGain(); gH5.gain.value = 0.08; // 5次谐波 8%
+
+  reed1.connect(g1); reed2.connect(g2); h2.connect(gH2); h5.connect(gH5);
+
+  // ===== 混音总线 =====
+  const mix = ctx.createGain();
+  mix.gain.value = v;
+  g1.connect(mix); g2.connect(mix); gH2.connect(mix); gH5.connect(mix);
+
+  // ===== 滤波：模拟口琴腔体 =====
+  // 带通滤波：簧片共振峰 + 去尖锐高频
+  const bp = ctx.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.value = freq * 2.5;      // 共振中心
+  bp.Q.value = 3.5;                      // 共振尖锐度
+  // 低通软化高频方波毛刺
+  const lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = Math.min(freq * 8, 9000);
+  lp.Q.value = 0.7;
+  // 高通去低频嗡鸣
+  const hp = ctx.createBiquadFilter();
+  hp.type = 'highpass';
+  hp.frequency.value = Math.max(140, freq * 0.5);
+  hp.Q.value = 0.5;
+
+  mix.connect(hp); hp.connect(bp); bp.connect(lp); lp.connect(ctx.destination);
+
+  // ===== 呼吸噪声（粉噪声 + 高通）=====
+  let noiseSrc = null, noiseGain = null, noiseLP = null;
   try {
     const nb = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * 2), ctx.sampleRate);
     const nd = nb.getChannelData(0);
-    for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+    // 生成粉噪声（更像呼吸）
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for (let i = 0; i < nd.length; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99886*b0 + white*0.0555179;
+      b1 = 0.99332*b1 + white*0.0750759;
+      b2 = 0.96900*b2 + white*0.1538520;
+      b3 = 0.86650*b3 + white*0.3104856;
+      b4 = 0.55000*b4 + white*0.5329522;
+      b5 = -0.7616*b5 - white*0.0168980;
+      const pink = (b0+b1+b2+b3+b4+b5+b6+white*0.5362)*0.11;
+      b6 = white*0.115926;
+      nd[i] = pink;
+    }
     noiseSrc = ctx.createBufferSource();
     noiseSrc.buffer = nb;
     noiseSrc.loop = true;
-    const nbp = ctx.createBiquadFilter();
-    nbp.type = 'highpass';
-    nbp.frequency.value = freq * 0.8;
+    noiseLP = ctx.createBiquadFilter();
+    noiseLP.type = 'bandpass';
+    noiseLP.frequency.value = freq * 1.2;
+    noiseLP.Q.value = 1.0;
     noiseGain = ctx.createGain();
     noiseGain.gain.value = 0;
-    noiseSrc.connect(nbp); nbp.connect(noiseGain); noiseGain.connect(ctx.destination);
+    noiseSrc.connect(noiseLP); noiseLP.connect(noiseGain); noiseGain.connect(ctx.destination);
   } catch(e) {}
 
-  const gain = ctx.createGain();
-  gain.gain.value = 0;
+  // ===== 颤音 LFO（自动颤音，模拟口琴手气息）=====
+  let vib = null, vibGain = null, vibGain2 = null;
+  function enableVibrato() {
+    if (vib) return;
+    vib = ctx.createOscillator();
+    vib.type = 'sine';
+    vib.frequency.value = 5.0;          // 5Hz 口琴典型颤音速度
+    vibGain = ctx.createGain();
+    vibGain.gain.value = freq * 0.008;  // ±8/1000 频率偏移 ≈ 自然颤音深度
+    vibGain2 = ctx.createGain();
+    vibGain2.gain.value = freq * 0.004; // 第二簧片颤音稍小，更自然
+    vib.connect(vibGain); vibGain.connect(reed1.frequency);
+    vib.connect(vibGain2); vibGain2.connect(reed2.frequency);
+    vib.start();
+  }
 
-  reed.connect(hipass); reed5Gain.connect(hipass);
-  hipass.connect(lowpass); lowpass.connect(gain);
-  gain.connect(ctx.destination);
-
-  let vib = null, vibGain = null;
-
+  let started = false, stopped = false;
   return {
-    _started: false, _stopped: false,
     start(t) {
-      if (this._started) return;
-      this._started = true;
+      if (started) return;
+      started = true;
       const st = t || ctx.currentTime;
-      reed.start(st); reed5.start(st); if (noiseSrc) noiseSrc.start(st);
-      gain.gain.setValueAtTime(0, st);
-      gain.gain.linearRampToValueAtTime(v, st + 0.01);
-      gain.gain.linearRampToValueAtTime(v * 0.82, st + 0.05);
+      reed1.start(st); reed2.start(st); h2.start(st); h5.start(st);
+      if (noiseSrc) noiseSrc.start(st);
+      // ADSR 包络：快速起音（15ms），然后稳定
+      mix.gain.setValueAtTime(0, st);
+      mix.gain.linearRampToValueAtTime(v * 0.95, st + 0.012);
+      mix.gain.linearRampToValueAtTime(v, st + 0.05);
+      // 呼吸噪声：起音时最明显，快速衰减
       if (noiseGain) {
-        noiseGain.gain.setValueAtTime(0.025, st);
-        noiseGain.gain.exponentialRampToValueAtTime(0.003, st + 0.08);
+        noiseGain.gain.setValueAtTime(0, st);
+        noiseGain.gain.linearRampToValueAtTime(v * 0.15, st + 0.01);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.12);
       }
     },
     stop(t) {
-      if (this._stopped) return;
-      this._stopped = true;
+      if (stopped) return;
+      stopped = true;
       const st = t || ctx.currentTime;
-      const cur = gain.gain.value;
-      gain.gain.cancelScheduledValues(st);
-      gain.gain.setValueAtTime(cur, st);
-      gain.gain.exponentialRampToValueAtTime(0.001, st + 0.05);
+      // 快速释放（15ms）+ 自然衰减尾音
+      mix.gain.cancelScheduledValues(st);
+      const cur = mix.gain.value;
+      mix.gain.setValueAtTime(Math.max(cur, 0.001), st);
+      mix.gain.exponentialRampToValueAtTime(0.0005, st + 0.12);
       if (noiseGain) {
         noiseGain.gain.cancelScheduledValues(st);
-        noiseGain.gain.setValueAtTime(noiseGain.gain.value, st);
-        noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.03);
+        noiseGain.gain.setValueAtTime(Math.max(noiseGain.gain.value, 0.001), st);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.06);
       }
-      reed.stop(st + 0.1); reed5.stop(st + 0.1);
-      if (noiseSrc) noiseSrc.stop(st + 0.1);
-      if (vib) { try { vib.stop(st + 0.1); } catch(e){} }
+      // 延迟停止振荡器，让尾音自然衰减
+      setTimeout(() => {
+        try { reed1.stop(); reed2.stop(); h2.stop(); h5.stop(); } catch(e){}
+        if (noiseSrc) try { noiseSrc.stop(); } catch(e){}
+        if (vib) try { vib.stop(); } catch(e){}
+      }, 250);
     },
     setVibrato(on) {
-      if (on && !vib) {
-        vib = ctx.createOscillator();
-        vibGain = ctx.createGain();
-        vib.frequency.value = 5.5;
-        vibGain.gain.value = freq * 0.006;
-        vib.connect(vibGain); vibGain.connect(reed.frequency);
-        vibGain.connect(reed5.frequency);
-        vib.start();
-      }
+      if (on) enableVibrato();
     }
   };
 }
