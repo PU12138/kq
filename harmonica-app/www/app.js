@@ -73,6 +73,8 @@ const State = {
   userSongs: [],            // 用户自定义歌曲
   currentCategory: 'all',
   searchQuery: '',
+  pageHistory: [],          // 页面历史栈（用于返回）
+  beatCount: 0,             // 节拍计数（用于强弱拍）
 };
 
 // ====== 简谱解析器 ======
@@ -215,21 +217,27 @@ function playNote(noteName, duration, startTime = 0, velocity = 0.15) {
   filter.frequency.exponentialRampToValueAtTime(1500, t + duration);
   filter.Q.value = 1;
   
-  // 音量包络(ADSR)
-  const attack = Math.min(0.03, duration * 0.1);
-  const release = Math.min(0.15, duration * 0.3);
+  // 音量包络(ADSR) - 根据音符时长调整
+  // 长音：更柔和的起音和释放，营造连贯感
+  // 短音：更清脆的起音，营造颗粒感
+  const isLong = duration > 0.5;
+  const attack = isLong ? Math.min(0.08, duration * 0.15) : Math.min(0.015, duration * 0.1);
+  const release = isLong ? Math.min(0.2, duration * 0.25) : Math.min(0.06, duration * 0.2);
+  const sustainLevel = isLong ? velocity * 0.75 : velocity * 0.65;
   
   gain.gain.setValueAtTime(0, t);
   gain.gain.linearRampToValueAtTime(velocity, t + attack);
-  gain.gain.linearRampToValueAtTime(velocity * 0.7, t + attack + 0.05);
-  gain.gain.setValueAtTime(velocity * 0.7, t + duration - release);
+  // 长音保持稳定，短音快速衰减
+  gain.gain.linearRampToValueAtTime(sustainLevel, t + attack + (isLong ? 0.08 : 0.03));
+  gain.gain.setValueAtTime(sustainLevel, t + duration - release);
   gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
   
   // 颤音(轻微的频率调制，模拟口琴的颤音效果)
+  // 长音颤音更明显，短音颤音较弱
   const vibrato = ctx.createOscillator();
   const vibratoGain = ctx.createGain();
-  vibrato.frequency.value = 5.5;
-  vibratoGain.gain.value = freq * 0.008;
+  vibrato.frequency.value = isLong ? 5.5 : 4;
+  vibratoGain.gain.value = freq * (isLong ? 0.012 : 0.005);
   vibrato.connect(vibratoGain);
   vibratoGain.connect(osc1.frequency);
   vibratoGain.connect(osc2.frequency);
@@ -311,6 +319,7 @@ function startAutoPlay() {
   State.isPlaying = true;
   State.isPaused = false;
   State.playIndex = 0;
+  State.beatCount = 0;  // 重置节拍计数，从强拍开始
   State.nextNoteTime = State.audioCtx.currentTime + 0.05;
   
   updatePlayButton();
@@ -374,13 +383,38 @@ function scheduler() {
     if (!note.isRest) {
       const noteName = noteToNoteName(note, State.currentSong.key);
       if (noteName) {
-        playNote(noteName, duration * 0.9, State.nextNoteTime, 0.18);
+        // 根据节拍位置计算力度（强弱拍），让演奏更有感情
+        // State.beatCount 累计拍数，4/4 拍为一个小节
+        const beatInBar = State.beatCount % 4;
+        let velocity;
+        if (beatInBar === 0) velocity = 0.22;        // 强拍
+        else if (beatInBar === 2) velocity = 0.19;   // 次强拍
+        else velocity = 0.15;                        // 弱拍
+        
+        // 长音稍微加强，保持连贯感
+        if (note.beats >= 2) velocity += 0.02;
+        // 高音稍微加强（口琴高音需要更用力）
+        if (note.octave > 0) velocity += 0.01;
+        
+        // 音符实际发音时长：长音更连贯，短音更短促
+        let noteDur;
+        if (note.beats >= 2) {
+          noteDur = duration * 0.95;  // 长音几乎占满
+        } else if (note.beats <= 0.5) {
+          noteDur = duration * 0.8;   // 短音留空隙，更清晰
+        } else {
+          noteDur = duration * 0.88;  // 普通音符
+        }
+        
+        playNote(noteName, noteDur, State.nextNoteTime, velocity);
         // 在适当时间高亮UI
         const delay = (State.nextNoteTime - State.audioCtx.currentTime) * 1000;
         setTimeout(() => highlightPlayingNote(State.playIndex), Math.max(0, delay));
       }
     }
     
+    // 累加拍数（用于强弱拍计算）
+    State.beatCount += note.beats;
     State.nextNoteTime += duration;
     State.playIndex++;
   }
@@ -676,8 +710,16 @@ function selectSong(song) {
 /**
  * 切换页面
  */
-function switchPage(page) {
+function switchPage(page, fromBack = false) {
+  const oldPage = State.currentPage;
   State.currentPage = page;
+  
+  // 记录页面历史（返回操作不记录）
+  if (!fromBack && oldPage !== page) {
+    State.pageHistory.push(oldPage);
+    // 限制历史栈长度
+    if (State.pageHistory.length > 20) State.pageHistory.shift();
+  }
   
   // 更新导航
   document.querySelectorAll('.nav-item').forEach(item => {
@@ -699,6 +741,19 @@ function switchPage(page) {
   } else if (page === 'library') {
     document.getElementById('libraryPage').classList.add('active');
     renderLibrary();
+  }
+}
+
+/**
+ * 返回上一页
+ */
+function goBack() {
+  if (State.pageHistory.length > 0) {
+    const prevPage = State.pageHistory.pop();
+    switchPage(prevPage, true);
+  } else {
+    // 没有历史记录时，返回演奏页
+    switchPage('play', true);
   }
 }
 
@@ -955,6 +1010,32 @@ function init() {
   document.getElementById('btnSelectSong').addEventListener('click', () => switchPage('songs'));
   document.getElementById('btnAddSongQuick').addEventListener('click', () => switchPage('add'));
   document.getElementById('btnLibrary').addEventListener('click', () => switchPage('library'));
+  
+  // 返回按钮
+  document.querySelectorAll('.back-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = btn.dataset.back;
+      if (target) {
+        switchPage(target, true);
+      } else {
+        goBack();
+      }
+    });
+  });
+  
+  // Cordova Android 返回键处理
+  if (window.cordova) {
+    document.addEventListener('backbutton', (e) => {
+      e.preventDefault();
+      if (State.currentPage !== 'play') {
+        goBack();
+      } else {
+        // 在演奏页时，退出应用
+        navigator.app.exitApp();
+      }
+    }, false);
+  }
   
   // 添加歌曲页面的调性选择
   const inputKey = document.getElementById('inputKey');
