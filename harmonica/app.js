@@ -1185,6 +1185,7 @@ function init() {
   
   // 设置默认口琴
   State.currentHarmonica = HARMONICAS.find(h => h.default) || HARMONICAS[0];
+  console.log("=== 口琴演奏家 v2.0.0 (2026-10-11) ===");
   
   // 填充口琴选择器
   const select = document.getElementById('harmonicaSelect');
