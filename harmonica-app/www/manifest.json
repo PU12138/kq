@@ -1,0 +1,40 @@
+{
+  "name": "口琴演奏家",
+  "short_name": "口琴",
+  "description": "一款手机口琴演奏软件，支持多种口琴类型、100+首内置歌曲自动演奏、自由添加琴谱",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a2e",
+  "theme_color": "#e8a317",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["music", "entertainment", "education"],
+  "shortcuts": [
+    {
+      "name": "演奏",
+      "short_name": "演奏",
+      "url": "./index.html?page=play"
+    },
+    {
+      "name": "曲谱库",
+      "short_name": "曲谱",
+      "url": "./index.html?page=songs"
+    }
+  ]
+}

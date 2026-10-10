@@ -866,8 +866,8 @@ function showToast(msg) {
 // ====== 初始化 ======
 
 function init() {
-  // 注册 Service Worker (PWA 支持)
-  if ('serviceWorker' in navigator) {
+  // 注册 Service Worker (仅在 http/https 环境，Cordova 为 file:// 不支持)
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     navigator.serviceWorker.register('service-worker.js').then(() => {
       console.log('Service Worker 注册成功');
     }).catch(err => {

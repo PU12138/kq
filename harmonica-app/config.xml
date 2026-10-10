@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.harmonica.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>口琴演奏家</name>
+    <description>
+        手机口琴演奏软件，支持多种口琴类型、100+首内置歌曲自动演奏、自由添加琴谱
+    </description>
+    <author email="dev@harmonica.app" href="https://cordova.apache.org">
+        口琴演奏家
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-navigation href="*" />
+    <access origin="*" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#1a1a2e" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="AndroidInsecureFileModeEnabled" value="true" />
+    <icon src="www/icon-512.png" />
+    <icon density="mdpi" src="www/icon-192.png" />
+    <icon density="hdpi" src="www/icon-192.png" />
+    <icon density="xhdpi" src="www/icon-512.png" />
+    <icon density="xxhdpi" src="www/icon-512.png" />
+    <icon density="xxxhdpi" src="www/icon-512.png" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-targetSdkVersion" value="36" />
+    </platform>
+</widget>
